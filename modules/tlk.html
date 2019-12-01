@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>Text Test</title>
+  <script src="prc.js"></script>
+  <style>
+    .txtArea {
+      width: 240px;
+      height: 72px;
+      padding: 20px;
+      border-radius: 5px;
+      background-color: #000000;
+    }
+    
+    .txtField {
+      display: flex;
+    }
+    
+    .txtCell {
+      font-family: Meiryo;
+      font-size: 17px;
+      color: #ffffff;
+      text-align: center;
+      width: 24px;
+      height: 24px;
+      background-color: #000000;
+    }
+  </style>
+</head>
+<body>
+<div class="txtArea">
+  <div class="txtField">
+    <div class="txtCell"></div>
+    <div class="txtCell"></div>
+    <div class="txtCell"></div>
+    <div class="txtCell"></div>
+    <div class="txtCell"></div>
+    <div class="txtCell"></div>
+    <div class="txtCell"></div>
+    <div class="txtCell"></div>
+    <div class="txtCell"></div>
+    <div class="txtCell"></div>
+    <div class="txtCell"></div>
+  </div>
+  <div class="txtField">
+    <div class="txtCell"></div>
+    <div class="txtCell"></div>
+    <div class="txtCell"></div>
+    <div class="txtCell"></div>
+    <div class="txtCell"></div>
+    <div class="txtCell"></div>
+    <div class="txtCell"></div>
+    <div class="txtCell"></div>
+    <div class="txtCell"></div>
+    <div class="txtCell"></div>
+    <div class="txtCell"></div>
+  </div>
+  <div class="txtField">
+    <div class="txtCell"></div>
+    <div class="txtCell"></div>
+    <div class="txtCell"></div>
+    <div class="txtCell"></div>
+    <div class="txtCell"></div>
+    <div class="txtCell"></div>
+    <div class="txtCell"></div>
+    <div class="txtCell"></div>
+    <div class="txtCell"></div>
+    <div class="txtCell"></div>
+    <div class="txtCell"></div>
+  </div>
+</div>
+<script>
+
+var Txt = function() {
+  this.txtCell = document.getElementsByClassName("txtCell");
+  this.count = 0;
+  this.tmId = 0;
+}
+
+Txt.prototype = {
+  cnstIn: function() {
+    Txt.inst.push(this);
+    return this;
+  },
+  shw: function(num) {
+    this.tmId = setInterval(function() {
+      Txt.pwrd(num);
+    }, 50);
+  }
+}
+
+Txt.pwrd =  function(num) {
+  Txt.inst[0].txtCell.item(Txt.inst[0].count).innerText = Txt.lst[num][Txt.inst[0].count];
+  Txt.inst[0].count++;
+  if (Txt.inst[0].count == Txt.lst[num].length || Txt.inst[0].count == Txt.inst[0].txtCell.length) {
+    clearInterval(Txt.inst[0].tmId );
+  }
+}
+
+Txt.inst = [];
+
+Txt.lst = [
+  "ぼくは　キジトラです　とても　うれしいです　ありがとう",
+  "このまちの　ことなら　なんでも　きいてね！　いろいろ　おしえるよ"
+];
+
+</script>
+</body>
+</html>

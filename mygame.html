@@ -1,0 +1,227 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <!-- 文字コード -->
+  <meta charset="utf-8">
+  <!-- プラグマ指示子 -->
+  <meta http-equiv="Pragma" content="no-cache">
+  <meta http-equiv="cache-control" content="no-cache">
+  <meta http-equiv="expires" content="0">
+  <!-- ゲームタイトル -->
+  <title>Engage with Tales - Eroded Muse -</title>
+  <!-- スタイルシート -->
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/tlk.style.css">
+</head>
+<body onload="main();" onclick="return false;" ondragstart="return false;">
+
+  <!-- マップチップ画像のロード ==> canvas要素化 -->
+  <img src="images/grass.png" class="images"><canvas class="texture" width="32" height="32"></canvas>
+  <img src="images/bg.png" class="images"><canvas class="texture" width="32" height="32"></canvas>
+  <img src="images/block.png" class="images"><canvas class="texture" width="32" height="32"></canvas>
+  <img src="images/block2.png" class="images"><canvas class="texture" width="32" height="32"></canvas>
+  <img src="images/desert.png" class="images"><canvas class="texture" width="32" height="32"></canvas>
+  <img src="images/water.png" class="images"><canvas class="texture" width="32" height="32"></canvas>
+  <img src="images/door.png" class="images"><canvas class="texture" width="32" height="32"></canvas>
+  
+  <!-- ゲームのフィールド -->
+  <div style="overflow: hidden; width: 800px; height: 608px; position: absolute; top: 20px; left: 200px;">
+    <div id="background" style="position: absolute; width: 864px; height: 672px; top: -32px; left: -32px;">
+    
+      <!-- 2層の背景レイヤー -->
+      <canvas id="canvas1" class="canvas" width="864" height="672"></canvas>
+      <canvas id="canvas2" class="canvas" width="864" height="672"></canvas>
+      
+      <!-- ゲームの画面 -->
+      <div id="mntr" style="position: relative">
+        <!-- マップ上の主人公の画像 -->
+        <img src="images/hero_front.png" style="position: absolute; top: 288px; left: 384px;z-index: 10;">
+        <!-- 人々が動く背景レイヤー -->
+        <div id="pbg"></div>
+      </div>
+      
+    </div>
+  </div>
+  
+  <!-- コマンド ここから -->
+  <div id="cmd">
+    
+    <div id="chrSlct">
+      <p id="chrSlct_ttl">つよさ</p>
+      <div id="chrSlctInner">
+        <div id="chrName_box">
+          <p class="chrName">むう</p>
+          <p class="chrName">マオ</p>
+          <p class="chrName">ニコ</p>
+        </div>
+      </div>
+    </div>
+    
+    <p id="cmd_ttl">コマンド</p>
+    
+    <div id="cnt_bx">
+      <div id="cmd_pntr" class="cmd_cnt">▶</div>
+      <p class="cmd_cnt">はなす</p>
+      <p class="cmd_cnt">じゅもん</p>
+      <p class="cmd_cnt">つよさ</p>
+      <p class="cmd_cnt">どうぐ</p>
+      <p class="cmd_cnt">そうび</p>
+      <p class="cmd_cnt">しらべる</p>
+    </div>
+    
+    <div id="cmd_inr"></div>
+    
+  </div>
+  <!-- コマンド ここまで -->
+  
+  <div class="container"></div>
+  
+  <div id="fld1" class="stt">
+  <div id="fldInner1">
+    <div id="fldBox1">
+    <div id="nameFld" class="fld1"></div>
+    <div id="sxFld" class="fld1"></div>
+    <div id="lvlFld" class="fld1"></div>
+    <div id="hpFld" class="fld1"></div>
+    <div id="mpFld" class="fld1"></div>
+    </div>
+  </div>
+  </div>
+  <div id="fld2" class="stt">
+  <div id="fldInner2">
+    <div id="fldBox2">
+    <div id="swrdFld" class="fld2"></div>
+    <div id="armFld" class="fld2"></div>
+    <div id="shldFld" class="fld2"></div>
+    <div id="helmFld" class="fld2"></div>
+    </div>
+  </div>
+  </div>
+  <div id="fld3" class="stt">
+  <div id="fldInner3">
+    <div id="fldBox3">
+    <div id="strngFld" class="fld3"></div>
+    <div id="speedFld" class="fld3"></div>
+    <div id="physclFld" class="fld3"></div>
+    <div id="intlFld" class="fld3"></div>
+    <div id="luckFld" class="fld3"></div>
+    <div id="mxHpFld" class="fld3"></div>
+    <div id="mxMpFld" class="fld3"></div>
+    <div id="ofsFld" class="fld3"></div>
+    <div id="dfsFld" class="fld3"></div>
+    <div id="exFld" class="fld3"></div>
+    </div>
+  </div>
+  </div>
+  
+  <!-- テキストエリア ここから -->
+  <div id="txtArea">
+    <div id="txtInner">
+      <!-- txtField が一行、txtCell 一文字を表す -->
+      <div class="txtField">
+        <div class="txtCell"></div>
+        <div class="txtCell"></div>
+        <div class="txtCell"></div>
+        <div class="txtCell"></div>
+        <div class="txtCell"></div>
+        <div class="txtCell"></div>
+        <div class="txtCell"></div>
+        <div class="txtCell"></div>
+        <div class="txtCell"></div>
+        <div class="txtCell"></div>
+        <div class="txtCell"></div>
+        <div class="txtCell"></div>
+        <div class="txtCell"></div>
+        <div class="txtCell"></div>
+        <div class="txtCell"></div>
+        <div class="txtCell"></div>
+        <div class="txtCell"></div>
+      </div>
+      <!-- txtField が一行、txtCell 一文字を表す -->
+      <div class="txtField">
+        <div class="txtCell"></div>
+        <div class="txtCell"></div>
+        <div class="txtCell"></div>
+        <div class="txtCell"></div>
+        <div class="txtCell"></div>
+        <div class="txtCell"></div>
+        <div class="txtCell"></div>
+        <div class="txtCell"></div>
+        <div class="txtCell"></div>
+        <div class="txtCell"></div>
+        <div class="txtCell"></div>
+        <div class="txtCell"></div>
+        <div class="txtCell"></div>
+        <div class="txtCell"></div>
+        <div class="txtCell"></div>
+        <div class="txtCell"></div>
+        <div class="txtCell"></div>
+      </div>
+      <!-- txtField が一行、txtCell 一文字を表す -->
+      <div class="txtField">
+        <div class="txtCell"></div>
+        <div class="txtCell"></div>
+        <div class="txtCell"></div>
+        <div class="txtCell"></div>
+        <div class="txtCell"></div>
+        <div class="txtCell"></div>
+        <div class="txtCell"></div>
+        <div class="txtCell"></div>
+        <div class="txtCell"></div>
+        <div class="txtCell"></div>
+        <div class="txtCell"></div>
+        <div class="txtCell"></div>
+        <div class="txtCell"></div>
+        <div class="txtCell"></div>
+        <div class="txtCell"></div>
+        <div class="txtCell"></div>
+        <div class="txtCell"></div>
+      </div>
+      <!-- txtField が一行、txtCell 一文字を表す -->
+      <div class="txtField">
+        <div class="txtCell"></div>
+        <div class="txtCell"></div>
+        <div class="txtCell"></div>
+        <div class="txtCell"></div>
+        <div class="txtCell"></div>
+        <div class="txtCell"></div>
+        <div class="txtCell"></div>
+        <div class="txtCell"></div>
+        <div class="txtCell"></div>
+        <div class="txtCell"></div>
+        <div class="txtCell"></div>
+        <div class="txtCell"></div>
+        <div class="txtCell"></div>
+        <div class="txtCell"></div>
+        <div class="txtCell"></div>
+        <div class="txtCell"></div>
+        <div class="txtCell"></div>
+      </div>
+    </div>
+  </div>
+  <!-- テキストエリア ここまで -->
+  
+  <!-- スクリプトのロード ここから -->
+  <!--<script src="storage.js"></script>-->
+  
+  <script src="map.js"></script>
+  <script src="mpchp.js"></script>
+  <script src="rsrc.js"></script>
+  <script src="bg.js"></script>
+  <!-- <script src="background.js"></script> -->
+  <script src="hero.js"></script>
+  <!--<script src="peoplefield.js"></script>-->
+  <script src="elem.js"></script>
+  <script src="ppl.js"></script>
+  <script src="rdm.js"></script>
+  <script src="flg.js"></script>
+  
+  <script src="wld.js"></script>
+  <script src="cmd.js"></script>
+  <script src="tlk.js"></script>
+  <script src="stt.js"></script>
+  <script src="main.js"></script>
+  <!-- スクリプトのロード ここまで -->
+  
+</body>
+</html>

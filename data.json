@@ -1,0 +1,24 @@
+[
+  {
+    "name": "むう",
+    "strng": "10",
+    "physcl": "10",
+    "speed": "10",
+    "intl": "10",
+    "luck": "10",
+    "mxHp": "10",
+    "mxMp": "10",
+    "ofs": "10",
+    "dfs": "10",
+    "ex": "10",
+    "sx": "10",
+    "lvl": "10",
+    "hp": "10",
+    "mp": "mp",
+    "swrd": "swrd",
+    "arm": "arm",
+    "shld": "shld",
+    "helm": "helm"
+  }
+  
+]

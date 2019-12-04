@@ -53,6 +53,12 @@ Wld.twn = {
   "klyam": {
     mp: Maps[1],
     ppl: 5
+  },
+
+  // アビの町
+  "abi": {
+    mp: Maps[2],
+    ppl: 0
   }
 };
 
@@ -86,13 +92,13 @@ Wld.prototype = {
     //Mpchp.drw(this.mp2, this.mp, 0);
     
     // 町の人を設置
-    for (var i = 0; i < this.ppl; i++) {
-      new Ppl("people", 1, 1, this.mp, 5, 5, i).cnstIn();
-    }
+    //for (var i = 0; i < this.ppl; i++) {
+      //new Ppl("people", 1, 1, this.mp, 5, 5, i).cnstIn();
+    //}
 
-    for (var i = 0; i < this.ppl; i++) {
-      new Ppl("boss", 1, 1, this.mp, 15, 5, i).cnstIn();
-    }
+    // for (var i = 0; i < this.ppl; i++) {
+    //   new Ppl("boss", 1, 1, this.mp, 15, 5, i).cnstIn();
+    // }
 
     // 町の人の動作を開始
     Ppl.act();

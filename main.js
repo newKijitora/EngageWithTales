@@ -6,7 +6,7 @@ function main() {
   ************************************************/
   
   // 世界をインスタンス化
-  var world = new Wld("kijitora").cnstIn();
+  var world = new Wld("abi").cnstIn();
   // フィールドをオープン
   world.opn();
   

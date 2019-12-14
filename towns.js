@@ -1,5 +1,5 @@
 // 町のリストを格納するオブジェクト（外部ファイル化する？）
-var TownList = {
+var Towns = {
 
   // きじとらの町
   "kijitora": {

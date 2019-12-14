@@ -6,7 +6,7 @@
 var World = function(townName) {
   // Wld.twnのJSONからtownNameキーで町を選択する
   // twnのmp, pplプロパティをWldのmpとpplに設定
-  var town = TownList[townName];
+  var town = Towns[townName];
 
   this.map = town.map; // 町のマップを表す配列オブジェクト
 

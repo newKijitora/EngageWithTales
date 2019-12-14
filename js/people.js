@@ -77,8 +77,8 @@ People.prototype = {
   
   tlk: function(num) { // 呼び出し元: Cmd.prototype.tlk();
     if (this.spch == num) {
-      Tlk.inst[0].opn(num);
-      Tlk.inst[0].bl = true;
+      Talk.inst[0].open(num);
+      Talk.inst[0].bl = true;
     }
   },
   

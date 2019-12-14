@@ -1,12 +1,13 @@
 // メイン関数
+
 function main() {
+
   /***********************************************
   * フィールドをインスタンス化する (rf: wld.js)
   ************************************************/
   
-  // 世界をインスタンス化
+  // フィールドの開始
   var world = new World("abi").cnstIn();
-  // フィールドをオープン
   world.open();
   
   /***********************************************
@@ -28,7 +29,7 @@ function main() {
   // コマンドの初期化
   var command = new Command().cnstIn();
   // トークイベントの初期化
-  var tlk = new Tlk().cnstIn();
+  var talk = new Talk().cnstIn();
   // ウェブストレージ利用時(コメントアウト中)
   // var storage = new Storage();
   
@@ -45,27 +46,36 @@ function main() {
   window.addEventListener("keydown", function(event) {
     Command.inst[0].mvPntr(event);
   }, false);
-
-  // 背景を動かすイベント
-  //window.addEventListener("keydown", function(evt) {Bg.inst[0].move(evt);}, false);
   
   /***********************************************
   * キーダウン、キーアップイベントの制御
   ************************************************/
   
   // キーダウンイベントの制御
-  addEventListener("keydown", function(event) {
+  window.addEventListener("keydown", function(event) {
+    
+    // 背景オブジェクトを取得
     let background = Bg.inst[0];
+    // キーコード
+    let keyCode = event.keyCode;
+
     if (background.powered == false && background.poweredParts.loop == 0) {
-      if (Command.inst[0].bl == false) {
-        background.interface.distribute(event.keyCode);
+      if (Command.inst[0].bool == false) {
+        
+        // 背景を動かす
+        background.interface.distribute(keyCode);
         background.move(background);
+
+        // 主人公の画像を切り替える
+        Hero.inst[0].directionChange(keyCode);
       }
     }
   }, false);
 
   // キーアップイベントの制御
-  addEventListener("keyup", function() {
+  window.addEventListener("keyup", function() {
+
+    // 背景オブジェクトを取得
     let background = Bg.inst[0];
     background.powered = false;
   }, false);

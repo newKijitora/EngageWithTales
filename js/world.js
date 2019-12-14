@@ -63,9 +63,9 @@ World.prototype = {
       new People("people", 1, 1, this.map, 5, 5, i).cnstIn();
     }
 
-    for (let i = 0; i < this.people; i++) {
-      new People("enemy2", 1, 1, this.map, 15, 5, i).cnstIn();
-    }
+    // for (let i = 0; i < this.people; i++) {
+    //   new People("enemy2", 1, 1, this.map, 15, 5, i).cnstIn();
+    // }
 
     // 町の人の動作を開始
     People.move();

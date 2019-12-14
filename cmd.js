@@ -3,6 +3,7 @@
  *****************************/
 
 var Command = function() {
+  this.hero = document.getElementById("hero");
   this.ent = document.getElementById("command");
   this.pntr = document.getElementById("cmd_pntr");
   this.chrNameBx = document.getElementById("chrName_box");
@@ -12,7 +13,7 @@ var Command = function() {
   this.chrSlct = document.getElementById("chrSlct");
   this.pare = document.getElementById("mntr");
   this.pare.appendChild(this.ent);
-  this.bool = false; // 真偽値の初期値
+  this.bl = false; // 真偽値の初期値
   this.status = "cls"; // 状態の初期値
   this.kcd = 74; // キーボード「j」キー
   this.pntrNum = 0;
@@ -37,7 +38,7 @@ Command.prototype = {
   },
   
   mvPntr: function(evt) {
-    if (this.bool == true && this.status != "tlk") {
+    if (this.bl == true && this.status != "tlk") {
     switch (evt.keyCode) {
       case 65:
         if (parseInt(this.pntr.style.left) != 0 && this.status != "slct")
@@ -64,8 +65,8 @@ Command.prototype = {
   opn: function (evt) {
     if (evt.keyCode == 75)
       this.cls();
-    if (evt.keyCode == this.kcd && Talk.inst[0].fin == true) {
-      this.bool = true;
+    if (evt.keyCode == this.kcd && Tlk.inst[0].fin == true) {
+      this.bl = true;
       switch (this.status) {
         case "cmd": this.slct(); break;
         case "tlk": this.cls(); break;
@@ -101,7 +102,6 @@ Command.prototype = {
     this.status = "tlk";
     People.tlk(1);
   },
-  
   strng: function() {
     this.status = "slct";
     this.pntr.style.top = "0px";
@@ -109,26 +109,23 @@ Command.prototype = {
     this.chrNameBx.appendChild(this.pntr);
     Status.inst[0].slct();
   },
-  
-  // 「しらべる」コマンド
   srch: function() {
     this.status = "tlk";
-    Talk.inst[0].open(0);
-    Talk.inst[0].bl = true;
+    Tlk.inst[0].opn(0);
+    Tlk.inst[0].bl = true;
   },
-
   cls: function() {
-    if (Talk.inst[0].fin == true) {
+    if (Tlk.inst[0].fin == true) {
       this.status = "cls";
-      this.bool = false;
+      this.bl = false;
       this.ent.style.display = "none";
       this.chrSlct.style.display = "none";
       this.cntBx.appendChild(this.pntr);
-      Talk.inst[0].close();
+      Tlk.inst[0].cls();
       Status.inst[0].cls();
       Command.inst[0].pntr.style.left = "0px";
       Command.inst[0].pntr.style.top = "0px";
-      Talk.inst[0].bl = false;
+      Tlk.inst[0].bl = false;
       People.move();
     }
   }

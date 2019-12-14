@@ -3,17 +3,18 @@
  *************************************************/
 
 // コンストラクタ
-var Wld = function(twnName) {
+var World = function(townName) {
   // Wld.twnのJSONからtownNameキーで町を選択する
   // twnのmp, pplプロパティをWldのmpとpplに設定
-  var twn = Wld.twn[twnName];
+  var town = TownList[townName];
 
-  this.mp = twn.mp; // 町のマップを表す配列オブジェクト
+  this.map = town.map; // 町のマップを表す配列オブジェクト
 
-  this.ppl = twn.ppl; // 町の人数
-  console.log(this.mp); 
+  this.people = town.people; // 町の人数
+  console.log(this.map);
+
   // 人々が動くレイヤー
-  this.pbg = new Bg(this.mp).cnstIn();
+  this.pbg = new Bg(this.map).cnstIn();
 
   // 背景の上層レイヤーと下層レイヤー（動作するごとにレイヤーは入れ替わる）
   //this.bg1 = new BgPart("canvas1", this.mp, false).cnstIn();
@@ -32,7 +33,7 @@ var Wld = function(twnName) {
 
 /* ゲーム本体のインスタンスを格納する配列 */
 
-Wld.inst = [];
+World.inst = [];
 
 /* フィールドのリストを格納するオブジェクト群 */
 
@@ -40,48 +41,27 @@ Wld.inst = [];
 // 各フィールドのマップはmap.jsのMaps配列からインデックスで選択する
 // 各フィールドのキャラクターの人数はpplキーの値に整数値で指定
 
-// 町のリストを格納するオブジェクト
-Wld.twn = {
-
-  // きじとらの町
-  "kijitora": {
-    mp: Maps[0],
-    ppl: 10
-  },
-
-  // クルヤムの町
-  "klyam": {
-    mp: Maps[1],
-    ppl: 5
-  },
-
-  // アビの町
-  "abi": {
-    mp: Maps[2],
-    ppl: 0
-  }
-};
 
 // 城のリストを格納するオブジェクト
-Wld.csl = {};
+World.csl = {};
 
 // ダンジョン（洞窟や塔など）のリストを格納するオブジェクト
-Wld.dgn = {};
+World.dgn = {};
 
 /*************************************************
  * インスタンスメソッド
  *************************************************/
 
-Wld.prototype = {
+World.prototype = {
   
   // コンストラクタのインスタンスリストに登録
   cnstIn: function() {
-    Wld.inst.push(this);
+    World.inst.push(this);
     return this;
   },
   
   // 指定されたマップを開くメソッド
-  opn: function() {
+  open: function() {
 
     // マップの初期化（要素を生成）
     //Mpchp.stUp(this.mp1, "canvas1");

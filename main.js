@@ -6,9 +6,9 @@ function main() {
   ************************************************/
   
   // 世界をインスタンス化
-  var world = new Wld("abi").cnstIn();
+  var world = new World("abi").cnstIn();
   // フィールドをオープン
-  world.opn();
+  world.open();
   
   /***********************************************
   * ゲームのパーティを編成

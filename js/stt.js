@@ -1,5 +1,5 @@
-var Stt = function(name, sx, strng, speed, physcl, intl, luck, mxHp, mxMp, ofs, dfs, ex, lvl, hp, mp, swrd, arm, shld, helm) {
-  this.ent = document.getElementsByClassName("stt");
+var Status = function(name, sx, strng, speed, physcl, intl, luck, mxHp, mxMp, ofs, dfs, ex, lvl, hp, mp, swrd, arm, shld, helm) {
+  this.ent = document.getElementsByClassName("Status");
   for (var i = 0; i < this.ent.length; i++) {
     document.getElementById("mntr").appendChild(this.ent.item(i));
   }
@@ -43,30 +43,30 @@ var Stt = function(name, sx, strng, speed, physcl, intl, luck, mxHp, mxMp, ofs, 
   // this.helm = JSON.parse(localStorage.getItem(this.name)).helm;
 }
 
-Stt.inst = [];
+Status.inst = [];
 
-Stt.prototype = {
+Status.prototype = {
 
   cnstIn: function() {
-    Stt.inst.push(this);
+    Status.inst.push(this);
     return this;
   },
   slct: function() {
-    Cmd.inst[0].chrSlct.style.display = "block";
+    Command.inst[0].chrSlct.style.display = "block";
   },
   
   shw: function() {
-  switch (parseInt(Cmd.inst[0].pntr.style.top)) {
-    case 0: Stt.inst[0].inpt(); break;
-    case 32: Stt.inst[1].inpt(); break;
-    case 64: Stt.inst[2].inpt(); break;
+  switch (parseInt(Command.inst[0].pntr.style.top)) {
+    case 0: Status.inst[0].inpt(); break;
+    case 32: Status.inst[1].inpt(); break;
+    case 64: Status.inst[2].inpt(); break;
   }
   for (var i = 0; i < this.ent.length; i++) {
     this.ent.item(i).style.display = "block";
   }
   Tlk.inst[0].bl = true;
   Tlk.inst[0].fin = true;
-  Cmd.inst[0].stt = "tlk";
+  Command.inst[0].Status = "tlk";
   },
  cls: function() {
    for (var i = 0; i < this.ent.length; i++) {

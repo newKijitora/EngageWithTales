@@ -16,6 +16,6 @@ var Towns = {
   // アビの町
   "abi": {
     map: Maps[2],
-    people: 0
+    people: 10
   }
 };

@@ -2,13 +2,13 @@
  * 町の人クラス              *
  *****************************/
 
-var Ppl = function(name, w, h, cont, x, y, spch) {
+var People = function(name, w, h, cont, x, y, spch) {
   this.ent = Elem.setElem("img", w, h, "pbg", x, y);
   this.ent.src = "images/" + name + ".png";
   this.ent.setAttribute("class", "chara");
   this.ent.style.zIndex = 1;
   this.moto = cont[this.ftprnt(this.ent)];
-  this.chrcd = Ppl.chrcd[name];
+  this.characterCode = People.characterCode[name];
   this.drct;
   this.pos;
   this.map = cont;
@@ -21,13 +21,13 @@ var Ppl = function(name, w, h, cont, x, y, spch) {
  *****************************/
 
 // インスタンスを格納する配列
-Ppl.inst = [];
+People.inst = [];
 
 // 人物ごとのタイマーIDを格納する配列
-Ppl.tmId = [];
+People.tmId = [];
 
 // 人物コード
-Ppl.chrcd = {
+People.characterCode = {
   "people": 18,
   "heroin_front": 15,
   "enemy2": 20,
@@ -35,30 +35,30 @@ Ppl.chrcd = {
 };
 
 // 人物の動き
-Ppl.dist = [-32, -32, 32, 32];
+People.dist = [-32, -32, 32, 32];
 
 /*****************************
  * クラスメソッド             *
  *****************************/
 
 // すべてのインスタンスを動かす
-Ppl.act = function(evt) {
-  for (var i = 0; i < Ppl.inst.length; i++) {
-    Ppl.inst[i].act(evt);
+People.move = function(evt) {
+  for (var i = 0; i < People.inst.length; i++) {
+    People.inst[i].move(evt);
   }
 }
 
 // すべてのインスタンスの動きを止める
-Ppl.stp = function() {
-  for (var i = 0; i < Ppl.inst.length; i++) {
-    Ppl.inst[i].stp();
+People.stop = function() {
+  for (let i = 0; i < People.inst.length; i++) {
+    People.inst[i].stop();
   }
 }
 
 // 人物に話を始めさせる
-Ppl.tlk = function(num) {
-  for (var i = 0; i < Ppl.inst.length; i++) {
-    Ppl.inst[i].tlk(num);
+People.tlk = function(num) {
+  for (var i = 0; i < People.inst.length; i++) {
+    People.inst[i].tlk(num);
   }
 }
 
@@ -66,12 +66,12 @@ Ppl.tlk = function(num) {
  * インスタンスメソッド       *
  *****************************/
 
-Ppl.prototype = {
+People.prototype = {
   
   // コンストラクタのインスタンスリストに登録
   cnstIn: function() {
-    this.time = Ppl.inst.length * 100;
-    Ppl.inst.push(this);
+    this.time = People.inst.length * 100;
+    People.inst.push(this);
     return this;
   },
   
@@ -83,10 +83,10 @@ Ppl.prototype = {
   },
   
   // 動きはじめる
-  act: function() {
-    var ent = this.ent, moto = this.moto, chrcd = this.chrcd, map = this.map, time = this.time;
+  move: function() {
+    var ent = this.ent, moto = this.moto, characterCode = this.characterCode, map = this.map, time = this.time;
     var ftprnt = this.ftprnt;
-    Ppl.tmId.push(setInterval(function() {
+    People.tmId.push(setInterval(function() {
       var direction = RandomGenerator.generate(0, 3);
       switch (direction) {
         case 0:
@@ -96,8 +96,8 @@ Ppl.prototype = {
             case 1:
               map[ftprnt(ent)] = moto;
               moto = map[ftprnt(ent) + Rsrc.aryDist[direction]];
-              map[ftprnt(ent) + Rsrc.aryDist[direction]] = Ppl.chrcd[chrcd];
-              ent.style.left = parseInt(ent.style.left) + Ppl.dist[direction] + "px";
+              map[ftprnt(ent) + Rsrc.aryDist[direction]] = People.characterCode[characterCode];
+              ent.style.left = parseInt(ent.style.left) + People.dist[direction] + "px";
               break;
             default:
               break;
@@ -110,8 +110,8 @@ Ppl.prototype = {
             case 1:
               map[ftprnt(ent)] = moto;
               moto = map[ftprnt(ent) + Rsrc.aryDist[direction]];
-              map[ftprnt(ent) + Rsrc.aryDist[direction]] = Ppl.chrcd[chrcd];
-              ent.style.top = parseInt(ent.style.top) + Ppl.dist[direction] + "px";
+              map[ftprnt(ent) + Rsrc.aryDist[direction]] = People.characterCode[characterCode];
+              ent.style.top = parseInt(ent.style.top) + People.dist[direction] + "px";
               break;
             default:
               break;
@@ -122,8 +122,8 @@ Ppl.prototype = {
   },
   
   // 動きを止める
-  stp: function() {
-    clearInterval(Ppl.tmId.shift());
+  stop: function() {
+    clearInterval(People.tmId.shift());
   },
   
   // 足跡メソッド

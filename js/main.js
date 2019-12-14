@@ -1,5 +1,4 @@
-// bodyのロード時に起動するスクリプト
-
+// メイン関数
 function main() {
   /***********************************************
   * フィールドをインスタンス化する (rf: wld.js)
@@ -15,9 +14,10 @@ function main() {
   ************************************************/
   
   // インスタンス化に必要な引数: new Stt(name, sx, strng, speed, physcl, intl, luck, mxHp, mxMp, ofs, dfs, ex, lvl, hp, mp, swrd, arm, shld, helm);
-  new Stt("むう", "おとこ", 10, 100, 100, 100, 100, 100, 100, 100, 100, 0, 1, 50, 50, "ひのきのぼう", "ぬののふく", "きのたて", "かわのぼうし").cnstIn();
-  new Stt("マオ", "おんな", 10, 100, 100, 100, 100, 100, 100, 100, 100, 0, 1, 50, 50, "ひのきのぼう", "ぬののふく", "きのたて", "かわのぼうし").cnstIn();
-  new Stt("ニコ", "おんな", 10, 100, 100, 100, 100, 100, 100, 100, 100, 0, 1, 50, 50, "ひのきのぼう", "ぬののふく", "きのたて", "かわのぼうし").cnstIn();
+  new Status("むう", "おとこ", 10, 100, 100, 100, 100, 100, 100, 100, 100, 0, 1, 50, 50, "ひのきのぼう", "ぬののふく", "きのたて", "かわのぼうし").cnstIn();
+  new Status("マオ", "おんな", 10, 100, 100, 100, 100, 100, 100, 100, 100, 0, 1, 50, 50, "ひのきのぼう", "ぬののふく", "きのたて", "かわのぼうし").cnstIn();
+  new Status("ニコ", "おんな", 10, 100, 100, 100, 100, 100, 100, 100, 100, 0, 1, 50, 50, "ひのきのぼう", "ぬののふく", "きのたて", "かわのぼうし").cnstIn();
+  new Status("ルナ", "おんな", 10, 100, 100, 100, 100, 100, 100, 100, 100, 0, 1, 50, 50, "ひのきのぼう", "ぬののふく", "きのたて", "かわのぼうし").cnstIn();
   
   /***********************************************
   * ゲームに必要な要素の初期化
@@ -26,7 +26,7 @@ function main() {
   // 主人公をマップ上に配置
   var hero = new Hero().cnstIn();
   // コマンドの初期化
-  var cmd = new Cmd().cnstIn();
+  var command = new Command().cnstIn();
   // トークイベントの初期化
   var tlk = new Tlk().cnstIn();
   // ウェブストレージ利用時(コメントアウト中)
@@ -38,12 +38,12 @@ function main() {
   
   // コマンドを開く
   window.addEventListener("keydown", function(event) {
-    Cmd.inst[0].opn(event);
+    Command.inst[0].opn(event);
   }, false);
 
   // カーソルを動かす
   window.addEventListener("keydown", function(event) {
-    Cmd.inst[0].mvPntr(event);
+    Command.inst[0].mvPntr(event);
   }, false);
 
   // 背景を動かすイベント
@@ -57,7 +57,7 @@ function main() {
   addEventListener("keydown", function(event) {
     let background = Bg.inst[0];
     if (background.powered == false && background.poweredParts.loop == 0) {
-      if (Cmd.inst[0].bl == false) {
+      if (Command.inst[0].bl == false) {
         background.interface.distribute(event.keyCode);
         background.move(background);
       }

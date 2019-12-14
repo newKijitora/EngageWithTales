@@ -1,30 +1,17 @@
 /*************************************************
- * Wldクラス　ゲーム本体のクラス (rf: bg.js)
+ * Worldクラス　ゲーム本体のクラス (rf: bg.js)
  *************************************************/
 
 // コンストラクタ
 var World = function(townName) {
-  // Wld.twnのJSONからtownNameキーで町を選択する
-  // twnのmp, pplプロパティをWldのmpとpplに設定
+  // 町の設定
   var town = Towns[townName];
-
-  this.map = town.map; // 町のマップを表す配列オブジェクト
-
-  this.people = town.people; // 町の人数
-  console.log(this.map);
-
-  // 人々が動くレイヤー
+  // マップの設定
+  this.map = town.map;
+  // 町の人々の人数
+  this.people = town.people;
+  // フィールドの開始
   this.pbg = new Bg(this.map).cnstIn();
-
-  // 背景の上層レイヤーと下層レイヤー（動作するごとにレイヤーは入れ替わる）
-  //this.bg1 = new BgPart("canvas1", this.mp, false).cnstIn();
-  //this.bg2 = new BgPart("canvas2", this.mp, true).cnstIn();
-    
-  //this.bg1.ent.appendChild(this.pbg.ent);
-  
-  // マップの一マスになるdiv要素を格納する配列
-  //this.mp1 = [];
-  //this.mp2 = [];
 };
 
 /*************************************************
@@ -72,15 +59,15 @@ World.prototype = {
     //Mpchp.drw(this.mp2, this.mp, 0);
     
     // 町の人を設置
-    //for (var i = 0; i < this.ppl; i++) {
-      //new Ppl("people", 1, 1, this.mp, 5, 5, i).cnstIn();
-    //}
+    for (let i = 0; i < this.people; i++) {
+      new People("people", 1, 1, this.map, 5, 5, i).cnstIn();
+    }
 
-    // for (var i = 0; i < this.ppl; i++) {
-    //   new Ppl("boss", 1, 1, this.mp, 15, 5, i).cnstIn();
-    // }
+    for (let i = 0; i < this.people; i++) {
+      new People("enemy2", 1, 1, this.map, 15, 5, i).cnstIn();
+    }
 
     // 町の人の動作を開始
-    Ppl.act();
+    People.move();
   }
 };

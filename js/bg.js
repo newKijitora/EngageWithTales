@@ -157,7 +157,7 @@ BgPart.prototype = {
  *************************************************/
 
 var PeopleField = function() {
-  this.entity = document.getElementById("pbg"); // 要素を取得
+  this.entity = document.getElementById("people-background"); // 要素を取得
   
   // 要素のプロパティ
   this.entity.style.top = "-32px";
@@ -234,7 +234,6 @@ Bg.prototype = {
 
   // 背景を動かす
   move: function(bg) {
-
     if (bg.interface.bool) {
       switch (bg.map[bg.baseNumber + bg.distance[bg.interface.keynumber]]) {
         case 0:

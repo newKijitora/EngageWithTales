@@ -37,7 +37,7 @@
         <!-- マップ上の主人公の画像 -->
         <img id="hero" src="images/hero_front.png" style="position: absolute; top: 288px; left: 384px;z-index: 10;">
         <!-- 人々が動く背景レイヤー -->
-        <div id="pbg"></div>
+        <div id="people-background"></div>
       </div>
       
     </div>
@@ -60,7 +60,9 @@
     <p id="cmd_ttl">コマンド</p>
     
     <div id="cnt_bx">
-      <div id="cmd_pntr" class="cmd_cnt">▶</div>
+      <!-- コマンドのカーソル -->
+      <div id="command-pointer" class="cmd_cnt">▶</div>
+      <!-- コマンドの項目 -->
       <p class="cmd_cnt">はなす</p>
       <p class="cmd_cnt">じゅもん</p>
       <p class="cmd_cnt">つよさ</p>
@@ -217,7 +219,7 @@
   <script src="js/flg.js"></script>
   <script src="js/world.js"></script>
   <script src="js/command.js"></script>
-  <script src="js/tlk.js"></script>
+  <script src="js/talk.js"></script>
   <script src="js/status.js"></script>
   <script src="js/main.js"></script>
   <!-- スクリプトのロード ここまで -->

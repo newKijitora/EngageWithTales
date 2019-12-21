@@ -39,12 +39,12 @@ function main() {
   
   // コマンドを開く
   window.addEventListener("keydown", function(event) {
-    Command.inst[0].opn(event);
+    Command.inst[0].open(event);
   }, false);
 
   // カーソルを動かす
   window.addEventListener("keydown", function(event) {
-    Command.inst[0].mvPntr(event);
+    Command.inst[0].movePointer(event);
   }, false);
   
   /***********************************************

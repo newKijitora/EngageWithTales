@@ -3,7 +3,7 @@
  *****************************/
 
 var People = function(name, w, h, cont, x, y, spch) {
-  this.ent = Elem.setElem("img", w, h, "pbg", x, y);
+  this.ent = Elem.setElem("img", w, h, "people-background", x, y);
   this.ent.src = "images/" + name + ".png";
   this.ent.setAttribute("class", "chara");
   this.ent.style.zIndex = 1;
@@ -56,9 +56,9 @@ People.stop = function() {
 }
 
 // 人物に話を始めさせる
-People.tlk = function(num) {
+People.talk = function(num) {
   for (var i = 0; i < People.inst.length; i++) {
-    People.inst[i].tlk(num);
+    People.inst[i].talk(num);
   }
 }
 
@@ -75,7 +75,7 @@ People.prototype = {
     return this;
   },
   
-  tlk: function(num) { // 呼び出し元: Cmd.prototype.tlk();
+  talk: function(num) { // 呼び出し元: Cmd.prototype.tlk();
     if (this.spch == num) {
       Talk.inst[0].open(num);
       Talk.inst[0].bl = true;

@@ -3,7 +3,6 @@
  *****************************/
 
 class Command {
-  
   // コンストラクタ
   constructor() {
     this.entity = document.getElementById("command"); // コマンドのウィンドウ
@@ -41,7 +40,7 @@ class Command {
       return false;
     }
 
-    let keyCode = event.keyCode;
+    const keyCode = event.keyCode;
 
     switch (keyCode) {
       case 65: // 左
@@ -67,7 +66,7 @@ class Command {
   
   // コマンドを開く
   open(event) {
-    let keyCode = event.keyCode;
+    const keyCode = event.keyCode;
 
     // キャンセルボタンであればコマンドを閉じる
     if (keyCode == 75) {
@@ -97,7 +96,7 @@ class Command {
   
   // コマンドを選択したときの動作
    select() {
-     let selection = parseInt(this.pointer.style.top) + parseInt(this.pointer.style.left);
+     const selection = parseInt(this.pointer.style.top) + parseInt(this.pointer.style.left);
      switch (selection) {
       // 「はなす」コマンド
       case 0:
@@ -173,9 +172,14 @@ class Command {
 
   // 「どうぐ」コマンド
   tool() {
-    this.status = "talking";
-    Talk.inst[0].open(4);
-    Talk.inst[0].bl = true;
+    this.status = "selected";
+    this.pointer.style.top = "0px";
+    this.pointer.style.left = "0px";
+    this.chrNameBx.appendChild(this.pointer);
+    Status.inst[0].slct();
+    // this.status = "talking";
+    // Talk.inst[0].open(4);
+    // Talk.inst[0].bl = true;
   }
 
   // コマンドを閉じる

@@ -24,7 +24,6 @@ class Talk {
   
   // トークを開始する
   open(num) { // 呼び出し元: Ppl.prototype.tlk();
-    console.log(this.speed);
     // ウィンドウを表示
     this.area.style.display = "block";
     this.fin = false;
@@ -41,7 +40,7 @@ class Talk {
     this.area.style.display = "none";
 
     // 文字をすべて消去する
-    for (var i = 0; i < this.textCells.length; i++) {
+    for (let i = 0; i < this.textCells.length; i++) {
       this.textCells.item(i).innerText = "";
     }
   }

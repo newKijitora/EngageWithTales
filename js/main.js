@@ -7,7 +7,7 @@ function main() {
   ************************************************/
   
   // フィールドの開始
-  var world = new World("abi").cnstIn();
+  const world = new World("abi").cnstIn();
   world.open();
   
   /***********************************************
@@ -25,13 +25,13 @@ function main() {
   ************************************************/
   
   // 主人公をマップ上に配置
-  var hero = new Hero().cnstIn();
+  const hero = new Hero().cnstIn();
   // コマンドの初期化
-  var command = new Command().cnstIn();
+  const command = new Command().cnstIn();
   // トークイベントの初期化
-  var talk = new Talk().cnstIn();
+  const talk = new Talk().cnstIn();
   // ウェブストレージ利用時(コメントアウト中)
-  // var storage = new Storage();
+  // const storage = new Storage();
   
   /***********************************************
   * イベントリスナの登録
@@ -74,9 +74,8 @@ function main() {
 
   // キーアップイベントの制御
   window.addEventListener("keyup", function() {
-
     // 背景オブジェクトを取得
-    let background = Bg.inst[0];
+    const background = Bg.inst[0];
     background.powered = false;
   }, false);
 };

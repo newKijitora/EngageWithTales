@@ -12,7 +12,7 @@ class World {
     // 町の人々の人数
     this.people = town.people;
     // フィールドの開始
-    this.pbg = new Bg(this.map).cnstIn();
+    this.pbg = new Background(this.map);
 
     World.inst.push(this);
   }

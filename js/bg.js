@@ -2,18 +2,18 @@
  * BgIntrfaceクラス　背景を操作するクラス
  *************************************************/
 
-var BackgroundInterface = function() {
-  this.keycode = []; /* 移動用のキーコードを保存 */
-  this.keynumber = 0; /* キーコードに基づくインデックス番号 */
-  this.bool = false; /* キー入力のオンオフ */
-  this.startPosition = 2295; /*  */
-  this.direction = []; /* 移動に関する配列用変数 */
-};
+class BackgroundInterface {
+  // コンストラクタ
+  constructor() {
+    this.keycode = []; /* 移動用のキーコードを保存 */
+    this.keynumber = 0; /* キーコードに基づくインデックス番号 */
+    this.bool = false; /* キー入力のオンオフ */
+    this.startPosition = 2295; /*  */
+    this.direction = []; /* 移動に関する配列用変数 */
+  }
 
-BackgroundInterface.prototype = {
-  
   // 移動の方向を定める
-  distribute: function(keycode) {
+  distribute(keycode) {
     switch (keycode) {
       case 65: /* 左移動 */
         this.direction = [2, 0, -32, 0, -1];
@@ -41,7 +41,7 @@ BackgroundInterface.prototype = {
     }
     this.bool = true;
   }
-};
+}
 
 /*************************************************
  * BgPartクラス　背景を形成するクラス
@@ -252,43 +252,39 @@ PeopleField.prototype = {
  * Bgクラス　背景を管理するクラス
  *************************************************/
 
-var Bg = function(mp) {
+class Background {
+  // コンストラクタ
+  constructor(mp) {
 
-  this.entity = document.getElementById("background"); // 背景要素
-  this.map = mp; // マップ配列
-  
-  this.interface = new BackgroundInterface(); // OK
-  
-  // 交互に入れ替わるレイヤー
-  this.parts1 = new BgPart("canvas1", this.map, true); // レイヤー1
-  this.parts2 = new BgPart("canvas2", this.map, false); // レイヤー2
-  
-  // 人々が動作するレイヤー
-  this.peopleField = new PeopleField(); // OK
+    this.entity = document.getElementById("background"); // 背景要素
+    this.map = mp; // マップ配列
+    
+    this.interface = new BackgroundInterface(); // OK
+    
+    // 交互に入れ替わるレイヤー
+    this.parts1 = new BgPart("canvas1", this.map, true); // レイヤー1
+    this.parts2 = new BgPart("canvas2", this.map, false); // レイヤー2
+    
+    // 人々が動作するレイヤー
+    this.peopleField = new PeopleField(); // OK
 
-  this.poweredParts = this.parts1; // 初期表示はレイヤー1
-  this.unPoweredParts = this.parts2; // レイヤー2は表示しない
-  
-  this.powered = false;
-  this.time = 0;
-  
-  this.baseNumber = 3388; // 主人公のスタート位置
-  this.distance = [-1, 1, 108/*27 * 4*/, -108/*-27 * 4*/];
-};
+    this.poweredParts = this.parts1; // 初期表示はレイヤー1
+    this.unPoweredParts = this.parts2; // レイヤー2は表示しない
+    
+    this.powered = false;
+    this.time = 0;
+    
+    this.baseNumber = 3388; // 主人公のスタート位置
+    this.distance = [-1, 1, 108/*27 * 4*/, -108/*-27 * 4*/];
 
-// 背景のインスタンスを格納する配列
-Bg.inst = [];
+    Background.inst.push(this);
+  }
 
-Bg.prototype = {
-
-  // インスタンスをクラス配列に格納する
-  cnstIn: function() {
-    Bg.inst.push(this);
-    return this;
-  },
+  // 背景のインスタンスを格納する配列
+  static inst = [];
 
   // 背景を動かす
-  move: function(bg) {
+  move(bg) {
     if (bg.interface.bool) {
       switch (bg.map[bg.baseNumber + bg.distance[bg.interface.keynumber]]) {
         case 0:
@@ -317,4 +313,4 @@ Bg.prototype = {
       });
     }
   }
-};
+}

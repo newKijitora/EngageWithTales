@@ -60,7 +60,7 @@ function main() {
   // キーダウンイベントの制御
   window.addEventListener("keydown", function(event) {  
     // 背景オブジェクトを取得
-    let background = Bg.inst[0];
+    let background = Background.inst[0];
     // キーコード
     let keyCode = event.keyCode;
 
@@ -79,7 +79,7 @@ function main() {
   // キーアップイベントの制御
   window.addEventListener("keyup", function() {
     // 背景オブジェクトを取得
-    const background = Bg.inst[0];
+    const background = Background.inst[0];
     background.powered = false;
   }, false);
 };

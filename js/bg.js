@@ -72,8 +72,15 @@ var BgPart = function(bgId, map, powered) {
   // テクスチャーを用意
   this.textures = this.getTxtr();
 
-  this.drawMap(0, 2295);
+  
 };
+
+class Sortable {
+  constructor(id, string) {
+    this.key = id;
+    this.string = string;
+  }
+}
 
 
 BgPart.prototype = {
@@ -93,17 +100,65 @@ BgPart.prototype = {
 
   },
   
+  compare: function(a, b) {
+    let comparison = 0;
+    if (a.data.id > b.data.id) {
+      comparison= 1;
+    } else if (b.data.id > a.data.id) {
+      comparison = -1;
+    }
+    return comparison;
+  },
+
+
   // テクスチャーを用意する
   getTxtr: function() {
-    
-    // キャンバスとテクスチャー画像を取得
-    var textures = document.getElementsByClassName("texture");
-    var images = document.getElementsByClassName("images");
+    var count = 0;  
+    const imageSources = [
+      "images/grass.png",
+      "images/bg.png",
+      "images/block.png",
+      "images/block2.png",
+      "images/desert.png",
+      "images/water.png",
+      "images/door.png"
+    ];
 
-    // キャンバスにテクスチャー画像を描画
-    for (var i = 0; i < images.length; i++) {
-      var textureContext = textures[i].getContext("2d");
-      textureContext.drawImage(images[i], 0, 0);
+    var images = [];
+    var textures = [];
+
+    var _this = this;
+
+    for (let i = 0; i < imageSources.length; i++) {
+      var image = new Image();
+      image.setAttribute("data-id", i);
+      image.src = imageSources[i];
+      
+      
+      image.addEventListener("load", function(event) {
+        count++;
+        images.push(event.target);
+
+        if (count == imageSources.length) {
+          var ima = null;
+          for (let i = 0; i < imageSources.length; i++) {
+              images.some(function(value) {
+              if (value.dataset.id == i) {
+                ima = value;
+              }
+            });
+            var texture = document.createElement("canvas");
+            texture.width = 32;
+            texture.height = 32;
+            texture.setAttribute("class", "texture");
+            var textureContext = texture.getContext("2d");
+            textureContext.drawImage(ima, 0, 0);
+            textures.push(texture);
+          }
+          count = 0;
+          _this.drawMap(0, 2295);
+        }
+      }, false);
     }
 
     // 背景オブジェクトに保存

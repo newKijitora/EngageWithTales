@@ -64,7 +64,7 @@ class Status {
   }
 
   shw() {
-    switch (parseInt(Command.inst[0].pntr.style.top)) {
+    switch (parseInt(Command.inst[0].pointer.style.top)) {
       case 0: Status.inst[0].inpt(); break;
       case 32: Status.inst[1].inpt(); break;
       case 64: Status.inst[2].inpt(); break;

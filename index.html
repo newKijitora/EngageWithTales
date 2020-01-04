@@ -16,15 +16,6 @@
 </head>
 <body onload="main();" onclick="return false;" ondragstart="return false;">
 
-  <!-- マップチップ画像のロード ==> canvas要素化 -->
-  <img src="images/grass.png" class="images"><canvas class="texture" width="32" height="32"></canvas>
-  <img src="images/bg.png" class="images"><canvas class="texture" width="32" height="32"></canvas>
-  <img src="images/block.png" class="images"><canvas class="texture" width="32" height="32"></canvas>
-  <img src="images/block2.png" class="images"><canvas class="texture" width="32" height="32"></canvas>
-  <img src="images/desert.png" class="images"><canvas class="texture" width="32" height="32"></canvas>
-  <img src="images/water.png" class="images"><canvas class="texture" width="32" height="32"></canvas>
-  <img src="images/door.png" class="images"><canvas class="texture" width="32" height="32"></canvas>
-  
   <!-- ゲームのフィールド -->
   <div style="overflow: hidden; width: 800px; height: 608px; position: absolute; top: 20px; left: 200px;">
     <div id="background" style="position: absolute; width: 864px; height: 672px; top: -32px; left: -32px;">
@@ -215,11 +206,11 @@
   
   <!-- スクリプトのロード ここから -->
   <script src="js/randomgenerator.js"></script>
-  <script src="storage.js"></script>
-  <script src="js/map.js"></script>
+  <!-- <script src="storage.js"></script> -->
+  <script src="js/maparrays.js"></script>
   <script src="js/towns.js"></script>
-  <script src="js/mpchp.js"></script>
-  <script src="js/rsrc.js"></script>
+  <script src="js/mapchip.js"></script>
+  <script src="js/resources.js"></script>
   <script src="js/bg.js"></script>
   <!-- <script src="background.js"></script> -->
   <script src="js/hero.js"></script>

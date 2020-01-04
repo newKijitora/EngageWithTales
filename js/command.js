@@ -40,21 +40,31 @@ class Command {
 
     switch (keyCode) {
       case 65: // 左
-        if (this.pointer.x != 0 && this.status != "selected")
+        if (this.pointer.x != 0 && this.status != "selected") {
           this.pointer.setPosition(this.pointer.x - 120, this.pointer.y);
-          break;
+        }
+        break;
       case 68: // 右
-        if (this.pointer.x != 120 && this.status != "selected")
+        if (this.pointer.x != 120 && this.status != "selected") {
           this.pointer.setPosition(this.pointer.x + 120, this.pointer.y);
-          break;
+        }
+        break;
       case 83: // 下
-        if (this.pointer.y != 64)
+        if ((this.status != "selected" && this.pointer.y != 64) || (this.status == "selected" && this.pointer.y != 32 * (Party.inst[0].member.length - 1))) {
           this.pointer.setPosition(this.pointer.x, this.pointer.y + 32);
-          break;
+          if (this.status == "selected") {
+            console.log(Party.inst[0].member[(this.pointer.y / 32)].name);
+          }
+        }
+        break;
       case 87: // 上
-        if (this.pointer.y != 0)
+        if (this.pointer.y != 0) {
           this.pointer.setPosition(this.pointer.x, this.pointer.y - 32);
-          break;
+          if (this.status == "selected") {
+            console.log(Party.inst[0].member[(this.pointer.y / 32)].name);
+          }
+        }
+        break;
 
       default: break;
     }
@@ -84,6 +94,7 @@ class Command {
           break;
         case "selected":
           Status.inst[0].shw();
+          
           break;
         default:
           break;
@@ -102,6 +113,7 @@ class Command {
       // 「つよさ」コマンド
       case 32:
         this.strng();
+        console.log(Party.inst[0].member[(this.pointer.y / 32)].name);
         break;
       // 「そうび」コマンド
       case 64:
@@ -114,6 +126,7 @@ class Command {
       // 「どうぐ」コマンド
       case 152:
         this.tool();
+        console.log(Party.inst[0].member[(this.pointer.y / 32)].name);
         break;
       // 「しらべる」コマンド
       case 184:

@@ -26,6 +26,24 @@ function main() {
   party.add(character3);
   party.add(character4);
 
+  // 「つよさ」コマンドのメンバーメニュー
+  const box = document.getElementById("chrName_box");
+  for (let i = 0; i < party.member.length; i++) {
+    const member = document.createElement("p");
+    member.innerText = party.member[i].name;
+    member.setAttribute("class", "chrName");
+    box.appendChild(member);
+  }
+
+  // 「どうぐ」コマンドのメンバーメニュー
+  const box2 = document.getElementById("chrName_box2");
+  for (let i = 0; i < party.member.length; i++) {
+    const member = document.createElement("p");
+    member.innerText = party.member[i].name;
+    member.setAttribute("class", "chrName");
+    box2.appendChild(member);
+  }
+
   /***********************************************
   * ゲームに必要な要素の初期化
   ************************************************/

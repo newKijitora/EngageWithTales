@@ -1,34 +1,34 @@
-var Hero = function() {
-  this.ent = document.getElementById("hero");
-}
+/*****************************
+ * 主人公クラス            *
+ *****************************/
 
-Hero.inst = [];
-
-Hero.prototype = {
-  
-  // インスタンスを保持する
-  cnstIn: function() {
+class Hero {
+  // コンストラクタ
+  constructor(idName) {
+    this.ent = document.getElementById(idName);
     Hero.inst.push(this);
-    return this;
-  },
+  }
 
   // 主人公の画像の向きを変える
-  directionChange: function(keycode) {
+  directionChange(keycode) {
     switch (keycode) {
-      case 65:
+      case 65: // 左方向
         this.ent.src = "images/hero_left.png";
         break;
-      case 68:
+      case 68: // 右方向
         this.ent.src = "images/hero_right.png";
         break;
-      case 83:
+      case 83: // 下方向
         this.ent.src = "images/hero_front.png";
         break;
-      case 87:
+      case 87: // 上方向
         this.ent.src = "images/hero_back.png";
         break;
       default:
         break;
+    }
   }
-}
+
+  // クラスのインスタンス
+  static inst = [];
 }

@@ -89,6 +89,19 @@ body {
   display: none;
   background-color: #ffffff;
   width: 128px;
+  /*height: 150px;*/
+  border: 2px solid #000000;
+  box-sizing: border-box;
+  border-radius: 5px;
+}
+
+#chrSlct2 {
+  position: absolute;
+  top: 72px;
+  left: 126px;
+  display: none;
+  background-color: #ffffff;
+  width: 128px;
   height: 150px;
   border: 2px solid #000000;
   box-sizing: border-box;
@@ -240,6 +253,12 @@ body {
 }
 
 #chrName_box {
+  position: relative;
+  /*margin-top: 28px;*/
+  width: 118px;
+}
+
+#chrName_box2 {
   position: absolute;
   top: 28px;
   width: 118px;
@@ -258,15 +277,47 @@ body {
   letter-spacing: 3px;
 }
 
+#chrSlct_ttl2 {
+  position: absolute;
+  background-color: #000000;
+  z-index: 12000;
+  left: 23px;
+  top: -2px;
+  color: #ffffff;
+  text-align: center;
+  font-size: 17px;
+  width: 70px;
+  letter-spacing: 3px;
+}
+
 .chrName {
   line-height: 32px;
 }
 
 .chrName:first-child {
-  margin-top: -3px;
+  height: 29px;
+  line-height: 29px;
 }
 
 #chrSlctInner {
+  position: relative;
+  width: 118px;
+  /*height: 140px;*/
+  z-index: 11000;
+  border-radius: 5px;
+  font-size: 17px;
+  text-align: center;
+  left: 3px;
+  top: 3px;
+  letter-spacing: 3px;
+  background-color: #000000;
+  color: #ffffff;
+  padding-bottom: 19px;
+  padding-top: 28px;
+  margin-bottom: 6px;
+}
+
+#chrSlctInner2 {
   position: absolute;
   width: 118px;
   height: 140px;

@@ -59,6 +59,10 @@ class Status {
     Command.inst[0].chrSlct.style.display = "block";
   }
 
+  slctTool() {
+    Command.inst[0].chrSlct2.style.display = "block";
+  }
+
   shw() {
     switch (parseInt(Command.inst[0].pntr.style.top)) {
       case 0: Status.inst[0].inpt(); break;

@@ -4,14 +4,14 @@
 
 class Command {
   // コンストラクタ
-  constructor() {
-    this.entity = document.getElementById("command"); // コマンドのウィンドウ
-    this.pointer = document.getElementById("command-pointer"); // コマンドのカーソル
+  constructor(idName) {
+    this.entity = document.getElementById(idName); // コマンドのウィンドウ
+    this.pointer = new Pointer("command-pointer");
     this.chrNameBx = document.getElementById("chrName_box");
+    this.chrNameBx2 = document.getElementById("chrName_box2");
     this.cntBx = document.getElementById("cnt_bx");
-    this.pointer.style.left = "0px";
-    this.pointer.style.top = "0px";
     this.chrSlct = document.getElementById("chrSlct");
+    this.chrSlct2 = document.getElementById("chrSlct2");
     this.pare = document.getElementById("mntr");
     this.pare.appendChild(this.entity);
     
@@ -21,12 +21,8 @@ class Command {
     this.kcd = 74; // キーボード「j」キー
     this.pntrNum = 0;
     this.blPos = 0;
-  }
 
-  // コンストイン
-  cnstIn() {
     Command.inst.push(this);
-    return this;
   }
 
   // カーソルを動かす：キーダウンイベントのイベントハンドラー
@@ -44,20 +40,20 @@ class Command {
 
     switch (keyCode) {
       case 65: // 左
-        if (parseInt(this.pointer.style.left) != 0 && this.status != "selected")
-          this.pointer.style.left = parseInt(this.pointer.style.left) - 120 + "px";
+        if (this.pointer.x != 0 && this.status != "selected")
+          this.pointer.setPosition(this.pointer.x - 120, this.pointer.y);
           break;
       case 68: // 右
-        if (parseInt(this.pointer.style.left) != 120 && this.status != "selected")
-          this.pointer.style.left = parseInt(this.pointer.style.left) + 120 + "px";
+        if (this.pointer.x != 120 && this.status != "selected")
+          this.pointer.setPosition(this.pointer.x + 120, this.pointer.y);
           break;
       case 83: // 下
-        if (parseInt(this.pointer.style.top) != 64)
-          this.pointer.style.top = parseInt(this.pointer.style.top) + 32 + "px";
+        if (this.pointer.y != 64)
+          this.pointer.setPosition(this.pointer.x, this.pointer.y + 32);
           break;
       case 87: // 上
-        if (parseInt(this.pointer.style.top) != 0)
-          this.pointer.style.top = parseInt(this.pointer.style.top) - 32 + "px";
+        if (this.pointer.y != 0)
+          this.pointer.setPosition(this.pointer.x, this.pointer.y - 32);
           break;
 
       default: break;
@@ -73,6 +69,7 @@ class Command {
       this.close();
     }
 
+    // キーコードで処理を分岐
     if (keyCode == this.kcd && Talk.inst[0].fin == true) {
       this.bool = true;
       switch (this.status) {
@@ -96,7 +93,7 @@ class Command {
   
   // コマンドを選択したときの動作
    select() {
-     const selection = parseInt(this.pointer.style.top) + parseInt(this.pointer.style.left);
+     const selection = this.pointer.y + this.pointer.x;
      switch (selection) {
       // 「はなす」コマンド
       case 0:
@@ -143,9 +140,8 @@ class Command {
   // 「つよさ」コマンド
   strng() {
     this.status = "selected";
-    this.pointer.style.top = "0px";
-    this.pointer.style.left = "0px";
-    this.chrNameBx.appendChild(this.pointer);
+    this.pointer.setPosition(0, 0);
+    this.chrNameBx.appendChild(this.pointer.element);
     Status.inst[0].slct();
   }
   
@@ -173,10 +169,9 @@ class Command {
   // 「どうぐ」コマンド
   tool() {
     this.status = "selected";
-    this.pointer.style.top = "0px";
-    this.pointer.style.left = "0px";
-    this.chrNameBx.appendChild(this.pointer);
-    Status.inst[0].slct();
+    this.pointer.setPosition(0, 0);
+    this.chrNameBx2.appendChild(this.pointer.element);
+    Status.inst[0].slctTool();
     // this.status = "talking";
     // Talk.inst[0].open(4);
     // Talk.inst[0].bl = true;
@@ -193,12 +188,13 @@ class Command {
     this.bool = false;
     this.entity.style.display = "none";
     this.chrSlct.style.display = "none";
-    this.cntBx.appendChild(this.pointer);
+    this.chrSlct2.style.display = "none";
+    this.cntBx.appendChild(this.pointer.element);
 
     Talk.inst[0].close();
     Status.inst[0].cls();
-    Command.inst[0].pointer.style.left = "0px";
-    Command.inst[0].pointer.style.top = "0px";
+    Command.inst[0].pointer.x = 0;
+    Command.inst[0].pointer.y = 0;
     Talk.inst[0].bl = false;
     
     // 人々の動きを再開する

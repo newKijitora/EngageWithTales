@@ -73,18 +73,19 @@ class People {
   // 動きはじめる
   move() {
     let ent = this.ent, moto = this.moto, characterCode = this.characterCode, map = this.map, time = this.time;
-    let ftprnt = this.ftprnt;
+    let _this = this;
+
     People.tmId.push(setInterval(function() {
       let direction = RandomGenerator.generate(0, 3);
       switch (direction) {
         case 0:
         case 2:
-          switch (map[ftprnt(ent) + Rsrc.aryDist[direction]]) {
+          switch (map[_this.ftprnt(ent) + Rsrc.aryDist[direction]]) {
             case 0:
             case 1:
-              map[ftprnt(ent)] = moto;
-              moto = map[ftprnt(ent) + Rsrc.aryDist[direction]];
-              map[ftprnt(ent) + Rsrc.aryDist[direction]] = People.characterCode[characterCode];
+              map[_this.ftprnt(ent)] = moto;
+              moto = map[_this.ftprnt(ent) + Rsrc.aryDist[direction]];
+              map[_this.ftprnt(ent) + Rsrc.aryDist[direction]] = People.characterCode[characterCode];
               ent.style.left = parseInt(ent.style.left) + People.dist[direction] + "px";
               break;
             default:
@@ -93,12 +94,12 @@ class People {
           break;
         case 1:
         case 3:
-          switch (map[ftprnt(ent) + Rsrc.aryDist[direction]]) {
+          switch (map[_this.ftprnt(ent) + Rsrc.aryDist[direction]]) {
             case 0:
             case 1:
-              map[ftprnt(ent)] = moto;
-              moto = map[ftprnt(ent) + Rsrc.aryDist[direction]];
-              map[ftprnt(ent) + Rsrc.aryDist[direction]] = People.characterCode[characterCode];
+              map[_this.ftprnt(ent)] = moto;
+              moto = map[_this.ftprnt(ent) + Rsrc.aryDist[direction]];
+              map[_this.ftprnt(ent) + Rsrc.aryDist[direction]] = People.characterCode[characterCode];
               ent.style.top = parseInt(ent.style.top) + People.dist[direction] + "px";
               break;
             default:

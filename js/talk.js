@@ -4,22 +4,18 @@
 
 class Talk {
   // コンストラクタ
-  constructor() {
-    this.area = document.getElementById("txtArea");
-    this.textCells = document.getElementsByClassName("txtCell");
-    this.pare = document.getElementById("mntr");
+  constructor(area, cell, monitor) {
+    this.area = document.getElementById(area);
+    this.textCells = document.getElementsByClassName(cell);
+    this.pare = document.getElementById(monitor);
     this.pare.appendChild(this.area);
     this.count = 0;
     this.timeId = 0;
     this.bl = false;
     this.fin = true;
     this.speed = 10;
-  }
 
-  // コンストイン
-  cnstIn() {
     Talk.inst.push(this);
-    return this;
   }
   
   // トークを開始する

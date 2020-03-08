@@ -9,6 +9,7 @@ class Command {
     this.pointer = new Pointer("command-pointer");
     this.chrNameBx = document.getElementById("chrName_box");
     this.chrNameBx2 = document.getElementById("chrName_box2");
+    this.strengthWindow = document.getElementById("strength-window");
     this.cntBx = document.getElementById("cnt_bx");
     this.chrSlct = document.getElementById("chrSlct");
     this.chrSlct2 = document.getElementById("chrSlct2");
@@ -94,7 +95,8 @@ class Command {
           break;
         case "selected":
           Status.inst[0].shw();
-          
+        case "strength":
+
           break;
         default:
           break;
@@ -113,7 +115,7 @@ class Command {
       // 「つよさ」コマンド
       case 32:
         this.strng();
-        console.log(Party.inst[0].member[(this.pointer.y / 32)].name);
+        console.log();
         break;
       // 「そうび」コマンド
       case 64:
@@ -155,6 +157,8 @@ class Command {
     this.status = "selected";
     this.pointer.setPosition(0, 0);
     this.chrNameBx.appendChild(this.pointer.element);
+    // this.strengthWindow.style.display = block;
+    // this.strengthWindow.innnerText = Party.inst[0].member[(this.pointer.y / 32)].name;
     Status.inst[0].slct();
   }
   

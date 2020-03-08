@@ -50,10 +50,13 @@ function main() {
   
   // 主人公をマップ上に配置
   const hero = new Hero("hero");
+
   // コマンドの初期化
   const command = new Command("command");
+  
   // トークイベントの初期化
   const talk = new Talk("txtArea", "txtCell", "mntr");
+  
   // ウェブストレージ利用時(コメントアウト中)
   // const storage = new Storage();
   

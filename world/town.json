@@ -1,0 +1,38 @@
+{
+  "kijitora": {
+    "mapIndex" : 0,
+    "people" : [
+      ["people", [20, 20], true],
+      ["people", [25, 34], false],
+      ["heroin_front", [18, 29], false]
+    ]
+  },
+  
+  "lolo" : {
+    "mapIndex": 1,
+    "people" : [
+      ["enemy", [15, 15], false]
+    ]
+  },
+
+  "rokarito" : {
+    "mapIndex": 2,
+    "mainBackgroundTextureIndex": 3,
+    "people" : [
+      ["hero_bottom", [46, 14], true, false, 0, false],
+      ["boss", [46, 12], false, false, 0, false],
+      ["boss", [27, 31], false, false, 0, false],
+      ["boss", [46, 50], false, false, 0, false],
+      ["boss", [65, 31], false, false, 0, false],
+      ["boss", [65, 31], false, false, 0, false],
+      ["heroin_front", [40, 31], true, true, 3000, false, "talk"],
+      ["heroin_front", [44, 16], true, true, 4800, false, "talk"],
+      ["heroin_front", [41, 47], true, true, 2700, false, "talk"],
+      ["heroin_front", [59, 30], true, true, 3200, false, "talk"]
+    ],
+    "centerPosition": [46, 14]
+  },
+  "darknessDunsion": {
+
+  }
+}

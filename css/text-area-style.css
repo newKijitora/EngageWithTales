@@ -1,0 +1,36 @@
+/* テキストエリアのスタイル */
+
+#textArea.textAreaOuter {
+  position: absolute;
+  top: 352px;
+  left: 192px;
+  background-color: #fefefe;
+  border-radius: 6px;
+  border: 2px solid #222222;
+  box-sizing: border-box;
+  padding: 3px;
+}
+
+#textArea .textAreaInner {
+  padding: 21px 24px 21px 25px;
+  border-radius: 5px;
+}
+
+#textArea .textField {
+  display: flex;
+  flex-direction: column;
+}
+
+#textArea .textRow {
+  display: inline-flex;
+  flex-direction: row;
+}
+
+#textArea .textCell {
+  font-family: Meiryo;
+  font-size: 17px;
+  text-align: center;
+  display: inline-block;
+  width: 23px;
+  height: 27px;
+}

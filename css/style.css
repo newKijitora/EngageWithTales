@@ -108,6 +108,19 @@ body {
   border-radius: 5px;
 }
 
+#chrSlct3 {
+  position: absolute;
+  top: 72px;
+  left: 126px;
+  display: none;
+  background-color: #ffffff;
+  width: 128px;
+  /*height: 150px;*/
+  border: 2px solid #000000;
+  box-sizing: border-box;
+  border-radius: 5px;
+}
+
 #fld1 {
   position: absolute;
   display: none;

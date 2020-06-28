@@ -14,11 +14,11 @@ function main() {
   * ゲームのパーティを編成
   ************************************************/
   
-  // インスタンス化に必要な引数: new Stt(name, sx, strng, speed, physcl, intl, luck, mxHp, mxMp, ofs, dfs, ex, lvl, hp, mp, swrd, arm, shld, helm);
-  const character1 = new Status("むう", "おとこ", 10, 100, 100, 100, 100, 100, 100, 100, 100, 0, 1, 50, 50, "ひのきのぼう", "ぬののふく", "きのたて", "かわのぼうし").cnstIn();
-  const character2 = new Status("マオ", "おんな", 10, 100, 100, 100, 100, 100, 100, 100, 100, 0, 1, 50, 50, "ひのきのぼう", "ぬののふく", "きのたて", "かわのぼうし").cnstIn();
-  const character3 = new Status("ニコ", "おんな", 10, 100, 100, 100, 100, 100, 100, 100, 100, 0, 1, 50, 50, "ひのきのぼう", "ぬののふく", "きのたて", "かわのぼうし").cnstIn();
-  const character4 = new Status("ルナ", "おんな", 10, 100, 100, 100, 100, 100, 100, 100, 100, 0, 1, 50, 50, "ひのきのぼう", "ぬののふく", "きのたて", "かわのぼうし").cnstIn();
+  // インスタンス化に必要な引数: new Stt(name, sx, strng, speed, physcl, intl, luck, mxHp, mxMp, ofs, dfs, ex, lvl, hp, mp, swrd, arm, shld, helm, isWizard);
+  const character1 = new Status("むう", "おとこ", 10, 100, 100, 100, 100, 100, 100, 100, 100, 0, 1, 50, 50, "ひのきのぼう", "ぬののふく", "きのたて", "かわのぼうし", true).cnstIn();
+  const character2 = new Status("マオ", "おんな", 10, 100, 100, 100, 100, 100, 100, 100, 100, 0, 1, 50, 50, "ひのきのぼう", "ぬののふく", "きのたて", "かわのぼうし", false).cnstIn();
+  const character3 = new Status("ニコ", "おんな", 10, 100, 100, 100, 100, 100, 100, 100, 100, 0, 1, 50, 50, "ひのきのぼう", "ぬののふく", "きのたて", "かわのぼうし", false).cnstIn();
+  const character4 = new Status("ルナ", "おんな", 10, 100, 100, 100, 100, 100, 100, 100, 100, 0, 1, 50, 50, "ひのきのぼう", "ぬののふく", "きのたて", "かわのぼうし", true).cnstIn();
   
   const party = new Party();
   party.add(character1);
@@ -28,6 +28,7 @@ function main() {
 
   // 「つよさ」コマンドのメンバーメニュー
   const box = document.getElementById("chrName_box");
+
   for (let i = 0; i < party.member.length; i++) {
     const member = document.createElement("p");
     member.innerText = party.member[i].name;
@@ -37,11 +38,24 @@ function main() {
 
   // 「どうぐ」コマンドのメンバーメニュー
   const box2 = document.getElementById("chrName_box2");
+  
   for (let i = 0; i < party.member.length; i++) {
     const member = document.createElement("p");
     member.innerText = party.member[i].name;
     member.setAttribute("class", "chrName");
     box2.appendChild(member);
+  }
+
+  // 「じゅもん」コマンドのメンバーメニュー
+  const box3 = document.getElementById("chrName_box3");
+  
+  for (let i = 0; i < party.member.length; i++) {
+    if (party.member[i].isWizard) {
+      const member = document.createElement("p");
+      member.innerText = party.member[i].name;
+      member.setAttribute("class", "chrName");
+      box2.appendChild(member);
+    }
   }
 
   /***********************************************
@@ -51,28 +65,14 @@ function main() {
   // 主人公をマップ上に配置
   const hero = new Hero("hero");
 
-  // コマンドの初期化
+  // コマンドとテキストエリアの初期化
   const command = new Command("command");
-  
+
   // トークイベントの初期化
-  const talk = new Talk("txtArea", "txtCell", "mntr");
+  const talk = new Talk();
   
   // ウェブストレージ利用時(コメントアウト中)
   // const storage = new Storage();
-  
-  /***********************************************
-  * イベントリスナの登録
-  ************************************************/
-  
-  // コマンドを開く
-  window.addEventListener("keydown", function(event) {
-    command.open(event);
-  }, false);
-
-  // カーソルを動かす
-  window.addEventListener("keydown", function(event) {
-    command.movePointer(event);
-  }, false);
   
   /***********************************************
   * キーダウン、キーアップイベントの制御

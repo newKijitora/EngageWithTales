@@ -14,7 +14,23 @@
       this.element.style.left = x + "px";
       this.element.style.top = y + "px";
     }
+    
+    moveLeft() {
+      this.setPosition(this.x - 120, this.y);
+    }
   
+    moveRight() {
+      this.setPosition(this.x + 120, this.y);
+    }
+
+    moveBottom() {
+      this.setPosition(this.x, this.y + 32);
+    }
+
+    moveTop() {
+      this.setPosition(this.x, this.y - 32);
+    }
+
     // ポインタのX軸位置
     get x() {
       return parseInt(this.element.style.left);

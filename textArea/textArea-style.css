@@ -1,27 +1,26 @@
-#txtArea {
+#textArea {
   position: absolute;
   top: 352px;
   left: 192px;
   background-color: #ffffff;
   border-radius: 6px;
   z-index: 11000;
-  display: none;
   border: 2px solid #000000;
   box-sizing: border-box;
   padding: 3px;
 }
 
-#txtInner {
+#textAreaInner {
   padding: 21px 24px 21px 25px;
   border-radius: 5px;
   background-color: #000000;
 }
 
-.txtField {
+.textField {
   display: flex;
 }
 
-.txtCell {
+.textCell {
   font-family: Meiryo;
   font-size: 17px;
   color: #ffffff;
@@ -29,4 +28,12 @@
   width: 23px;
   height: 27px;
   background-color: #000000;
+}
+
+#textArea.display-block {
+  display: block;
+}
+
+#textArea.display-none {
+  display: none;
 }

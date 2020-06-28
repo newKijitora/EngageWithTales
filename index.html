@@ -11,19 +11,17 @@
   <title>Engage with Tales - Eroded Muse -</title>
   <!-- スタイルシート -->
   <link rel="stylesheet" href="css/style.css">
-  <link rel="stylesheet" href="css/tlk.style.css">
+  <link rel="stylesheet" href="textArea/textArea-style.css">
   <link rel="stylesheet" href="css/command.css">
 </head>
 <body onload="main();" onclick="return false;" ondragstart="return false;">
-
   <!-- ゲームのフィールド -->
   <div style="overflow: hidden; width: 800px; height: 608px; position: absolute; top: 20px; left: 200px;">
     <div id="background" style="position: absolute; width: 864px; height: 672px; top: -32px; left: -32px;">
-    
-      <!-- 2層の背景レイヤー -->
+      <!-- 背景レイヤー1 -->
       <canvas id="canvas1" class="canvas" width="864" height="672"></canvas>
+      <!-- 背景レイヤー2 -->
       <canvas id="canvas2" class="canvas" width="864" height="672"></canvas>
-      
       <!-- ゲームの画面 -->
       <div id="mntr" style="position: relative">
         <!-- マップ上の主人公の画像 -->
@@ -31,7 +29,6 @@
         <!-- 人々が動く背景レイヤー -->
         <div id="people-background"></div>
       </div>
-      
     </div>
   </div>
   
@@ -45,7 +42,7 @@
         <div id="chrName_box"></div>
       </div>
     </div>
-
+    
     <!-- 「つよさ」ウィンドウ -->
     <div id="strength-window">
       <!-- <div id="status">
@@ -53,13 +50,11 @@
         <p id="level">レベル：</p>
       </div>
       <div id="equipment">
-
       </div>
       <div id="specification">
-
       </div> -->
     </div>
-
+    
     <!-- 「どうぐ」コマンドのメンバーメニュー -->
     <div id="chrSlct2">
       <p id="chrSlct_ttl2">どうぐ</p>
@@ -68,8 +63,13 @@
       </div>
     </div>
     
-
-
+    <!-- 「じゅもん」コマンドのメンバーメニュー -->
+    <div id="chrSlct3">
+      <p id="chrSlct_ttl3">じゅもん</p>
+      <div id="chrSlctInner3">
+        <div id="chrName_box3"></div>
+      </div>
+    </div>
     <p id="cmd_ttl">コマンド</p>
     
     <div id="cnt_bx">
@@ -83,14 +83,11 @@
       <p class="cmd_cnt">そうび</p>
       <p class="cmd_cnt">しらべる</p>
     </div>
-    
     <div id="cmd_inr"></div>
-    
   </div>
   <!-- コマンド ここまで -->
-  
+
   <div class="container"></div>
-  
   <div id="fld1" class="stt">
   <div id="fldInner1">
     <div id="fldBox1">
@@ -129,96 +126,11 @@
   </div>
   </div>
   
-  <!-- テキストエリア ここから -->
-  <div id="txtArea">
-    <div id="txtInner">
-      <!-- txtField が一行、txtCell 一文字を表す -->
-      <div class="txtField">
-        <div class="txtCell"></div>
-        <div class="txtCell"></div>
-        <div class="txtCell"></div>
-        <div class="txtCell"></div>
-        <div class="txtCell"></div>
-        <div class="txtCell"></div>
-        <div class="txtCell"></div>
-        <div class="txtCell"></div>
-        <div class="txtCell"></div>
-        <div class="txtCell"></div>
-        <div class="txtCell"></div>
-        <div class="txtCell"></div>
-        <div class="txtCell"></div>
-        <div class="txtCell"></div>
-        <div class="txtCell"></div>
-        <div class="txtCell"></div>
-        <div class="txtCell"></div>
-      </div>
-      <!-- txtField が一行、txtCell 一文字を表す -->
-      <div class="txtField">
-        <div class="txtCell"></div>
-        <div class="txtCell"></div>
-        <div class="txtCell"></div>
-        <div class="txtCell"></div>
-        <div class="txtCell"></div>
-        <div class="txtCell"></div>
-        <div class="txtCell"></div>
-        <div class="txtCell"></div>
-        <div class="txtCell"></div>
-        <div class="txtCell"></div>
-        <div class="txtCell"></div>
-        <div class="txtCell"></div>
-        <div class="txtCell"></div>
-        <div class="txtCell"></div>
-        <div class="txtCell"></div>
-        <div class="txtCell"></div>
-        <div class="txtCell"></div>
-      </div>
-      <!-- txtField が一行、txtCell 一文字を表す -->
-      <div class="txtField">
-        <div class="txtCell"></div>
-        <div class="txtCell"></div>
-        <div class="txtCell"></div>
-        <div class="txtCell"></div>
-        <div class="txtCell"></div>
-        <div class="txtCell"></div>
-        <div class="txtCell"></div>
-        <div class="txtCell"></div>
-        <div class="txtCell"></div>
-        <div class="txtCell"></div>
-        <div class="txtCell"></div>
-        <div class="txtCell"></div>
-        <div class="txtCell"></div>
-        <div class="txtCell"></div>
-        <div class="txtCell"></div>
-        <div class="txtCell"></div>
-        <div class="txtCell"></div>
-      </div>
-      <!-- txtField が一行、txtCell 一文字を表す -->
-      <div class="txtField">
-        <div class="txtCell"></div>
-        <div class="txtCell"></div>
-        <div class="txtCell"></div>
-        <div class="txtCell"></div>
-        <div class="txtCell"></div>
-        <div class="txtCell"></div>
-        <div class="txtCell"></div>
-        <div class="txtCell"></div>
-        <div class="txtCell"></div>
-        <div class="txtCell"></div>
-        <div class="txtCell"></div>
-        <div class="txtCell"></div>
-        <div class="txtCell"></div>
-        <div class="txtCell"></div>
-        <div class="txtCell"></div>
-        <div class="txtCell"></div>
-        <div class="txtCell"></div>
-      </div>
-    </div>
-  </div>
-  <!-- テキストエリア ここまで -->
   
   <!-- スクリプトのロード ここから -->
   <script src="js/randomgenerator.js"></script>
   <!-- <script src="storage.js"></script> -->
+  <script src="textArea/textArea-view.js"></script>
   <script src="js/maparrays.js"></script>
   <script src="js/towns.js"></script>
   <script src="js/mapchip.js"></script>
@@ -233,7 +145,7 @@
   <script src="js/party.js"></script>
   <script src="js/pointer.js"></script>
   <script src="js/command.js"></script>
-  <script src="js/talk.js"></script>
+  <script src="textArea/textArea-control.js"></script>
   <script src="js/status.js"></script>
   <script src="js/main.js"></script>
   <!-- スクリプトのロード ここまで -->

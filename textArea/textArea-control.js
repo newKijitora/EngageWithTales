@@ -4,11 +4,9 @@
 
 class Talk {
   // コンストラクタ
-  constructor(area, cell, monitor) {
-    this.area = document.getElementById(area);
-    this.textCells = document.getElementsByClassName(cell);
-    this.pare = document.getElementById(monitor);
-    this.pare.appendChild(this.area);
+  constructor() {
+    this.textArea = new textAreaView();
+    
     this.count = 0;
     this.timeId = 0;
     this.bl = false;
@@ -20,10 +18,9 @@ class Talk {
   
   // トークを開始する
   open(num) { // 呼び出し元: Ppl.prototype.tlk();
-    // ウィンドウを表示
-    this.area.style.display = "block";
+    this.textArea.open();
     this.fin = false;
-    this.timeId = setInterval(function() {
+    this.timeId = window.setInterval(function() {
       Talk.start(num);
     }, this.speed);
   }
@@ -31,21 +28,14 @@ class Talk {
   // トークを終了する
   close() { // 呼び出し元: Cmd.prototype.cls();
     this.bl = false;
-    
-    // ウィンドウを非表示にする
-    this.area.style.display = "none";
-
-    // 文字をすべて消去する
-    for (let i = 0; i < this.textCells.length; i++) {
-      this.textCells.item(i).innerText = "";
-    }
+    this.textArea.close();
   }
 
   static start(num) {
-    Talk.inst[0].textCells.item(Talk.inst[0].count).innerText = Talk.list[num][Talk.inst[0].count];
+    Talk.inst[0].textArea.textCells.item(Talk.inst[0].count).innerText = Talk.list[num][Talk.inst[0].count];
     Talk.inst[0].count++;
     
-    if (Talk.inst[0].count == Talk.list[num].length || Talk.inst[0].count == Talk.inst[0].textCells.length) {
+    if (Talk.inst[0].count == Talk.list[num].length || Talk.inst[0].count == Talk.inst[0].textArea.textCells.length) {
       window.clearInterval(Talk.inst[0].timeId);
       Talk.inst[0].count = 0;
       Talk.inst[0].fin = true;

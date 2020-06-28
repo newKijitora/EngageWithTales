@@ -7,12 +7,18 @@ class Command {
   constructor(idName) {
     this.entity = document.getElementById(idName); // コマンドのウィンドウ
     this.pointer = new Pointer("command-pointer");
+
     this.chrNameBx = document.getElementById("chrName_box");
     this.chrNameBx2 = document.getElementById("chrName_box2");
+    this.chrNameBx3 = document.getElementById("chrName_box3");
+    
     this.strengthWindow = document.getElementById("strength-window");
     this.cntBx = document.getElementById("cnt_bx");
+    
     this.chrSlct = document.getElementById("chrSlct");
     this.chrSlct2 = document.getElementById("chrSlct2");
+    this.chrSlct3 = document.getElementById("chrSlct3");
+
     this.pare = document.getElementById("mntr");
     this.pare.appendChild(this.entity);
     
@@ -24,11 +30,13 @@ class Command {
     this.blPos = 0;
 
     Command.inst.push(this);
+
+    window.addEventListener("keydown", event => this.open(event), false);
+    window.addEventListener("keydown", event => this.movePointer(event), false);
   }
 
   // カーソルを動かす：キーダウンイベントのイベントハンドラー
   movePointer(event) {
-    // トーク状態の場合はキャンセル
     if (this.status == "talking") {
       return false;
     }
@@ -42,28 +50,22 @@ class Command {
     switch (keyCode) {
       case 65: // 左
         if (this.pointer.x != 0 && this.status != "selected") {
-          this.pointer.setPosition(this.pointer.x - 120, this.pointer.y);
+          this.pointer.moveLeft();
         }
         break;
       case 68: // 右
         if (this.pointer.x != 120 && this.status != "selected") {
-          this.pointer.setPosition(this.pointer.x + 120, this.pointer.y);
+          this.pointer.moveRight();
         }
         break;
       case 83: // 下
         if ((this.status != "selected" && this.pointer.y != 64) || (this.status == "selected" && this.pointer.y != 32 * (Party.inst[0].member.length - 1))) {
-          this.pointer.setPosition(this.pointer.x, this.pointer.y + 32);
-          if (this.status == "selected") {
-            console.log(Party.inst[0].member[(this.pointer.y / 32)].name);
-          }
+          this.pointer.moveBottom();
         }
         break;
       case 87: // 上
         if (this.pointer.y != 0) {
-          this.pointer.setPosition(this.pointer.x, this.pointer.y - 32);
-          if (this.status == "selected") {
-            console.log(Party.inst[0].member[(this.pointer.y / 32)].name);
-          }
+          this.pointer.moveTop();
         }
         break;
 
@@ -75,14 +77,13 @@ class Command {
   open(event) {
     const keyCode = event.keyCode;
 
-    // キャンセルボタンであればコマンドを閉じる
     if (keyCode == 75) {
       this.close();
     }
 
-    // キーコードで処理を分岐
     if (keyCode == this.kcd && Talk.inst[0].fin == true) {
       this.bool = true;
+      
       switch (this.status) {
         case "cmd":
           this.select();
@@ -98,42 +99,40 @@ class Command {
         case "strength":
 
           break;
-        default:
-          break;
+
+        default: break;
       }
     }
   }
   
   // コマンドを選択したときの動作
-   select() {
-     const selection = this.pointer.y + this.pointer.x;
-     switch (selection) {
-      // 「はなす」コマンド
-      case 0:
-        this.talk();
-        break;
-      // 「つよさ」コマンド
-      case 32:
-        this.strng();
-        console.log();
-        break;
-      // 「そうび」コマンド
-      case 64:
-        this.equipment();
-        break;
-      // 「じゅもん」コマンド
-      case 120:
-        this.magic();
-        break;
-      // 「どうぐ」コマンド
-      case 152:
-        this.tool();
-        console.log(Party.inst[0].member[(this.pointer.y / 32)].name);
-        break;
-      // 「しらべる」コマンド
-      case 184:
-        this.search();
-        break;
+  select() {
+    const selection = this.pointer.x + this.pointer.y;
+    switch (selection) {
+    // 「はなす」コマンド
+    case 0:
+      this.talk();
+      break;
+    // 「つよさ」コマンド
+    case 32:
+      this.strng();
+      break;
+    // 「そうび」コマンド
+    case 64:
+      this.equipment();
+      break;
+    // 「じゅもん」コマンド
+    case 120:
+      this.magic();
+      break;
+    // 「どうぐ」コマンド
+    case 152:
+      this.tool();
+      break;
+    // 「しらべる」コマンド
+    case 184:
+      this.search();
+      break;
     }
   }
   

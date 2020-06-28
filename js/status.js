@@ -4,7 +4,8 @@
 
 class Status {
   // コンストラクタ
-  constructor(name, sx, strng, speed, physcl, intl, luck, mxHp, mxMp, ofs, dfs, ex, lvl, hp, mp, swrd, arm, shld, helm) {
+  constructor(name, sx, strng, speed, physcl, intl, luck, mxHp, mxMp, ofs, dfs, ex, lvl, hp, mp, swrd, arm, shld, helm, isWizard) {
+    
     this.ent = document.getElementsByClassName("Status");
     for (let i = 0; i < this.ent.length; i++) {
       document.getElementById("mntr").appendChild(this.ent.item(i));
@@ -29,6 +30,7 @@ class Status {
     this.shldFld = document.getElementById("shldFld");
     this.helmFld = document.getElementById("helmFld");
     this.name = name;
+    this.isWizard = isWizard;
     // this.strng = JSON.parse(localStorage.getItem(this.name)).strng;
     // this.physcl = JSON.parse(localStorage.getItem(this.name)).physcl;
     // this.speed = JSON.parse(localStorage.getItem(this.name)).speed;

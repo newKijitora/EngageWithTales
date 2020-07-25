@@ -55,10 +55,16 @@ class MemberSelecterView {
     const characterNames = new Array(this.controller.characters.length);
     
     for (let i = 0; i < characterNames.length; i++) {
+      const nameCase = document.createElement("div");
+      const arrow = document.createElement("div");
+      arrow.innerText = "▶";
       const characterName = document.createElement("div");
-      characterName.classList.add("characterName");
+      nameCase.appendChild(arrow);
+      nameCase.appendChild(characterName);
+      nameCase.style.display = "flex";
+      nameCase.classList.add("characterName");
       characterName.innerText = this.controller.characters[i].name;
-      selectField.appendChild(characterName);
+      selectField.appendChild(nameCase);
     }
 
     this.memberSelecter = selecter;

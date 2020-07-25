@@ -189,6 +189,15 @@ class Resources {
     ]
   ];
 
+  commands = [
+    [
+      [0, 5, 5, 5, 5, 3],
+      [4, -1, -1, -1, -1, 6],
+      [4, -1, -1, -1, -1, 6],
+      [1, 7, 7, 7, 7, 2],
+    ]
+  ];
+
   // テクスチャー
   textures = [
     new Texture("desert", true, false),
@@ -200,5 +209,69 @@ class Resources {
     new Texture("door", false, false),
     new Texture("table", false, false),
     new Texture("floor", true, true),
+  ];
+
+  // コマンドのテクスチャー
+  commandTextures = [
+    new Texture("frame-left-top", true, true),
+    new Texture("frame-left-bottom", true, true),
+    new Texture("frame-right-bottom", true, true),
+    new Texture("frame-right-top", true, true),
+    new Texture("frame-left", true, true),
+    new Texture("frame-top", true, true),
+    new Texture("frame-right", true, true),
+    new Texture("frame-bottom", true, true),
+  ];
+
+  // 文字
+  textElements = [
+    new Text("ji", "blank", "じ"),
+    new Text("yu-s", "blank", "ゅ"),
+    new Text("mo", "blank", "も"),
+    new Text("n", "blank", "ん"),
+    new Text("to", "dakuten", "ど"),
+    new Text("u", "blank", "う"),
+    new Text("ku", "dakuten", "ぐ"),
+    new Text("tu", "blank", "つ"),
+    new Text("yo", "blank", "よ"),
+    new Text("sa", "blank", "さ"),
+    new Text("ha", "blank", "は"),
+    new Text("na", "blank", "な"),
+    new Text("su", "blank", "す"),
+    new Text("si", "blank", "し"),
+    new Text("ra", "blank", "ら"),
+    new Text("he", "dakuten", "べ"),
+    new Text("ru", "blank", "る"),
+    new Text("so", "blank", "そ"),
+    new Text("u", "blank", "う"),
+    new Text("hi", "dakuten", "び"),
+    new Text("arrow", "blank", "矢"),
+  ];
+
+  // 文字
+  characters = [
+    new Texture("ji", true, true),
+    new Texture("yu-s", true, true),
+    new Texture("mo", true, true),
+    new Texture("n", true, true),
+    new Texture("to", true, true),
+    new Texture("u", true, true),
+    new Texture("ku", true, true),
+    new Texture("tu", true, true),
+    new Texture("yo", true, true),
+    new Texture("sa", true, true),
+    new Texture("ha", true, true),
+    new Texture("na", true, true),
+    new Texture("su", true, true),
+    new Texture("si", true, true),
+    new Texture("ra", true, true),
+    new Texture("he", true, true),
+    new Texture("ru", true, true),
+    new Texture("so", true, true),
+    new Texture("u", true, true),
+    new Texture("hi", true, true),
+    new Texture("dakuten", true, true),
+    new Texture("blank", true, true),
+    new Texture("arrow", true, true),
   ];
 }

@@ -14,14 +14,17 @@ class WorldController extends Controller {
     this.openKeyCode = 74;
     this.closeKeyCode = 75;
 
+    // サイズ係数
+    this.coefficient = 2;
+
     // ビュー上のサイズ単位
     this.squareSize = new Size(32, 32);
-    
+
     // ゲームのビュー（モニター）のサイズと位置
     this.worldViewSize = new Size(this.squareSize.x * 25, this.squareSize.y * 19);
     this.worldViewPosition = new Position(5, 2);
 
-    // テキストの速度
+    // テキストの速度と１フレームの移動距離
     this.textSpeed = 16;
     this.distance = 2;
 

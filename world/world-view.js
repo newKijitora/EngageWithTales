@@ -1,6 +1,4 @@
-"use strict";
-
-// ワールドのビュークラス
+// ゲーム世界のビュークラス
 class WorldView {
   // コンストラクタ
   constructor(controller) {

@@ -174,12 +174,14 @@ class PeopleView {
   assemblingElements() {
     const peopleField = document.getElementById("people-Field");
     const people = document.createElement("div");
-    people.classList.add("people");
+    people.style.position = "absolute";
     people.style.top = ((this.controller.basePosition.y - this.controller.mapUpperLeftPosition.y) * this.controller.squareSize.y - 8) + "px";
     people.style.left = (this.controller.basePosition.x - this.controller.mapUpperLeftPosition.x) * this.controller.squareSize.x + "px";
 
     const image = document.createElement("img");
     image.src = "resources/images/" + this.controller.peopleName + ".png";
+    image.style.width = this.controller.squareSize.x + "px";
+    image.style.height = this.controller.squareSize.y + "px";
 
     people.appendChild(image);
     peopleField.appendChild(people);

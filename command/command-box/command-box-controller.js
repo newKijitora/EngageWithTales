@@ -1,10 +1,26 @@
 // コマンドボックスのコントローラー
 class CommandBoxController extends Controller {
 
-  constructor(town, zIndexBase) { super();
+  constructor(world, town, zIndexBase) { super();
     // コンテキスト
+    this.world = world;
     this.town = town;
     this.squareSize = this.town.context.squareSize;
+
+    this.menus = [
+      ["はなす", "じゅもん"],
+      ["つよさ", "どうぐ"],
+      ["そうび", "しらべる"]
+    ];
+
+    // 文字のテクスチャー
+    this.textures = this.world.textTextures;
+    this.commandTextures = this.world.resource.commandTextures;
+    this.commandMap = this.world.resource.commands[0];
+
+    this.textTextures = this.world.resource.characters;
+
+    this.mojis = this.world.resource.textElements;
 
     // ビューの状態
     this.viewState = "closed";

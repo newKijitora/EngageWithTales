@@ -5,11 +5,25 @@ class CommandBoxView {
     // コントローラー 
     this.controller = controller;
 
+    this.commandBoxRows = 4;
+    this.commandBoxColumns = 6;
+
+    // HTML要素
     this.commandBox = null;
+    this.commandFrame = null;
     this.commandMenus = null;
+
+    this.commandTextureCanvases = new Array(this.controller.commandTextures.length);
+    
+    // 文字キャンバスのオブジェクト
+    this.charCanvases = {};
 
     // HTML要素の組成
     this.assemblingElements();    
+
+    // 画像の読み込みと描画
+    this.loadImageChars();
+    this.loadImages();
 
     // イベントリスナ
     window.addEventListener("keydown", (event) => this.open(event.keyCode), false);
@@ -130,43 +144,173 @@ class CommandBoxView {
 
   // HTML要素の生成
   assemblingElements() {
-    const commandBox = document.createElement("section");
-    commandBox.setAttribute("id", "command-box");
-    commandBox.classList.add("command-box-outer");
-    commandBox.classList.add("display-none");
-    commandBox.style.left = this.controller.position.x * this.controller.squareSize.x + "px";
-    commandBox.style.top = this.controller.position.y * this.controller.squareSize.y + "px";
+    const commandFrame = document.createElement("canvas");
+    commandFrame.width = this.controller.squareSize.x * 6;
+    commandFrame.height = this.controller.squareSize.y * 4;
 
     const selectField = document.createElement("div");
-    selectField.classList.add("select-field");
-    selectField.classList.add("command-box-inner");
+    selectField.style.position = "absolute";
+    selectField.style.top = 0;
+    selectField.style.left = 0;
+    selectField.style.padding = "16px";
+    selectField.style.display = "flex";
+    selectField.style.flexWrap = "wrap";
+    selectField.style.width = "160px";
 
     const commandMenus = new Array(3);
 
     for (let i = 0; i < commandMenus.length; i++) {
       commandMenus[i] = new Array(2);
       for (let j = 0; j < commandMenus[i].length; j++) {
-        commandMenus[i][j] = new CommandMenuView(this.controller.commandMenuControllers[i][j]);
+        commandMenus[i][j] = new CommandMenuView(this.controller.commandMenuControllers[i][j], this.controller.menus[i][j]);
         selectField.appendChild(commandMenus[i][j].commandMenu);
       }
     }
     
-    const commandTitle = document.createElement("div");
-    commandTitle.classList.add("command-title");
-    commandTitle.innerText = "コマンド";
+    // const commandTitle = document.createElement("div");
+    // commandTitle.classList.add("command-title");
+    // commandTitle.innerText = "コマンド";
 
-    commandBox.appendChild(commandTitle);
+    // commandBox.appendChild(commandTitle);
+    // commandBox.appendChild(selectField);
+
+    const commandBox = document.createElement("div");
+    commandBox.classList.add("layer");
+    commandBox.style.zIndex = this.controller.zIndexBase;
+
+    commandBox.appendChild(commandFrame);
     commandBox.appendChild(selectField);
 
-    const commandBoxLayer = document.createElement("div");
-    commandBoxLayer.classList.add("layer");
-    commandBoxLayer.style.zIndex = this.controller.zIndexBase;
-    commandBoxLayer.appendChild(commandBox);
+    commandBox.style.display = "none";
+    commandBox.style.backgroundColor = "#020202";
+    commandBox.style.left = 7 * this.controller.squareSize.x + "px";
+    commandBox.style.top = 3 * this.controller.squareSize.y + "px";
 
     const monitor = document.getElementById("world");
-    monitor.appendChild(commandBoxLayer);
+    monitor.appendChild(commandBox);
 
     this.commandBox = commandBox;
+    this.commandFrame = commandFrame;
     this.commandMenus = commandMenus;
+  }
+
+  // 画像を読み込んでキャッシュする
+  loadImages() {
+    const images = new Array(this.controller.commandTextures.length);
+    const mapChipSize = this.controller.squareSize;
+    let loadedImageCount = 0;
+
+    for (let i = 0; i < this.controller.commandTextures.length; i++) {
+      images[i] = new Image();
+      images[i].src = "resources/images/" + this.controller.commandTextures[i].texture + ".png";
+
+      // 画像ロードごとのイベントハンドラー
+      images[i].addEventListener("load", (event) => {
+        if (++loadedImageCount < this.commandTextureCanvases.length) {
+          return;
+        }
+        
+        for (let i = 0; i < this.commandTextureCanvases.length; i++) {
+          const textureCanvas = document.createElement("canvas");
+          textureCanvas.width = mapChipSize.x;
+          textureCanvas.height = mapChipSize.y;         
+
+          const textureContext = textureCanvas.getContext("2d");
+          textureContext.drawImage(images[i], 0, 0, images[i].width, images[i].height, 0, 0, mapChipSize.x, mapChipSize.y);
+          this.commandTextureCanvases[i] = textureCanvas;
+        }
+
+        this.drawCommandFrame();
+
+      }, false);
+    }
+  }
+
+  // 文字画像を読み込んでキャッシュする
+  loadImageChars() {
+
+    // 文字画像をすべて取得する
+    const images = new Array(this.controller.textTextures.length);
+    let loadedImageCount = 0;
+
+    // 画像の読み込みとロードイベントハンドラーの設定
+    for (let i = 0; i < this.controller.textTextures.length; i++) {
+      images[i] = new Image();
+      images[i].src = "resources/images/" + this.controller.textTextures[i].texture + ".png";
+
+      // 画像ロードごとのイベントハンドラー
+      images[i].addEventListener("load", (event) => {
+        if (++loadedImageCount < this.controller.textTextures.length) {
+          return;
+        }
+
+        // すべての文字テクスチャーのキャンバスを生成する
+        const soloCharCanvases = {};
+
+        for (let i = 0; i < this.controller.textTextures.length; i++) {
+          
+          const textureCanvas = document.createElement("canvas");
+          textureCanvas.width = this.controller.squareSize.x / 2;
+          textureCanvas.height = this.controller.squareSize.y / 2;         
+
+          const textureContext = textureCanvas.getContext("2d");
+          textureContext.mozImageSmoothingEnabled = false;
+          textureContext.webkitImageSmoothingEnabled = false;
+          textureContext.msImageSmoothingEnabled = false;
+          textureContext.imageSmoothingEnabled = false;
+
+          textureContext.drawImage(images[i], 0, 0, images[i].width, images[i].height, 0, 0, textureCanvas.width, textureCanvas.height);
+          soloCharCanvases[this.controller.textTextures[i].texture] = textureCanvas;
+        }
+
+        // ソロ文字を組み合わせて一文字分のキャンバスを生成する
+        for (let i = 0; i < this.controller.mojis.length; i++) {
+
+          const textureCanvas = document.createElement("canvas");
+          textureCanvas.width = this.controller.squareSize.x / 2;
+          textureCanvas.height = this.controller.squareSize.y;    
+          
+          const mainChar = soloCharCanvases[this.controller.mojis[i].texture1];
+          const subChar = soloCharCanvases[this.controller.mojis[i].texture2];
+          
+          const context = textureCanvas.getContext("2d");
+          context.drawImage(subChar, 0, 0);
+          context.drawImage(mainChar, 0, this.controller.squareSize.y / 2);
+
+          this.charCanvases[this.controller.mojis[i].read] = textureCanvas;
+        }
+
+        // コマンドメニューに文字を描画する
+        for (let i = 0; i < this.controller.menus.length; i++) {
+          for (let j = 0; j < this.controller.menus[i].length; j++) {
+            this.commandMenus[i][j].draw(this.charCanvases);
+          }
+        }
+      }, false);
+    }
+  }
+
+  // コマンドのフレームを描画する
+  drawCommandFrame() {
+    const context = this.commandFrame.getContext("2d");
+    context.mozImageSmoothingEnabled = false;
+    context.webkitImageSmoothingEnabled = false;
+    context.msImageSmoothingEnabled = false;
+    context.imageSmoothingEnabled = false;
+
+    const mapChipSize = this.controller.squareSize;
+
+    for (let i = 0; i < this.commandBoxRows; i++) {
+      for (let j = 0; j < this.commandBoxColumns; j++) {
+        
+        const textureIndex = this.controller.commandMap[i][j];
+        
+        if (textureIndex == -1) {
+          continue;
+        }
+
+        context.drawImage(this.commandTextureCanvases[textureIndex], j * mapChipSize.x, i * mapChipSize.y);
+      }
+    }
   }
 }

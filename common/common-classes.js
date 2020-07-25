@@ -41,6 +41,15 @@ class Texture {
   }
 }
 
+// テクスチャークラス
+class Text {
+  constructor(texture1, texture2, read) {
+    this.texture1 = texture1;
+    this.texture2 = texture2;
+    this.read = read;
+  }
+}
+
 // コントローラーの基底クラス
 class Controller {
   constructor() {

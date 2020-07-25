@@ -36,6 +36,7 @@ class GameEvent {
 
       const originalTargetStyleLeft = target.style.left;
       const quakeWidth = 2;
+      const quakeLimit = 16;
       
       let quakeTurn = quakeWidth;
       let quakeCount = 0;
@@ -59,7 +60,7 @@ class GameEvent {
           quakeCount++;
         }
 
-        if (quakeCount < 16) {
+        if (quakeCount < quakeLimit) {
           window.requestAnimationFrame(quake);
         } else {
           target.style.left = originalTargetStyleLeft;

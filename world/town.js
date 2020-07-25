@@ -37,6 +37,10 @@ class Town {
     request.onload = () => {
       // JSONにあるすべての町の情報
       const towns = request.response;
+      
+      // マップのマス目の数
+      const mapWidth = 27;
+      const mapHeight = 21;
 
       // 該当の町の情報を取得
       this.townInformation = towns[townName];
@@ -47,17 +51,17 @@ class Town {
       
       // 町のマップから衝突マップを生成
       this.collisionMap = this.createCollisionMap(this.map, world.resource.textures);
-
-      this.mapSize = new Size(world.squareSize.x * 27, world.squareSize.y * 21);
+      
+      this.mapSize = new Size(world.squareSize.x * mapWidth, world.squareSize.y * mapHeight);
       this.mapCenterPosition = new Position(this.townInformation.centerPosition[0], this.townInformation.centerPosition[1]);
-      this.mapPosition = new Position(this.mapCenterPosition.x - 13, this.mapCenterPosition.y - 10);
+      this.mapPosition = new Position(this.mapCenterPosition.x - Math.floor(mapWidth / 2), this.mapCenterPosition.y - Math.floor(mapHeight / 2));
       this.mapAreaController = new MapAreaController(world, this, 100);
 
       // 町の人々を生成する
       this.people = this.createPeople(this);
 
       // コマンドボックス
-      this.commandBoxController = new CommandBoxController(this, 300);
+      this.commandBoxController = new CommandBoxController(world, this, 300);
     };
 
     request.open("GET", world.townJsonUrl);

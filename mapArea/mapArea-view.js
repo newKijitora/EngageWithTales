@@ -115,7 +115,7 @@ class MapAreaView {
     if (this.drawnRows == 0) {
       const pattern = context.createPattern(this.textureCanvases[mainBackgroundTextureIndex], "repeat");
       context.fillStyle = pattern;
-      context.fillRect(0, 0, 864, 672);
+      context.fillRect(0, 0, 972, 672);
     }
 
     const x = this.controller.upperLeftPosition.x;

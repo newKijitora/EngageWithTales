@@ -18,7 +18,7 @@ class MapAreaController extends Controller {
     
     // マップの行数と列数
     this.numberOfMapRows = this.mapSize.y / this.squareSize.y;
-    this.numberOfMapColumns = this.mapSize.x / this.squareSize.y;
+    this.numberOfMapColumns = this.mapSize.x / this.squareSize.x;
     
     // アクティブマップとスタンバイマップのインデックス
     this.activeMapIndex = 0;

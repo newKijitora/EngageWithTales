@@ -35,8 +35,8 @@ class MemberStatusView {
   assemblingElements() {
     const memberStatusOuter = document.createElement("div");
     memberStatusOuter.setAttribute("id", "member-status-outer");
-    memberStatusOuter.style.left = "479px";
-    memberStatusOuter.style.top = "237px";
+    memberStatusOuter.style.left = "447px";
+    memberStatusOuter.style.top = "205px";
     memberStatusOuter.style.width = "350px";
 
     const memberStatus = document.createElement("div");

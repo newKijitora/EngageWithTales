@@ -1,11 +1,10 @@
 // コマンドボックスのコントローラー
 class CommandBoxController extends Controller {
 
-  constructor(world, town, zIndexBase) { super();
+  constructor(town, zIndexBase) { super();
     // コンテキスト
-    this.world = world;
     this.town = town;
-    this.squareSize = this.town.context.squareSize;
+    this.squareSize = this.town.world.squareSize;
 
     this.menus = [
       ["はなす", "じゅもん"],
@@ -14,13 +13,13 @@ class CommandBoxController extends Controller {
     ];
 
     // 文字のテクスチャー
-    this.textures = this.world.textTextures;
-    this.commandTextures = this.world.resource.commandTextures;
-    this.commandMap = this.world.resource.commands[0];
+    this.textures = this.town.world.textTextures;
+    this.commandTextures = this.town.world.resource.commandTextures;
+    this.commandMap = this.town.world.resource.commands[0];
 
-    this.textTextures = this.world.resource.characters;
+    this.textTextures = this.town.world.resource.characters;
 
-    this.mojis = this.world.resource.textElements;
+    this.mojis = this.town.world.resource.textElements;
 
     // ビューの状態
     this.viewState = "closed";
@@ -28,15 +27,14 @@ class CommandBoxController extends Controller {
     this.position = new Position(5, 2);
 
     // キー
-    this.openKey = new Key(74, "keyup");
-    this.closeKey = new Key(75, "keyup");
-
-    this.leftKey = new Key(this.town.context.leftKeyCode, "keyup");
-    this.rightKey = new Key(this.town.context.rightKeyCode, "keyup");
-    this.bottomKey = new Key(this.town.context.bottomKeyCode, "keyup");
-    this.topKey = new Key(this.town.context.topKeyCode, "keyup");
-
-    this.characters = this.town.characters;
+    this.leftKey = new Key(this.town.world.leftKeyCode, "keyup");
+    this.rightKey = new Key(this.town.world.rightKeyCode, "keyup");
+    this.bottomKey = new Key(this.town.world.bottomKeyCode, "keyup");
+    this.topKey = new Key(this.town.world.topKeyCode, "keyup");
+    this.openKey = new Key(this.town.world.openKeyCode, "keyup");
+    this.closeKey = new Key(this.town.world.closeKeyCode, "keyup");
+    
+    this.characters = this.town.world.characters;
 
     // 方向ごとの進み具合
     this.destinations = {

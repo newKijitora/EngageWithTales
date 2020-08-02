@@ -5,6 +5,14 @@ class TextAreaController extends Controller {
     // コンテキスト
     this.commandBox = commandBox;
 
+    this.squareSize = commandBox.squareSize;
+    this.commandTextures = commandBox.commandTextures;
+    this.textAreaMap = commandBox.town.world.resource.commands[1];
+
+    this.textTextures = this.commandBox.town.world.resource.characters;
+
+    this.mojis = this.commandBox.town.world.resource.textElements;
+
     // ビューの状態
     this.viewState = "closed";
     
@@ -20,13 +28,16 @@ class TextAreaController extends Controller {
     this.textSet = this.list[2];
     this.readIndex = 0;
     this.canReadContinue = false;
-    this.textSpeed = this.commandBox.town.context.textSpeed;
-    this.textColor = this.commandBox.town.context.textColor;
-    this.textAreaBackgroundColor = this.commandBox.town.context.textAreaBackgroundColor;
+    this.textSpeed = this.commandBox.town.world.textSpeed;
+    this.textColor = this.commandBox.town.world.textColor;
+    this.textAreaBackgroundColor = this.commandBox.town.world.textAreaBackgroundColor;
     
+    this.textAreaRows = 5;
+    this.textAreaColumns = 12;
+
     // 行数と一行あたりの文字数
     this.numberOfRows = 4;
-    this.numberOfCells = 17;
+    this.numberOfCells = 22;
     this.zIndexBase = zIndexBase;
 
     // エントリー
@@ -74,7 +85,39 @@ class TextAreaController extends Controller {
     ["なにも　みつからなかった"],
     ["＊「ぼくは　キングです！　　　　　　　このまちに　きてくれて　　　　　　とても　うれしいです　　　　　　　どうも　ありがとう！",
      "＊「このまちの　ことなら　　　　　　　なんでも　きいてね！　　　　　　　いろいろ　おしえるよ"],
-    ["＊「ここは　もうだめです　　　　　　　はやく　おにげください！"],
+    [
+      "ラルド「おまえの　それって\n　　じくうのけん　じゃないのか？",
+    ],
+    [
+      "エリス「ねえ　ラルドのこと　みなかった？",
+      "エリス「かれったら　あたしとの\n　　まちあわせも　すっぽかして\n　　どこかに　いってしまったのよ！",
+      "エリス「こんど　あったら　ぜったいに\n　　とっちめてやるわ！",
+    ],
+    [
+      "＊「ねえ　ラルドのこと　みなかった？"
+    ],
+    [
+      "＊「ラルドという　けんしのことを\n　　しっているか？",
+      "＊「かれは　とてつもない　さいのうを\n　　もったおとこだったけれど\n　　みちを　あやまってしまったんだ。",
+      "＊「ちのはてを　もとめて　たびだったという\n　　ことだけど　そのあと　どうなったかは\n　　だれひとり　しらないんだ。"
+    ],
+    [
+      "＊「ゆうべは　ずいぶん\n　　うなされていたのね。",
+      "＊「かわいい　かのじょを\n　　なかせちゃだめよ。"
+    ],
+    [
+      "＊「じくうのけんを　つかえば\n　　ときをこえることができる\n　　という　いいつたえがある。",
+      "＊「もしも　それがほんとうなら\n　　あのときの　あやまちを\n　　ただすことができるだろうか。"
+    ],
+    [
+      "＊「ろかりとは\n　　はぐれメタルのけんを\n　　そうびした！",
+      "＊「キリキリバッタを　たおした！\n　　１００ゴールドを　うばわれた！",
+      "＊「あのしょうねんの　まほうには\n　　だいけんじゃラルドすら\n　　てをやいたという　はなしだ。",
+      "＊「まいごに　なってしまうとは\n　　なにごとだ！",
+      "＊「あの　ものがなしい　ねいろが\n　　いまも　わすれられないんだ。",
+      "＊「かのじょのことが\n　　いまでも　わすれられないの？"
+    ],
+     //["＊「ここは　もうだめです　　　　　　　はやく　おにげください！"],
     ["＊「とてつもない　さいのうを　　　　　もった　けんしだったけれど　　　　みちを　あやまってしまった",
      "＊「けれど　かれの　ししょうの　　　　オルテガは　かれのことを　　　　　さいごまで　しんじていたよ",
      "＊「ラウドは　そんなししょうの　　　　きもちを　いともかんたんに　　　　ふみにじって　オルテガを　　　　　なきものに　したんだ",

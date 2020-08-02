@@ -6,7 +6,10 @@ class Town {
   // コンストラクタ
   constructor(world, townName) {
     // 世界のコンテキスト
-    this.context = world;
+    this.world = world;
+  
+    // ビュー上のサイズ単位
+    this.squareSize = world.squareSize;
 
     // 町の情報
     this.townInformation = null;
@@ -23,7 +26,7 @@ class Town {
     this.collisionMap = null;
 
     // 現在のキャラクターパーティ
-    this.characters = this.context.characters;
+    this.characters = this.world.characters;
 
     // 町の生成
     this.requestInformation(world, townName);
@@ -61,7 +64,7 @@ class Town {
       this.people = this.createPeople(this);
 
       // コマンドボックス
-      this.commandBoxController = new CommandBoxController(world, this, 300);
+      this.commandBoxController = new CommandBoxController(this, 300);
     };
 
     request.open("GET", world.townJsonUrl);
@@ -83,6 +86,7 @@ class Town {
         collisionMap[i][j] = textures[baseMap[i][j]].collision;
       }
     }
+
     return collisionMap;
   }
 
@@ -102,6 +106,7 @@ class Town {
         PeopleController.actions[town.townInformation.people[i][6]],
         100);
     }
+
     return people;
   }
 }

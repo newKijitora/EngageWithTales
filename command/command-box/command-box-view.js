@@ -145,6 +145,7 @@ class CommandBoxView {
   // HTML要素の生成
   assemblingElements() {
     const commandFrame = document.createElement("canvas");
+    commandFrame.style.display = "block"
     commandFrame.width = this.controller.squareSize.x * 6;
     commandFrame.height = this.controller.squareSize.y * 4;
 
@@ -175,16 +176,15 @@ class CommandBoxView {
     // commandBox.appendChild(selectField);
 
     const commandBox = document.createElement("div");
-    commandBox.classList.add("layer");
+    commandBox.style.position = "absolute";
     commandBox.style.zIndex = this.controller.zIndexBase;
+    commandBox.style.backgroundColor = "#020202";
+    commandBox.style.left = 6 * this.controller.squareSize.x + "px";
+    commandBox.style.top = 3 * this.controller.squareSize.y + "px";
+    commandBox.style.display = "none";
 
     commandBox.appendChild(commandFrame);
     commandBox.appendChild(selectField);
-
-    commandBox.style.display = "none";
-    commandBox.style.backgroundColor = "#020202";
-    commandBox.style.left = 7 * this.controller.squareSize.x + "px";
-    commandBox.style.top = 3 * this.controller.squareSize.y + "px";
 
     const monitor = document.getElementById("world");
     monitor.appendChild(commandBox);
@@ -216,6 +216,11 @@ class CommandBoxView {
           textureCanvas.height = mapChipSize.y;         
 
           const textureContext = textureCanvas.getContext("2d");
+          textureContext.mozImageSmoothingEnabled = false;
+          textureContext.webkitImageSmoothingEnabled = false;
+          textureContext.msImageSmoothingEnabled = false;
+          textureContext.imageSmoothingEnabled = false;
+
           textureContext.drawImage(images[i], 0, 0, images[i].width, images[i].height, 0, 0, mapChipSize.x, mapChipSize.y);
           this.commandTextureCanvases[i] = textureCanvas;
         }
@@ -293,18 +298,11 @@ class CommandBoxView {
   // コマンドのフレームを描画する
   drawCommandFrame() {
     const context = this.commandFrame.getContext("2d");
-    context.mozImageSmoothingEnabled = false;
-    context.webkitImageSmoothingEnabled = false;
-    context.msImageSmoothingEnabled = false;
-    context.imageSmoothingEnabled = false;
-
     const mapChipSize = this.controller.squareSize;
 
     for (let i = 0; i < this.commandBoxRows; i++) {
       for (let j = 0; j < this.commandBoxColumns; j++) {
-        
         const textureIndex = this.controller.commandMap[i][j];
-        
         if (textureIndex == -1) {
           continue;
         }

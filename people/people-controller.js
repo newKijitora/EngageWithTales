@@ -6,13 +6,13 @@ class PeopleController extends Controller {
     this.town = town;
 
     // 1マスのサイズ
-    this.squareSize = this.town.context.squareSize;
+    this.squareSize = this.town.world.squareSize;
 
     // キー
-    this.leftKey = new Key(this.town.context.leftKeyCode, "keyup");
-    this.rightKey = new Key(this.town.context.rightKeyCode, "keyup");
-    this.bottomKey = new Key(this.town.context.bottomKeyCode, "keyup");
-    this.topKey = new Key(this.town.context.topKeyCode, "keyup");
+    this.leftKey = new Key(this.town.world.leftKeyCode, "keyup");
+    this.rightKey = new Key(this.town.world.rightKeyCode, "keyup");
+    this.bottomKey = new Key(this.town.world.bottomKeyCode, "keyup");
+    this.topKey = new Key(this.town.world.topKeyCode, "keyup");
     
     // 方向ごとの進み具合
     this.destinations = {
@@ -23,7 +23,7 @@ class PeopleController extends Controller {
     };
     
     // 1フレームの移動距離
-    this.distance = this.town.context.distance;
+    this.distance = this.town.world.distance;
 
     // キャラクターの種類
     this.peopleName = peopleName;

@@ -4,13 +4,16 @@ class WorldView {
   constructor(controller) {
     // コントローラー
     this.controller = controller;
+
+    // ビュー上のサイズ単位
     this.squareSize = this.controller.squareSize;
+
+    // ビュー（モニター）のサイズとウィンドウ上のビューの位置
     this.worldViewSize = this.controller.worldViewSize;
     this.worldViewPosition = this.controller.worldViewPosition;
 
-    this.world = null;
-    
-    this.assemblingElements();
+    // DOM要素
+    this.world = this.assemblingElements();
   }
 
   // HTML要素の組成
@@ -18,15 +21,18 @@ class WorldView {
     const world = document.createElement("div");
     world.setAttribute("id", "world");
     world.style.position = "absolute";
-    world.style.top = this.worldViewPosition.y * this.squareSize.y + "px";
-    world.style.left = this.worldViewPosition.x * this.squareSize.x + "px";
+    world.style.overflow = "hidden";
+
+    // ビュー（モニター）のサイズ
     world.style.width = this.worldViewSize.x + "px";
     world.style.height = this.worldViewSize.y + "px";
-    world.style.overflow = "hidden";
-    world.style.cursor = "none";
+
+    // ウィンドウ上のビューの位置
+    world.style.top = this.worldViewPosition.y * this.squareSize.y + "px";
+    world.style.left = this.worldViewPosition.x * this.squareSize.x + "px";
 
     document.body.appendChild(world);
 
-    this.world = world;
+    return world;
   }
 }

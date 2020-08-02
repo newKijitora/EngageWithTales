@@ -20,7 +20,7 @@ class WorldController extends Controller {
     // ビュー上のサイズ単位
     this.squareSize = new Size(32, 32);
 
-    // ゲームのビュー（モニター）のサイズと位置
+    // ゲームのビュー（モニター）のサイズとウィンドウ上の位置
     this.worldViewSize = new Size(this.squareSize.x * 25, this.squareSize.y * 19);
     this.worldViewPosition = new Position(5, 2);
 

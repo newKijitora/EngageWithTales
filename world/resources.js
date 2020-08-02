@@ -195,20 +195,27 @@ class Resources {
       [4, -1, -1, -1, -1, 6],
       [4, -1, -1, -1, -1, 6],
       [1, 7, 7, 7, 7, 2],
+    ],
+    [
+      [0, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 3],
+      [4, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 6],
+      [4, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 6],
+      [4, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 6],
+      [1, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 2],
     ]
   ];
 
   // テクスチャー
   textures = [
-    new Texture("desert", true, false),
+    new Texture("floor", true, false),
     new Texture("block", false, false),
-    new Texture("grass", true, false),
+    new Texture("desert", true, false),
     new Texture("water", false, false),
     new Texture("block2", false, false),
-    new Texture("floor", true, false),
+    new Texture("grass", true, false),
     new Texture("door", false, false),
     new Texture("table", false, false),
-    new Texture("floor", true, true),
+    new Texture("grass", true, true),
   ];
 
   // コマンドのテクスチャー
@@ -225,53 +232,341 @@ class Resources {
 
   // 文字
   textElements = [
-    new Text("ji", "blank", "じ"),
-    new Text("yu-s", "blank", "ゅ"),
-    new Text("mo", "blank", "も"),
-    new Text("n", "blank", "ん"),
-    new Text("to", "dakuten", "ど"),
+
+    // 通常ひらがなここから
+
+    new Text("a", "blank", "あ"),
+    new Text("i", "blank", "い"),
     new Text("u", "blank", "う"),
-    new Text("ku", "dakuten", "ぐ"),
-    new Text("tu", "blank", "つ"),
-    new Text("yo", "blank", "よ"),
+    new Text("e", "blank", "え"),
+    new Text("o", "blank", "お"),
+
+    new Text("ka", "blank", "か"),
+    new Text("ki", "blank", "き"),
+    new Text("ku", "blank", "く"),
+    new Text("ke", "blank", "け"),
+    new Text("ko", "blank", "こ"),
+
     new Text("sa", "blank", "さ"),
-    new Text("ha", "blank", "は"),
-    new Text("na", "blank", "な"),
-    new Text("su", "blank", "す"),
     new Text("si", "blank", "し"),
-    new Text("ra", "blank", "ら"),
-    new Text("he", "dakuten", "べ"),
-    new Text("ru", "blank", "る"),
+    new Text("su", "blank", "す"),
+    new Text("se", "blank", "せ"),
     new Text("so", "blank", "そ"),
-    new Text("u", "blank", "う"),
+
+    new Text("ta", "blank", "た"),
+    new Text("ti", "blank", "ち"),
+    new Text("tu", "blank", "つ"),
+    new Text("te", "blank", "て"),
+    new Text("to", "blank", "と"),
+    
+    new Text("na", "blank", "な"),
+    new Text("ni", "blank", "に"),
+    new Text("nu", "blank", "ぬ"),
+    new Text("ne", "blank", "ね"),
+    new Text("no", "blank", "の"),
+
+    new Text("ha", "blank", "は"),
+    new Text("hi", "blank", "ひ"),
+    new Text("fu", "blank", "ふ"),
+    new Text("he", "blank", "へ"),
+    new Text("ho", "blank", "ほ"),
+
+    new Text("ma", "blank", "ま"),
+    new Text("mi", "blank", "み"),
+    new Text("mu", "blank", "む"),
+    new Text("me", "blank", "め"),
+    new Text("mo", "blank", "も"),
+
+    new Text("ya", "blank", "や"),
+    new Text("yu", "blank", "ゆ"),
+    new Text("yo", "blank", "よ"),
+
+    new Text("ra", "blank", "ら"),
+    new Text("ri", "blank", "り"),
+    new Text("ru", "blank", "る"),
+    new Text("re", "blank", "れ"),
+    new Text("ro", "blank", "ろ"),
+    
+    new Text("wa", "blank", "わ"),
+    new Text("wo", "blank", "を"),
+    new Text("n", "blank", "ん"),
+
+    new Text("tu-s", "blank", "っ"),
+    new Text("ya-s", "blank", "ゃ"),
+    new Text("yu-s", "blank", "ゅ"),
+    new Text("yo-s", "blank", "ょ"),
+
+    // 通常ひらがなここまで
+
+    // 濁点ひらがなここから
+    
+    new Text("ka", "dakuten", "が"),
+    new Text("ki", "dakuten", "ぎ"),
+    new Text("ku", "dakuten", "ぐ"),
+    new Text("ke", "dakuten", "げ"),
+    new Text("ko", "dakuten", "ご"),
+
+    new Text("sa", "dakuten", "ざ"),
+    new Text("si", "dakuten", "じ"),
+    new Text("su", "dakuten", "ず"),
+    new Text("se", "dakuten", "ぜ"),
+    new Text("so", "dakuten", "ぞ"),
+
+    new Text("ta", "dakuten", "だ"),
+    new Text("ti", "dakuten", "ぢ"),
+    new Text("tu", "dakuten", "づ"),
+    new Text("te", "dakuten", "で"),
+    new Text("to", "dakuten", "ど"),
+
+    new Text("ha", "dakuten", "ば"),
     new Text("hi", "dakuten", "び"),
+    new Text("fu", "dakuten", "ぶ"),
+    new Text("he", "dakuten", "べ"),
+    new Text("ho", "dakuten", "ぼ"),
+    
+    // 濁点ひらがなここまで
+
+    // 半濁点ひらがなここから
+
+    new Text("ha", "handakuten", "ぱ"),
+    new Text("hi", "handakuten", "ぴ"),
+    new Text("fu", "handakuten", "ぷ"),
+    new Text("he", "handakuten", "ぺ"),
+    new Text("ho", "handakuten", "ぽ"),
+
+    // 半濁点ひらがなここまで
+
+    // 通常カタカナここから
+
+    new Text("a-k", "blank", "ア"),
+    new Text("i-k", "blank", "イ"),
+    new Text("e-k", "blank", "エ"),
+    new Text("o-k", "blank", "オ"),
+
+    new Text("ka-k", "blank", "カ"),
+    new Text("ki-k", "blank", "キ"),
+    new Text("ku-k", "blank", "ク"),
+    new Text("ko-k", "blank", "コ"),
+    
+    new Text("si-k", "blank", "シ"),
+    new Text("su-k", "blank", "ス"),
+    new Text("so-k", "blank", "ソ"),
+    
+    new Text("ta-k", "blank", "タ"),
+    new Text("te-k", "blank", "テ"),
+    new Text("to-k", "blank", "ト"),
+
+    new Text("na-k", "blank", "ナ"),
+    new Text("ni-k", "blank", "ニ"),
+    new Text("ne-k", "blank", "ネ"),
+
+    new Text("ha-k", "blank", "ハ"),
+    new Text("hi-k", "blank", "ヒ"),
+    new Text("fu-k", "blank", "フ"),
+    new Text("he", "blank", "ヘ"),
+    new Text("ho-k", "blank", "ホ"),
+
+    new Text("ma-k", "blank", "マ"),
+    new Text("mi-k", "blank", "ミ"),
+    new Text("mu-k", "blank", "ム"),
+    new Text("me-k", "blank", "メ"),
+    new Text("mo-k", "blank", "モ"),
+
+    new Text("ra-k", "blank", "ラ"),
+    new Text("ri", "blank", "リ"),
+    new Text("ru-k", "blank", "ル"),
+    new Text("re-k", "blank", "レ"),
+    new Text("ro-k", "blank", "ロ"),
+    
+    new Text("n-k", "blank", "ン"),
+
+    // 通常カタカナここまで
+
+    // 濁点カタカナここから
+
+    new Text("ka-k", "dakuten", "ガ"),
+    new Text("ki-k", "dakuten", "ギ"),
+    new Text("ku-k", "dakuten", "グ"),
+    new Text("ko-k", "dakuten", "ゴ"),
+
+    new Text("si-k", "dakuten", "ジ"),
+    new Text("su-k", "dakuten", "ズ"),
+    new Text("so-k", "dakuten", "ゾ"),
+
+    new Text("ta-k", "dakuten", "ダ"),
+    new Text("te-k", "dakuten", "デ"),
+    new Text("to-k", "dakuten", "ド"),
+
+    new Text("ha-k", "dakuten", "バ"),
+    new Text("hi-k", "dakuten", "ビ"),
+    new Text("fu-k", "dakuten", "ブ"),
+    new Text("he", "dakuten", "ベ"),
+    new Text("ho-k", "dakuten", "ボ"),
+
+    // 濁点カタカナここまで
+
+    // 半濁点カタカナここから
+
+    new Text("ha-k", "handakuten", "パ"),
+    new Text("hi-k", "handakuten", "ピ"),
+    new Text("fu-k", "handakuten", "プ"),
+    new Text("he", "handakuten", "ペ"),
+    new Text("ho-k", "handakuten", "ポ"),
+
+    // 半濁点カタカナここまで
+
+    new Text("ya-s-k", "blank", "ャ"),
+    new Text("tu-s-k", "blank", "ッ"),
+
+    new Text("nobasi-k", "blank", "ー"),
+
+    // 算用数字ここから
+
+    new Text("zero", "blank", "０"),
+    new Text("one", "blank", "１"),
+    new Text("two", "blank", "２"),
+    new Text("three", "blank", "３"),
+    new Text("four", "blank", "４"),
+    new Text("five", "blank", "５"),
+    new Text("six", "blank", "６"),
+    new Text("seven", "blank", "７"),
+    new Text("eight", "blank", "８"),
+    new Text("nine", "blank", "９"),
+
+    // 算用数字ここまで
+
+    new Text("colon", "blank", "："),
+    new Text("h-a", "blank", "H"),
+    new Text("m-a", "blank", "M"),
+    new Text("p-a", "blank", "P"),
     new Text("arrow", "blank", "矢"),
+    new Text("aster", "blank", "＊"),
+    new Text("ex", "blank", "！"),
+    new Text("ques", "blank", "？"),
+    new Text("kakko", "blank", "「"),
+    new Text("maru", "blank", "。"),
+    new Text("exp", "blank", "経"),
   ];
 
   // 文字
   characters = [
-    new Texture("ji", true, true),
-    new Texture("yu-s", true, true),
-    new Texture("mo", true, true),
-    new Texture("n", true, true),
-    new Texture("to", true, true),
+    new Texture("a", true, true),
+    new Texture("i", true, true),
     new Texture("u", true, true),
+    new Texture("e", true, true),
+    new Texture("o", true, true),
+
+    new Texture("ka", true, true),
+    new Texture("ki", true, true),
     new Texture("ku", true, true),
-    new Texture("tu", true, true),
-    new Texture("yo", true, true),
+    new Texture("ke", true, true),
+    new Texture("ko", true, true),
+    
     new Texture("sa", true, true),
-    new Texture("ha", true, true),
-    new Texture("na", true, true),
-    new Texture("su", true, true),
     new Texture("si", true, true),
-    new Texture("ra", true, true),
-    new Texture("he", true, true),
-    new Texture("ru", true, true),
+    new Texture("su", true, true),
+    new Texture("se", true, true),
     new Texture("so", true, true),
-    new Texture("u", true, true),
+
+    new Texture("ta", true, true),
+    new Texture("ti", true, true),
+    new Texture("tu", true, true),
+    new Texture("te", true, true),
+    new Texture("to", true, true),
+
+    new Texture("na", true, true),
+    new Texture("ni", true, true),
+    new Texture("nu", true, true),
+    new Texture("ne", true, true),
+    new Texture("no", true, true),
+
+    new Texture("ha", true, true),
     new Texture("hi", true, true),
+    new Texture("fu", true, true),
+    new Texture("he", true, true),
+    new Texture("ho", true, true),
+
+    new Texture("ma", true, true),
+    new Texture("mi", true, true),
+    new Texture("mu", true, true),
+    new Texture("me", true, true),
+    new Texture("mo", true, true),
+
+    new Texture("ya", true, true),
+    new Texture("yu", true, true),
+    new Texture("yo", true, true),
+
+    new Texture("ra", true, true),
+    new Texture("ri", true, true),
+    new Texture("ru", true, true),
+    new Texture("re", true, true),
+    new Texture("ro", true, true),
+
+    new Texture("o-k", true, true),
+    new Texture("ki-k", true, true),
+    new Texture("ra-k", true, true),
+    new Texture("ma-k", true, true),
+    new Texture("ha-k", true, true),
+    new Texture("ru-k", true, true),
+    new Texture("i-k", true, true),
+    new Texture("to-k", true, true),
+    new Texture("hi-k", true, true),
+    new Texture("ho-k", true, true),
+    new Texture("ka-k", true, true),
+    new Texture("n-k", true, true),
+    new Texture("ta-k", true, true),
+    new Texture("ni-k", true, true),
+    new Texture("si-k", true, true),
+    new Texture("so-k", true, true),
+    new Texture("mo-k", true, true),
+    new Texture("nobasi-k", true, true),
+    new Texture("me-k", true, true),
+    new Texture("ko-k", true, true),
+    new Texture("mu-k", true, true),
+    new Texture("su-k", true, true),
+    new Texture("na-k", true, true),
+    new Texture("ya-s-k", true, true),
+    new Texture("mi-k", true, true),
+    new Texture("a-k", true, true),
+    new Texture("re-k", true, true),
+    new Texture("ku-k", true, true),
+    new Texture("fu-k", true, true),
+    new Texture("te-k", true, true),
+    new Texture("ne-k", true, true),
+    new Texture("ro-k", true, true),
+    new Texture("tu-s-k", true, true),
+    new Texture("e-k", true, true),
+
+    new Texture("zero", true, true),
+    new Texture("one", true, true),
+    new Texture("two", true, true),
+    new Texture("three", true, true),
+    new Texture("four", true, true),
+    new Texture("five", true, true),
+    new Texture("six", true, true),
+    new Texture("seven", true, true),
+    new Texture("eight", true, true),
+    new Texture("nine", true, true),
+    new Texture("colon", true, true),
+    new Texture("h-a", true, true),
+    new Texture("m-a", true, true),
+    new Texture("p-a", true, true),
+    new Texture("tu-s", true, true),
+    new Texture("ya-s", true, true),
+    new Texture("yo-s", true, true),
+    new Texture("yu-s", true, true),
+    new Texture("n", true, true),
     new Texture("dakuten", true, true),
+    new Texture("handakuten", true, true),
     new Texture("blank", true, true),
     new Texture("arrow", true, true),
+    new Texture("ex", true, true),
+    new Texture("aster", true, true),
+    new Texture("kakko", true, true),
+    new Texture("maru", true, true),
+    new Texture("wa", true, true),
+    new Texture("wo", true, true),
+    new Texture("exp", true, true),
+    new Texture("ques", true, true),
   ];
 }

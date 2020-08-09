@@ -1,5 +1,5 @@
 // キャラクターセレクタ―のコントローラークラス
-class MemberSelecterController extends Controller {
+class MemberSelecterContext extends Context {
   // コンストラクタ
   constructor(context) { super();
     this.context = context;
@@ -12,7 +12,7 @@ class MemberSelecterController extends Controller {
     this.state = "closed";
     this.characters = this.context.characters;
 
-    this.memberStatusController = new MemberStatusController(this);
+    this.memberStatusController = new MemberStatusContext(this);
     this.isChildOpened = false;
   }
 

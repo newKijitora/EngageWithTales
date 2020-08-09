@@ -1,17 +1,17 @@
 // テキストエリアのコントローラークラス
-class TextAreaController extends Controller {
+class TextAreaContext extends Context {
   // コンストラクタ
   constructor(commandBox, zIndexBase) { super();
     // コンテキスト
     this.commandBox = commandBox;
 
+    // 一コマのサイズ
     this.squareSize = commandBox.squareSize;
+
+    // テクスチャ
     this.commandTextures = commandBox.commandTextures;
-    this.textAreaMap = commandBox.town.world.resource.commands[1];
-
-    this.textTextures = this.commandBox.town.world.resource.characters;
-
-    this.mojis = this.commandBox.town.world.resource.textElements;
+    this.textTextures = this.commandBox.town.resource.characters;
+    this.mojis = this.commandBox.town.resource.textElements;
 
     // ビューの状態
     this.viewState = "closed";
@@ -28,9 +28,7 @@ class TextAreaController extends Controller {
     this.textSet = this.list[2];
     this.readIndex = 0;
     this.canReadContinue = false;
-    this.textSpeed = this.commandBox.town.world.textSpeed;
-    this.textColor = this.commandBox.town.world.textColor;
-    this.textAreaBackgroundColor = this.commandBox.town.world.textAreaBackgroundColor;
+    this.textSpeed = this.commandBox.textSpeed;
     
     this.textAreaRows = 5;
     this.textAreaColumns = 12;

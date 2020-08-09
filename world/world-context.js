@@ -1,32 +1,25 @@
 // ワールドのコントローラークラス
-class WorldController extends Controller {
+class WorldContext extends Context {
 
-  constructor(context) { super();
+  // コンストラクタ
+  constructor() { super();
     // リソース
-    this.context = context;
     this.resource = new Resources();
 
+    // ゲームの設定
+    this.settings = new Settings();
+
     // キーコード
-    this.leftKeyCode = 65;
-    this.rightKeyCode = 68;
-    this.bottomKeyCode = 83;
-    this.topKeyCode = 87;
-    this.openKeyCode = 74;
-    this.closeKeyCode = 75;
-
-    // サイズ係数
-    this.coefficient = 2;
-
-    // ビュー上のサイズ単位
-    this.squareSize = new Size(32, 32);
+    this.leftKeyCode = this.settings.keyCodes["left"];
+    this.rightKeyCode = this.settings.keyCodes["right"];
+    this.bottomKeyCode = this.settings.keyCodes["bottom"];
+    this.topKeyCode = this.settings.keyCodes["top"];
+    this.openKeyCode = this.settings.keyCodes["open"];
+    this.closeKeyCode = this.settings.keyCodes["close"];
 
     // ゲームのビュー（モニター）のサイズとウィンドウ上の位置
-    this.worldViewSize = new Size(this.squareSize.x * 25, this.squareSize.y * 19);
+    this.worldViewSize = new Size(this.settings.squareSize.x * 25, this.settings.squareSize.y * 19);
     this.worldViewPosition = new Position(5, 2);
-
-    // テキストの速度と１フレームの移動距離
-    this.textSpeed = 16;
-    this.distance = 2;
 
     // 色の設定
     this.textColor = "#fefefe"
@@ -35,7 +28,7 @@ class WorldController extends Controller {
     // 町のJSONファイルURL
     this.townJsonUrl = "world/town.json";
 
-    this.currentMap = null;
+    // 現在の町
     this.currentTown = null;
 
     // 主人公のパーティー

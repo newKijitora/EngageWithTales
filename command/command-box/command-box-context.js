@@ -1,10 +1,13 @@
 // コマンドボックスのコントローラー
-class CommandBoxController extends Controller {
+// コマンド関連オブジェクトのルート
+class CommandBoxContext extends Context {
 
   constructor(town, zIndexBase) { super();
     // コンテキスト
     this.town = town;
-    this.squareSize = this.town.world.squareSize;
+
+    // 一コマのサイズ
+    this.squareSize = town.settings.squareSize;
 
     this.menus = [
       ["はなす", "じゅもん"],
@@ -13,13 +16,15 @@ class CommandBoxController extends Controller {
     ];
 
     // 文字のテクスチャー
-    this.textures = this.town.world.textTextures;
-    this.commandTextures = this.town.world.resource.commandTextures;
-    this.commandMap = this.town.world.resource.commands[0];
+    this.textures = this.town.textTextures;
+    this.commandTextures = this.town.resource.commandTextures;
 
-    this.textTextures = this.town.world.resource.characters;
+    // テキストのスピード
+    this.textSpeed = town.settings.textSpeed;
 
-    this.mojis = this.town.world.resource.textElements;
+    this.textTextures = this.town.resource.characters;
+
+    this.mojis = this.town.resource.textElements;
 
     // ビューの状態
     this.viewState = "closed";
@@ -27,14 +32,15 @@ class CommandBoxController extends Controller {
     this.position = new Position(5, 2);
 
     // キー
-    this.leftKey = new Key(this.town.world.leftKeyCode, "keyup");
-    this.rightKey = new Key(this.town.world.rightKeyCode, "keyup");
-    this.bottomKey = new Key(this.town.world.bottomKeyCode, "keyup");
-    this.topKey = new Key(this.town.world.topKeyCode, "keyup");
-    this.openKey = new Key(this.town.world.openKeyCode, "keyup");
-    this.closeKey = new Key(this.town.world.closeKeyCode, "keyup");
+    this.leftKey = new Key(this.town.settings.keyCodes["left"], "left", "keyup");
+    this.rightKey = new Key(this.town.settings.keyCodes["right"], "right", "keyup");
+    this.bottomKey = new Key(this.town.settings.keyCodes["bottom"], "bottom", "keyup");
+    this.topKey = new Key(this.town.settings.keyCodes["top"], "top", "keyup");
+    this.openKey = new Key(this.town.settings.keyCodes["open"], "open", "keyup");
+    this.closeKey = new Key(this.town.settings.keyCodes["close"], "close", "keyup");
     
-    this.characters = this.town.world.characters;
+    // キャラクター
+    this.characters = this.town.characters;
 
     // 方向ごとの進み具合
     this.destinations = {
@@ -44,8 +50,8 @@ class CommandBoxController extends Controller {
       "bottom": new Destination(1, 0),
     };
 
-    // テキストエリアのコントローラー
-    this.textAreaController = new TextAreaController(this, this.zIndexBase);
+    // テキストエリアのコンテキスト
+    this.textAreaController = new TextAreaContext(this, this.zIndexBase);
 
     this.currentCommandMenu = null;
 
@@ -59,7 +65,7 @@ class CommandBoxController extends Controller {
         const isMemberSelectCommand = this.commandTexts[i][j][2];
         const position = new Position(j, i);
 
-        this.commandMenuControllers[i][j] = new CommandMenuController(this, commandMenuName, isSelected, isMemberSelectCommand, position);
+        this.commandMenuControllers[i][j] = new CommandMenuContext(this, commandMenuName, isSelected, isMemberSelectCommand, position);
         
         if (isSelected) {
           this.currentCommandMenu = this.commandMenuControllers[i][j];
@@ -90,10 +96,12 @@ class CommandBoxController extends Controller {
   }
 
   get canSelectionChange() {
+    // ビュー状態がclosedであればカット
     if (this.viewState == "closed") {
       return false;
     }
     
+    // テキストエリアのビュー状態がopenedであればカット
     if (this.textAreaController.viewState == "opened") {
       return false;
     }

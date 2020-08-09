@@ -1,5 +1,5 @@
 // コマンドメニューのコントローラー
-class CommandMenuController {
+class CommandMenuContext {
   // コンストラクタ
   constructor(context, menuName, isSelected, isMemberSelectCommand, position) {
     this.context = context;
@@ -17,7 +17,7 @@ class CommandMenuController {
     this.memberSelecterController = null;
     
     if (isMemberSelectCommand) {
-      this.memberSelecterController = new MemberSelecterController(this);
+      this.memberSelecterController = new MemberSelecterContext(this);
       this.memberSelecterPosition = new Position(this.position.x == 0 ? -5 : 0, 0);
     }
   }

@@ -1,4 +1,4 @@
-class PartyController {
+class PartyContext {
   // コンストラクタ
   constructor(context) {
     this.context = context;

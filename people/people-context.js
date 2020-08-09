@@ -1,45 +1,21 @@
 // ピープルのコントローラークラス
-class PeopleController extends Controller {
+class PeopleContext extends MovableContext {
   // コンストラクタ
-  constructor(context, town, peopleName, position, canMove, isAuto, moveTimeSpan, isActive, action, zIndexBase) { super();
-    // コンテキスト
+  constructor(town, peopleName, position, canMove, isAuto, moveTimeSpan, isActive, action, zIndexBase) { super(town);
+    // 町と設定
     this.town = town;
-
-    // 1マスのサイズ
-    this.squareSize = this.town.world.squareSize;
-
-    // キー
-    this.leftKey = new Key(this.town.world.leftKeyCode, "keyup");
-    this.rightKey = new Key(this.town.world.rightKeyCode, "keyup");
-    this.bottomKey = new Key(this.town.world.bottomKeyCode, "keyup");
-    this.topKey = new Key(this.town.world.topKeyCode, "keyup");
+    this.settings = town.settings;
     
-    // 方向ごとの進み具合
-    this.destinations = {
-      "top": new Destination(this.squareSize.y * -1, 0),
-      "left": new Destination(0, this.squareSize.x * -1),
-      "right": new Destination(0, this.squareSize.x),
-      "bottom": new Destination(this.squareSize.y, 0),
-    };
-    
-    // 1フレームの移動距離
-    this.distance = this.town.world.distance;
+    // 進行方向の設定
+    this.setDestinationStyle("forward");
 
     // キャラクターの種類
     this.peopleName = peopleName;
     this.basePosition = position;
     this.isProgress = false;
     
-    // キーの制御
-    this.currentKey = null;
-    this.nextKey = null;
-    this.continue = true;
-    
     // 現在のキャラクター位置
     this.currentPosition = new Position(this.basePosition.x, this.basePosition.y);
-
-    // 衝突マップ
-    this.collisionMap = this.town.collisionMap;
     this.mapUpperLeftPosition = this.town.mapPosition;
 
     // 動くキャラクターかどうか

@@ -1,5 +1,5 @@
 // メンバーステータスのコントローラークラス
-class MemberStatusController {
+class MemberStatusContext {
   // コンストラクタ
   constructor(context) {
     this.context = context;

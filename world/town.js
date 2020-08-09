@@ -5,11 +5,15 @@
 class Town {
   // コンストラクタ
   constructor(world, townName) {
-    // 世界のコンテキスト
-    this.world = world;
-  
+    // 各種設定
+    this.settings = world.settings;
+
+    // リソース
+    this.resource = world.resource;
+
     // ビュー上のサイズ単位
-    this.squareSize = world.squareSize;
+    this.squareSize = this.settings.squareSize;
+    this.textTextures = world.textTextures;
 
     // 町の情報
     this.townInformation = null;
@@ -20,13 +24,13 @@ class Town {
     this.mapCenterPosition = null;
     this.mapPosition = null;
     this.mapAreaController = null;
-    this.mainBackgroundTextureIndex = 0;
+    this.mainTextureIndex = 0;
 
     // 衝突マップ
     this.collisionMap = null;
 
     // 現在のキャラクターパーティ
-    this.characters = this.world.characters;
+    this.characters = world.characters;
 
     // 町の生成
     this.requestInformation(world, townName);
@@ -41,30 +45,28 @@ class Town {
       // JSONにあるすべての町の情報
       const towns = request.response;
       
-      // マップのマス目の数
-      const mapWidth = 27;
-      const mapHeight = 21;
+      // マップグリッドの数
+      const mapWidth = this.settings.mapWidth;
+      const mapHeight = this.settings.mapHeight;
 
       // 該当の町の情報を取得
       this.townInformation = towns[townName];
       this.map = world.resource.maps[this.townInformation.mapIndex];
-      this.mainBackgroundTextureIndex = this.townInformation.mainBackgroundTextureIndex;
-      
-      world.currentMap = this.map;
+      this.mainTextureIndex = this.townInformation.mainTextureIndex;
       
       // 町のマップから衝突マップを生成
       this.collisionMap = this.createCollisionMap(this.map, world.resource.textures);
       
-      this.mapSize = new Size(world.squareSize.x * mapWidth, world.squareSize.y * mapHeight);
+      this.mapSize = new Size(this.settings.squareSize.x * mapWidth, this.settings.squareSize.y * mapHeight);
       this.mapCenterPosition = new Position(this.townInformation.centerPosition[0], this.townInformation.centerPosition[1]);
       this.mapPosition = new Position(this.mapCenterPosition.x - Math.floor(mapWidth / 2), this.mapCenterPosition.y - Math.floor(mapHeight / 2));
-      this.mapAreaController = new MapAreaController(world, this, 100);
+      this.mapAreaController = new MapAreaContext(this, 100);
 
       // 町の人々を生成する
       this.people = this.createPeople(this);
 
       // コマンドボックス
-      this.commandBoxController = new CommandBoxController(this, 300);
+      this.commandBoxController = new CommandBoxContext(this, 300);
     };
 
     request.open("GET", world.townJsonUrl);
@@ -95,16 +97,17 @@ class Town {
     const people = new Array(town.townInformation.people.length);
 
     for (let i = 0; i < town.townInformation.people.length; i++) {
-      people[i] = new PeopleController(town.context,
-        town, town.townInformation.people[i][0],
+      people[i] = new PeopleContext(town,
+        town.townInformation.people[i][0],
         new Position(town.townInformation.people[i][1][0],
         town.townInformation.people[i][1][1]),
         town.townInformation.people[i][2],
         town.townInformation.people[i][3],
         town.townInformation.people[i][4],
         town.townInformation.people[i][5],
-        PeopleController.actions[town.townInformation.people[i][6]],
-        100);
+
+        // クラスメソッドを呼んでいる
+        PeopleContext.actions[town.townInformation.people[i][6]], 100);
     }
 
     return people;

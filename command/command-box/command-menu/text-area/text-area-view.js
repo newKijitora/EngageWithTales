@@ -1,7 +1,7 @@
 // テキストエリアのビュークラス
-class TextAreaView {
+class TextAreaView extends CommandBoxViewBase {
   // コンストラクタ
-  constructor(controller) {
+  constructor(controller) { super();
     // コントローラ
     this.controller = controller;
 
@@ -179,7 +179,6 @@ class TextAreaView {
     textArea.style.position = "absolute";
     textArea.style.top = this.controller.squareSize.y * 11 + "px";
     textArea.style.left = this.controller.squareSize.x * 6 + "px";
-    textArea.style.backgroundColor = "#020202";
     textArea.style.zIndex = this.controller.zIndexBase;
     textArea.style.display = "none";
 
@@ -228,7 +227,8 @@ class TextAreaView {
           this.textFrameCanvases[i] = textureCanvas;
         }
 
-        this.drawTextFrame();
+        // フレームの描画
+        super.drawFrame(this.textFrame, this.controller.squareSize, this.textFrameCanvases, this.controller.textAreaRows, this.controller.textAreaColumns);
 
       }, false);
     }
@@ -287,26 +287,7 @@ class TextAreaView {
 
           this.charCanvases[this.controller.mojis[i].read] = textureCanvas;
         }
-
-        
       }, false);
-    }
-  }
-
-  // テキストフレームを描画する
-  drawTextFrame() {
-    const context = this.textFrame.getContext("2d");
-    const mapChipSize = this.controller.squareSize;
-
-    for (let i = 0; i < this.controller.textAreaRows; i++) {
-      for (let j = 0; j < this.controller.textAreaColumns; j++) {
-        const textureIndex = this.controller.textAreaMap[i][j];
-        if (textureIndex == -1) {
-          continue;
-        }
-
-        context.drawImage(this.textFrameCanvases[textureIndex], j * mapChipSize.x, i * mapChipSize.y);
-      }
     }
   }
 }

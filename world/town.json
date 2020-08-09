@@ -17,7 +17,7 @@
 
   "rokarito" : {
     "mapIndex": 2,
-    "mainBackgroundTextureIndex": 3,
+    "mainTextureIndex": 3,
     "people" : [
       ["hero_bottom", [46, 14], true, false, 0, false],
       ["boss", [46, 12], false, false, 0, false],

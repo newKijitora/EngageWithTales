@@ -1,19 +1,16 @@
 // ゲーム世界のビュークラス
 class WorldView {
   // コンストラクタ
-  constructor(controller) {
+  constructor(context) {
     // コントローラー
-    this.controller = controller;
-
-    // ビュー上のサイズ単位
-    this.squareSize = this.controller.squareSize;
+    this.controller = context;
 
     // ビュー（モニター）のサイズとウィンドウ上のビューの位置
     this.worldViewSize = this.controller.worldViewSize;
     this.worldViewPosition = this.controller.worldViewPosition;
 
     // DOM要素
-    this.world = this.assemblingElements();
+    this.worldDom = this.assemblingElements();
   }
 
   // HTML要素の組成
@@ -28,8 +25,8 @@ class WorldView {
     world.style.height = this.worldViewSize.y + "px";
 
     // ウィンドウ上のビューの位置
-    world.style.top = this.worldViewPosition.y * this.squareSize.y + "px";
-    world.style.left = this.worldViewPosition.x * this.squareSize.x + "px";
+    world.style.top = this.worldViewPosition.y * this.controller.settings.squareSize.y + "px";
+    world.style.left = this.worldViewPosition.x * this.controller.settings.squareSize.x + "px";
 
     document.body.appendChild(world);
 

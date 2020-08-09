@@ -7,20 +7,22 @@ class Map {
 }
 
 // マップエリアクラス
-class MapAreaView {
+class MapAreaView extends MovableView {
   // コンストラクタ
-  constructor(controller) {
-    // コントローラー
-    this.controller = controller;
+  constructor(context) { super();
+    // コンテキスト
+    this.context = context;
 
-    // マップとコンテキスト
-    this.mapLayer = null;
+    // マップ
     this.mapAreas = new Array(2);
+
+    // 各レイヤー
+    this.mapLayer = null;
     this.peopleLayer = null;
     this.peopleField = null;
 
     // テクスチャー画像のキャンバス要素
-    this.textureCanvases = new Array(this.controller.textures.length);
+    this.textureCanvases = new Array(this.context.textures.length);
 
     // HTML要素の組成
     this.assemblingElements();
@@ -31,7 +33,7 @@ class MapAreaView {
     this.earthQuake = new GameEvent(this.mapLayer, "earthQuake");
 
     // スタンバイマップを非表示
-    this.mapAreas[this.controller.stanbyMapIndex].mapField.style.display = "none";
+    this.mapAreas[this.context.stanbyMapIndex].mapField.style.display = "none";
     this.drawnRows = 0;
 
     // イベントリスナー
@@ -42,32 +44,32 @@ class MapAreaView {
   // アクティブなマップシートを交代する
   swapMap() {
     this.drawnRows = 0;
-    this.mapAreas[this.controller.stanbyMapIndex].mapField.style.display = "block";
-    this.mapAreas[this.controller.activeMapIndex].mapField.style.display = "none";
-    this.mapAreas[this.controller.activeMapIndex].mapField.style.top = this.mapAreas[this.controller.stanbyMapIndex].mapField.style.top;
-    this.mapAreas[this.controller.activeMapIndex].mapField.style.left = this.mapAreas[this.controller.stanbyMapIndex].mapField.style.left;
-    const workIndex = this.controller.activeMapIndex;
-    this.controller.activeMapIndex = this.controller.stanbyMapIndex;
-    this.controller.stanbyMapIndex = workIndex;
+    this.mapAreas[this.context.stanbyMapIndex].mapField.style.display = "block";
+    this.mapAreas[this.context.activeMapIndex].mapField.style.display = "none";
+    this.mapAreas[this.context.activeMapIndex].mapField.style.top = this.mapAreas[this.context.stanbyMapIndex].mapField.style.top;
+    this.mapAreas[this.context.activeMapIndex].mapField.style.left = this.mapAreas[this.context.stanbyMapIndex].mapField.style.left;
+    const workIndex = this.context.activeMapIndex;
+    this.context.activeMapIndex = this.context.stanbyMapIndex;
+    this.context.stanbyMapIndex = workIndex;
   }
 
   // HTML要素を組成
   assemblingElements() {
     const world = document.getElementById("world");
-    const squareSize = this.controller.squareSize;
-    const mapSize = this.controller.mapSize;
+    const squareSize = this.context.squareSize;
+    const mapSize = this.context.mapSize;
 
     // マップ用のレイヤー
     const mapLayer = document.createElement("div");
     mapLayer.classList.add("layer");
-    mapLayer.style.zIndex = this.controller.zIndexBase + 0;
+    mapLayer.style.zIndex = this.context.zIndexBase + 0;
     mapLayer.style.top = (squareSize.y * -1) + "px";
     mapLayer.style.left = (squareSize.x * -1) + "px";
 
     // キャラクター用のレイヤー
     const peopleLayer = document.createElement("div");
     peopleLayer.classList.add("layer");
-    peopleLayer.style.zIndex = ++this.controller.zIndexBase;
+    peopleLayer.style.zIndex = ++this.context.zIndexBase;
 
     // マップエリアを生成する
     for (let i = 0; i < this.mapAreas.length; i++) {
@@ -105,21 +107,21 @@ class MapAreaView {
 
   // マップの行を描画する
   drawMapRows(mapIndex, numberOfLines, stanby) {
-    if (this.drawnRows > this.controller.numberOfMapRows) {
+    if (this.drawnRows > this.context.mapRows) {
       return;
     }
 
     const context = this.mapAreas[mapIndex].context;
-    const mainBackgroundTextureIndex = this.controller.mainBackgroundTextureIndex;
+    const mainTextureIndex = this.context.mainTextureIndex;
     
     if (this.drawnRows == 0) {
-      const pattern = context.createPattern(this.textureCanvases[mainBackgroundTextureIndex], "repeat");
+      const pattern = context.createPattern(this.textureCanvases[mainTextureIndex], "repeat");
       context.fillStyle = pattern;
       context.fillRect(0, 0, 972, 672);
     }
 
-    const x = this.controller.upperLeftPosition.x;
-    const y = this.controller.upperLeftPosition.y;
+    const x = this.context.upperLeftPosition.x;
+    const y = this.context.upperLeftPosition.y;
 
     let startRow = 0;
     let endRow = 0;
@@ -129,16 +131,16 @@ class MapAreaView {
       endRow = this.drawnRows + numberOfLines;
       this.drawnRows = endRow;
     } else {
-      endRow = this.controller.numberOfMapRows;
+      endRow = this.context.mapRows;
     }
 
     for (let i = startRow; i < endRow; i++) {
-      for (let j = 0; j < this.controller.numberOfMapColumns; j++) {
-        const textureIndex = this.controller.currentMap[y + i][x + j];
-        if (textureIndex == mainBackgroundTextureIndex) {
+      for (let j = 0; j < this.context.mapColumns; j++) {
+        const textureIndex = this.context.map[y + i][x + j];
+        if (textureIndex == mainTextureIndex) {
           continue;
         }
-        const mapChipSize = this.controller.squareSize;
+        const mapChipSize = this.context.squareSize;
 
         context.clearRect(j * mapChipSize.x, i * mapChipSize.y, mapChipSize.x, mapChipSize.y);
         context.drawImage(this.textureCanvases[textureIndex], j * mapChipSize.x, i * mapChipSize.y);
@@ -148,13 +150,13 @@ class MapAreaView {
 
   // 画像を読み込んでキャッシュする
   loadImages() {
-    const images = new Array(this.controller.textures.length);
-    const mapChipSize = this.controller.squareSize;
+    const images = new Array(this.context.textures.length);
+    const mapChipSize = this.context.squareSize;
     let loadedImageCount = 0;
 
-    for (let i = 0; i < this.controller.textures.length; i++) {
+    for (let i = 0; i < this.context.textures.length; i++) {
       images[i] = new Image();
-      images[i].src = "resources/images/" + this.controller.textures[i].texture + ".png";
+      images[i].src = "resources/images/" + this.context.textures[i].texture + ".png";
       
       // 画像ロードごとのイベントハンドラー
       images[i].addEventListener("load", (event) => {
@@ -172,100 +174,115 @@ class MapAreaView {
           this.textureCanvases[i] = textureCanvas;
         }
 
-        this.drawMapRows(this.controller.activeMapIndex, this.controller.numberOfMapRows, false);
+        this.drawMapRows(this.context.activeMapIndex, this.context.mapRows, false);
       }, false);
     }
   }
 
-  // マップが動く
+  // マップが動く => TODO：canvasに変更する
   move(destination) {
-    const startPositionTop = parseInt(this.mapAreas[this.controller.activeMapIndex].mapField.style.top);
-    const startPositionLeft = parseInt(this.mapAreas[this.controller.activeMapIndex].mapField.style.left);
+    // 起点位置
+    const startPositionTop = parseInt(this.mapAreas[this.context.activeMapIndex].mapField.style.top);
+    const startPositionLeft = parseInt(this.mapAreas[this.context.activeMapIndex].mapField.style.left);
+
+    // 終点位置
     const endPositionTop = startPositionTop + destination.top;
     const endPositionLeft = startPositionLeft + destination.left;
     
+    // 進行中の位置
     let presentPositionTop = startPositionTop;
     let presentPositionLeft = startPositionLeft;
 
-    // キャラクターフィールド
+    // キャラクターフィールド ==> 分割できる？
     let presentPositionTopForPeopleField = parseInt(this.peopleField.style.top);
     let presentPositionLeftForPeopleField = parseInt(this.peopleField.style.left);
 
     let baseTime = 0;
     let keyCode = 0;
 
+    // 動作のフレーム
     const moveFrame = (now) => {
+      // タイムスタンプの初期化
       if (!baseTime) {
         baseTime = now;
       }
 
       if (now - baseTime > 0) {
+        // 動作方向が上下方向の場合
         if (destination.top > 0) {
-          presentPositionTop += this.controller.distance;
-          presentPositionTopForPeopleField += this.controller.distance;
+          presentPositionTop += this.context.distance;
+          presentPositionTopForPeopleField += this.context.distance;
         } else if (destination.top < 0) {
-          presentPositionTop -= this.controller.distance;
-          presentPositionTopForPeopleField -= this.controller.distance;
+          presentPositionTop -= this.context.distance;
+          presentPositionTopForPeopleField -= this.context.distance;
         }
 
+        // 動作方向が左右方向の場合
         if (destination.left > 0) {
-          presentPositionLeft += this.controller.distance;
-          presentPositionLeftForPeopleField += this.controller.distance;
+          presentPositionLeft += this.context.distance;
+          presentPositionLeftForPeopleField += this.context.distance;
         } else if (destination.left < 0) {
-          presentPositionLeft -= this.controller.distance;
-          presentPositionLeftForPeopleField -= this.controller.distance;
+          presentPositionLeft -= this.context.distance;
+          presentPositionLeftForPeopleField -= this.context.distance;
         }
 
-        this.mapAreas[this.controller.activeMapIndex].mapField.style.top = presentPositionTop + "px";
-        this.mapAreas[this.controller.activeMapIndex].mapField.style.left = presentPositionLeft + "px";
+        // DOMの位置更新
+        this.mapAreas[this.context.activeMapIndex].mapField.style.top = presentPositionTop + "px";
+        this.mapAreas[this.context.activeMapIndex].mapField.style.left = presentPositionLeft + "px";
 
-        // キャラクターフィールド
+        // DOMの位置更新（キャラクターフィールド）
         this.peopleField.style.top = presentPositionTopForPeopleField + "px";
         this.peopleField.style.left = presentPositionLeftForPeopleField + "px";
 
-        this.drawMapRows(this.controller.stanbyMapIndex, 2, true);
+        // スタンバイマップのバックグラウンド描画（マップ行を2行ずつ描画）
+        this.drawMapRows(this.context.stanbyMapIndex, 2, true);
       }
 
+      // 終点まで動いていなければフレーム更新
       if (presentPositionTop != endPositionTop || presentPositionLeft != endPositionLeft) {
         window.requestAnimationFrame(moveFrame);
 
-      } else if (this.controller.nextKey) {
-        if (this.controller.textures[this.controller.currentMap[this.controller.centerPosition.y][this.controller.centerPosition.x]].next) {
+      // 終点まで動いていて、次のキーが登録されている
+      } else if (this.context.nextKey) {
+        if (this.context.textures[this.context.map[this.context.centerPosition.y][this.context.centerPosition.x]].next) {
           // ここで次のマップへ移行すること
           this.earthQuake.action();
         }
         this.swapMap();
-        if (this.controller.nextKey.state == "keyup") {
-          this.controller.continue = false;
+        if (this.context.nextKey.state == "keyup") {
+          this.context.continue = false;
         }
-        keyCode = this.controller.nextKey.keyCode;
-        this.controller.nextKey = null;
-        this.controller.isProgress = false;
+        keyCode = this.context.nextKey.keyCode;
+        this.context.nextKey = null;
+        this.context.isProgress = false;
         this.moveOn(keyCode);
 
-      } else if (this.controller.currentKey.state == "keydown") {
-        if (this.controller.textures[this.controller.currentMap[this.controller.centerPosition.y][this.controller.centerPosition.x]].next) {
+      // 終点まで動いていて、以前のキーが押しっぱなし
+      } else if (this.context.currentKey.state == "keydown") {
+        if (this.context.textures[this.context.map[this.context.centerPosition.y][this.context.centerPosition.x]].next) {
           // ここで次のマップへ移行すること
           this.earthQuake.action();
         }
         this.swapMap();
-        keyCode = this.controller.currentKey.keyCode;
-        this.controller.currentKey = null;
-        this.controller.isProgress = false;
+        keyCode = this.context.currentKey.keyCode;
+        this.context.currentKey = null;
+        this.context.isProgress = false;
         this.moveOn(keyCode);
 
+      // 次のキー操作がない
       } else {
-        if (this.controller.textures[this.controller.currentMap[this.controller.centerPosition.y][this.controller.centerPosition.x]].next) {
+        if (this.context.textures[this.context.map[this.context.centerPosition.y][this.context.centerPosition.x]].next) {
           // ここで次のマップへ移行すること
           this.earthQuake.action();
         }
         this.swapMap();
-        this.controller.currentKey = null;
-        this.controller.nextKey = null;
-        this.controller.isProgress = false;
+        this.context.currentKey = null;
+        this.context.nextKey = null;
+        this.context.isProgress = false;
       }
     };
 
+    // 動作開始
     window.requestAnimationFrame(moveFrame);
   }
 
@@ -274,84 +291,74 @@ class MapAreaView {
     let key = null;
     let destination = null;
     
-    switch (keyCode) {
-      case this.controller.leftKey.keyCode:
-        key = this.controller.leftKey;
-        destination = "left";
-        break;
-      case this.controller.rightKey.keyCode:
-        key = this.controller.rightKey;
-        destination = "right";
-        break;
-      case this.controller.topKey.keyCode:
-        key = this.controller.topKey;
-        destination = "top";
-        break;
-      case this.controller.bottomKey.keyCode:
-        key = this.controller.bottomKey;
-        destination = "bottom";
-        break;
-      default:
-        return;
+    // キーコードの振り分け（移動キー以外はカット）
+    key = this.context.getKey(keyCode);
+    if (!key) {
+      return;
     }
 
+    // 進行方向
+    destination = key.name;
+
     // 衝突検知
-    if (this.controller.canMove && !this.controller.collisionMap
-      [this.controller.centerPosition.y - this.controller.destinations[destination].top / this.controller.squareSize.y]
-      [this.controller.centerPosition.x - this.controller.destinations[destination].left / this.controller.squareSize.x]) {
+    if (this.context.canMove && !this.context.collisionMap
+      [this.context.centerPosition.y - this.context.getDestination(destination).top / this.context.squareSize.y]
+      [this.context.centerPosition.x - this.context.getDestination(destination).left / this.context.squareSize.x]) {
       return;
     }
     
     // 次のキーがすでに決まっている場合はカット
-    if (this.controller.nextKey && this.controller.currentKey) {
+    if (this.context.nextKey && this.context.currentKey) {
       return;
     }
 
     // 同じキーの連打はカット
-    if (this.controller.currentKey == key && this.controller.currentKey.state == "keydown") {
+    if (this.context.currentKey == key && this.context.currentKey.state == "keydown") {
       return;
     }
 
-    if (this.controller.canMove) {
-      this.controller.upperLeftPosition.y -= this.controller.destinations[destination].top / this.controller.squareSize.y;
-      this.controller.centerPosition.y = this.controller.upperLeftPosition.y + Math.floor(this.controller.numberOfMapRows / 2);
-      this.controller.upperLeftPosition.x -= this.controller.destinations[destination].left / this.controller.squareSize.x;
-      this.controller.centerPosition.x = this.controller.upperLeftPosition.x + Math.floor(this.controller.numberOfMapColumns / 2);
+    // 移動処理
+    if (this.context.canMove) {
+      this.context.upperLeftPosition.y -= this.context.getDestination(destination).top / this.context.squareSize.y;
+      this.context.centerPosition.y = this.context.upperLeftPosition.y + Math.floor(this.context.mapRows / 2);
+      this.context.upperLeftPosition.x -= this.context.getDestination(destination).left / this.context.squareSize.x;
+      this.context.centerPosition.x = this.context.upperLeftPosition.x + Math.floor(this.context.mapColumns / 2);
       
+      this.context.nextKey = null;
+      this.context.isProgress = true;
+      this.context.currentKey = key;
       
-      this.controller.nextKey = null;
-      this.controller.isProgress = true;
-      this.controller.currentKey = key;
-      
-      if (this.controller.continue) {
-        this.controller.currentKey.state = "keydown";
+      if (this.context.continue) {
+        this.context.currentKey.state = "keydown";
       } else {
-        this.controller.currentKey.state = "keyup";
-        this.controller.continue = true;
+        this.context.currentKey.state = "keyup";
+        this.context.continue = true;
       }
       
-      this.move(this.controller.destinations[destination]);
+      // 動作開始
+      this.move(this.context.getDestination(destination));
 
-    } else if (this.controller.isProgress) {
-      this.controller.nextKey = key;
-      this.controller.nextKey.state = "keydown";
+    // 動作中の場合は次のキーを格納（最新のキーのみ）
+    } else if (this.context.isProgress) {
+      this.context.nextKey = key;
+      this.context.nextKey.state = "keydown";
     }
   }
 
   // キーアップを検知する
   stop(keyCode) {
     switch (keyCode) {
-      case this.controller.leftKey.keyCode:
-        this.controller.leftKey.state = "keyup";
+      case this.context.leftKey.keyCode:
+        this.context.leftKey.state = "keyup";
         break;
-      case this.controller.rightKey.keyCode:
-        this.controller.rightKey.state = "keyup";
+      case this.context.rightKey.keyCode:
+        this.context.rightKey.state = "keyup";
         break;
-      case this.controller.topKey.keyCode:
-        this.controller.topKey.state = "keyup";
+      case this.context.topKey.keyCode:
+        this.context.topKey.state = "keyup";
         break;
-      case this.controller.bottomKey.keyCode:
-        this.controller.bottomKey.state = "keyup";
+      case this.context.bottomKey.keyCode:
+        this.context.bottomKey.state = "keyup";
         break;
     }
   }

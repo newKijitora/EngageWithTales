@@ -1,10 +1,13 @@
 // コマンドボックスのビュー
-class CommandBoxView {
+class CommandBoxView extends CommandBoxViewBase {
 
-  constructor(controller) {
+  // コンストラクタ
+  constructor(controller) { super();
+
     // コントローラー 
     this.controller = controller;
 
+    // コマンドフレームのサイズ
     this.commandBoxRows = 4;
     this.commandBoxColumns = 6;
 
@@ -22,10 +25,9 @@ class CommandBoxView {
     this.assemblingElements();    
 
     // 画像の読み込みと描画
-    this.loadImageChars();
     this.loadImages();
 
-    // イベントリスナ
+    // イベントリスナの設定
     window.addEventListener("keydown", (event) => this.open(event.keyCode), false);
     window.addEventListener("keydown", (event) => this.close(event.keyCode), false);
     window.addEventListener("keydown", (event) => this.selectionChange(event.keyCode), false);
@@ -62,11 +64,10 @@ class CommandBoxView {
         this.commandMenus[i][j].hideCommandPointer();
 
         this.commandMenus[0][0].controller.isSelected = true;
-        this.commandMenus[0][0].showCommandPointer();
+        this.commandMenus[0][0].showCommandPointer(this.charCanvases);
+
         this.controller.currentCommandMenu = this.commandMenus[0][0].controller;
         this.controller.textAreaController.firstThrough = true;
-
-        return;
       }
     }
   }
@@ -107,23 +108,29 @@ class CommandBoxView {
           continue;
         }
 
+        // 現在のコマンドメニューと位置情報
         const currentCommand = this.commandMenus[i][j];
         const currentPosition = currentCommand.controller.position;
 
+        // キー入力に応じた次の状態
         const nextPosition = new Position(currentPosition.x + destination.left, currentPosition.y + destination.top);
         const nextPositionIsOutOfRange = !((0 <= nextPosition.x && nextPosition.x <= 1) && (0 <= nextPosition.y && nextPosition.y <= 2));
 
+        // outOfRangeならカット
         if (nextPositionIsOutOfRange) {
           return;
         }
 
+        // 次のコマンドに状態遷移
         const nextCommand = this.commandMenus[nextPosition.y][nextPosition.x];
         
+        // 以前のコマンドのポインターを非表示
         currentCommand.controller.isSelected = false;
         currentCommand.hideCommandPointer();
         
+        // 現在のコマンドのポインターを表示
         nextCommand.controller.isSelected = true;
-        nextCommand.showCommandPointer();
+        nextCommand.showCommandPointer(this.charCanvases);
         
         this.controller.currentCommandMenu = nextCommand.controller;
 
@@ -144,11 +151,22 @@ class CommandBoxView {
 
   // HTML要素の生成
   assemblingElements() {
+
+    // コマンドのコンテナ
+    const commandBox = document.createElement("div");
+    commandBox.style.position = "absolute";
+    commandBox.style.zIndex = this.controller.zIndexBase;
+    commandBox.style.left = 6 * this.controller.squareSize.x + "px";
+    commandBox.style.top = 3 * this.controller.squareSize.y + "px";
+    commandBox.style.display = "none";
+
+    // コマンドのフレーム（バックグラウンド）
     const commandFrame = document.createElement("canvas");
     commandFrame.style.display = "block"
     commandFrame.width = this.controller.squareSize.x * 6;
     commandFrame.height = this.controller.squareSize.y * 4;
 
+    // コマンドメニューのセットを格納するコンテナ
     const selectField = document.createElement("div");
     selectField.style.position = "absolute";
     selectField.style.top = 0;
@@ -158,6 +176,7 @@ class CommandBoxView {
     selectField.style.flexWrap = "wrap";
     selectField.style.width = "160px";
 
+    // コマンドメニューを生成
     const commandMenus = new Array(3);
 
     for (let i = 0; i < commandMenus.length; i++) {
@@ -167,21 +186,6 @@ class CommandBoxView {
         selectField.appendChild(commandMenus[i][j].commandMenu);
       }
     }
-    
-    // const commandTitle = document.createElement("div");
-    // commandTitle.classList.add("command-title");
-    // commandTitle.innerText = "コマンド";
-
-    // commandBox.appendChild(commandTitle);
-    // commandBox.appendChild(selectField);
-
-    const commandBox = document.createElement("div");
-    commandBox.style.position = "absolute";
-    commandBox.style.zIndex = this.controller.zIndexBase;
-    commandBox.style.backgroundColor = "#020202";
-    commandBox.style.left = 6 * this.controller.squareSize.x + "px";
-    commandBox.style.top = 3 * this.controller.squareSize.y + "px";
-    commandBox.style.display = "none";
 
     commandBox.appendChild(commandFrame);
     commandBox.appendChild(selectField);
@@ -225,7 +229,9 @@ class CommandBoxView {
           this.commandTextureCanvases[i] = textureCanvas;
         }
 
-        this.drawCommandFrame();
+        // フレームの描画
+        super.drawFrame(this.commandFrame, this.controller.squareSize, this.commandTextureCanvases, this.commandBoxRows, this.commandBoxColumns);
+        this.loadImageChars();
 
       }, false);
     }
@@ -288,27 +294,15 @@ class CommandBoxView {
         // コマンドメニューに文字を描画する
         for (let i = 0; i < this.controller.menus.length; i++) {
           for (let j = 0; j < this.controller.menus[i].length; j++) {
-            this.commandMenus[i][j].draw(this.charCanvases);
+            this.commandMenus[i][j].initialize(this.charCanvases);
+
+            // メンバーセレクターの描画
+            if (this.commandMenus[i][j].controller.isMemberSelectCommand) {
+              this.commandMenus[i][j].memberSelecter.drawFrame(this.commandTextureCanvases);
+            }
           }
         }
       }, false);
-    }
-  }
-
-  // コマンドのフレームを描画する
-  drawCommandFrame() {
-    const context = this.commandFrame.getContext("2d");
-    const mapChipSize = this.controller.squareSize;
-
-    for (let i = 0; i < this.commandBoxRows; i++) {
-      for (let j = 0; j < this.commandBoxColumns; j++) {
-        const textureIndex = this.controller.commandMap[i][j];
-        if (textureIndex == -1) {
-          continue;
-        }
-
-        context.drawImage(this.commandTextureCanvases[textureIndex], j * mapChipSize.x, i * mapChipSize.y);
-      }
     }
   }
 }

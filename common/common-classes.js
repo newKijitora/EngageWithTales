@@ -1,7 +1,8 @@
 // キークラス
 class Key {
-  constructor(keyCode, state) {
+  constructor(keyCode, name, state) {
     this.keyCode = keyCode;
+    this.name = name;
     this.state = "keyup";
   }
 }
@@ -50,19 +51,6 @@ class Text {
   }
 }
 
-// コントローラーの基底クラス
-class Controller {
-  constructor() {
-    
-  }
-
-  entry(controller) {
-    const viewName = controller.constructor.name.replace("Controller", "View");
-    const view = Function("return " + viewName + ";")();
-    new view(controller);
-  }
-}
-
 // キャラクタークラス
 class Character {
   // コンストラクタ
@@ -76,4 +64,3 @@ class Character {
     this.mp = mp;
   }
 }
-

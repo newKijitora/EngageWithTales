@@ -1,84 +1,101 @@
 // ピープルクラス
-class PeopleView {
+class PeopleView extends MovableView {
   // コンストラクタ   
-  constructor(controller) {
-    this.controller = controller;
+  constructor(context) { super();
+    // コンテキスト
+    this.context = context;
 
     // ビュー上のオブジェクト
-    this.people = null;
+    this.peopleDom = null;
     this.peopleImage = null;
 
     // HTML要素の組成
-    this.assemblingElements();   
+    this.assemblingElements();
 
     // イベントリスナー
-    if (!this.controller.isAuto) {
+    if (!this.context.isAuto) {
       window.addEventListener("keydown", (event) => this.moveOn(event.keyCode), false);
       window.addEventListener("keyup", (event) => this.stop(event.keyCode), false);
     } else {
+      // 自動で動く
       this.autoMove();
     }
   }
 
-  // 人物が動く
+  // 人物が動く => TODO：canvasに変更する
   move(destination) {
-    const startPositionTop = parseInt(this.people.style.top);
-    const startPositionLeft = parseInt(this.people.style.left);
+    // 起点位置
+    const startPositionTop = parseInt(this.peopleDom.style.top);
+    const startPositionLeft = parseInt(this.peopleDom.style.left);
+    
+    // 終点位置
     const endPositionTop = startPositionTop + destination.top;
     const endPositionLeft = startPositionLeft + destination.left;
     
+    // 進行中の位置
     let presentPositionTop = startPositionTop;
     let presentPositionLeft = startPositionLeft;
+
     let baseTime = 0;
     let keyCode = 0;
 
+    // 動作のフレーム
     const moveFrame = (now) => {
+      // タイムスタンプの初期化
       if (!baseTime) {
         baseTime = now;
       }
 
       if (now - baseTime > 0) {
+        // 動作方向が上下方向の場合
         if (destination.top > 0) {
-          presentPositionTop += this.controller.distance;
+          presentPositionTop += this.context.distance;
         } else if (destination.top < 0) {
-          presentPositionTop -= this.controller.distance;
+          presentPositionTop -= this.context.distance;
         }
 
+        // 動作方向が左右方向の場合
         if (destination.left > 0) {
-          presentPositionLeft += this.controller.distance;
+          presentPositionLeft += this.context.distance;
         } else if (destination.left < 0) {
-          presentPositionLeft -= this.controller.distance;
+          presentPositionLeft -= this.context.distance;
         }
 
-        this.people.style.top = presentPositionTop + "px";
-        this.people.style.left = presentPositionLeft + "px";
+        // DOMの位置更新
+        this.peopleDom.style.top = presentPositionTop + "px";
+        this.peopleDom.style.left = presentPositionLeft + "px";
       }
 
+      // 終点まで動いていなければフレーム更新
       if (presentPositionTop != endPositionTop || presentPositionLeft != endPositionLeft) {
         window.requestAnimationFrame(moveFrame);
 
-      } else if (this.controller.nextKey) {
-        if (this.controller.nextKey.state == "keyup") {
-          this.controller.continue = false;
+      // 終点まで動いていて、次のキーが登録されている
+      } else if (this.context.nextKey) {
+        if (this.context.nextKey.state == "keyup") {
+          this.context.continue = false;
         }
-        keyCode = this.controller.nextKey.keyCode;
-        this.controller.nextKey = null;
-        this.controller.isProgress = false;
+        keyCode = this.context.nextKey.keyCode;
+        this.context.nextKey = null;
+        this.context.isProgress = false;
         this.moveOn(keyCode);
 
-      } else if (this.controller.currentKey.state == "keydown") {
-        keyCode = this.controller.currentKey.keyCode;
-        this.controller.currentKey = null;
-        this.controller.isProgress = false;
+      // 終点まで動いていて、以前のキーが押しっぱなし
+      } else if (this.context.currentKey.state == "keydown") {
+        keyCode = this.context.currentKey.keyCode;
+        this.context.currentKey = null;
+        this.context.isProgress = false;
         this.moveOn(keyCode);
 
+      // 次のキー操作がない
       } else {
-        this.controller.currentKey = null;
-        this.controller.nextKey = null;
-        this.controller.isProgress = false;
+        this.context.currentKey = null;
+        this.context.nextKey = null;
+        this.context.isProgress = false;
       }
     };
 
+    // 動作開始
     window.requestAnimationFrame(moveFrame);
   }
 
@@ -87,85 +104,79 @@ class PeopleView {
     let key = null;
     let destination = null;
     
-    switch (keyCode) {
-      case this.controller.leftKey.keyCode:
-        key = this.controller.leftKey;
-        destination = "left";
-        break;
-      case this.controller.rightKey.keyCode:
-        key = this.controller.rightKey;
-        destination = "right";
-        break;
-      case this.controller.topKey.keyCode:
-        key = this.controller.topKey;
-        destination = "top";
-        break;
-      case this.controller.bottomKey.keyCode:
-        key = this.controller.bottomKey;
-        destination = "bottom";
-        break;
-      default:
-        return;
+    // キーコードの振り分け（移動キー以外はカット）
+    key = this.context.getKey(keyCode);
+    if (!key) {
+      return;
     }
 
+    // 進行方向
+    destination = key.name;
+
     // 衝突検知
-    if (this.controller.canMove && !this.controller.collisionMap
-      [this.controller.currentPosition.y + this.controller.destinations[destination].top / this.controller.squareSize.y]
-      [this.controller.currentPosition.x + this.controller.destinations[destination].left / this.controller.squareSize.x]) {
-      this.controller.peopleName = this.controller.peopleName.replace(this.controller.peopleName.substring(this.controller.peopleName.indexOf("_") + 1), destination)
-      this.peopleImage.src = "resources/images/" + this.controller.peopleName + ".png";
+    if (this.context.canMove && !this.context.collisionMap
+      [this.context.currentPosition.y + this.context.getDestination(destination).top / this.context.squareSize.y]
+      [this.context.currentPosition.x + this.context.getDestination(destination).left / this.context.squareSize.x]) {
+      this.context.peopleName = this.context.peopleName.replace(this.context.peopleName.substring(this.context.peopleName.indexOf("_") + 1), destination)
+      this.peopleImage.src = "resources/images/" + this.context.peopleName + ".png";
       return;
     }
     
     // 次のキーがすでに決まっている場合はカット
-    if (this.controller.nextKey && this.controller.currentKey) {
+    if (this.context.nextKey && this.context.currentKey) {
       return;
     }
 
     // 同じキーの連打はカット
-    if (this.controller.currentKey == key && this.controller.currentKey.state == "keydown") {
+    if (this.context.currentKey == key && this.context.currentKey.state == "keydown") {
       return;
     }
 
-    if (this.controller.canMove) {
-      this.controller.collisionMap[this.controller.currentPosition.y][this.controller.currentPosition.x] = true;
-      this.controller.currentPosition.y += this.controller.destinations[destination].top / this.controller.squareSize.y;
-      this.controller.currentPosition.x += this.controller.destinations[destination].left / this.controller.squareSize.x;
-      this.controller.collisionMap[this.controller.currentPosition.y][this.controller.currentPosition.x] = false;
-      this.controller.nextKey = null;
-      this.controller.isProgress = true;
-      this.controller.currentKey = key;
+    // 移動処理
+    if (this.context.canMove) {
+      this.context.collisionMap[this.context.currentPosition.y][this.context.currentPosition.x] = true;
+      this.context.currentPosition.y += this.context.getDestination(destination).top / this.context.squareSize.y;
+      this.context.currentPosition.x += this.context.getDestination(destination).left / this.context.squareSize.x;
+      this.context.collisionMap[this.context.currentPosition.y][this.context.currentPosition.x] = false;
       
-      if (this.controller.continue) {
-        this.controller.currentKey.state = "keydown";
+      this.context.nextKey = null;
+      this.context.isProgress = true;
+      this.context.currentKey = key;
+      
+      if (this.context.continue) {
+        this.context.currentKey.state = "keydown";
       } else {
-        this.controller.currentKey.state = "keyup";
-        this.controller.continue = true;
+        this.context.currentKey.state = "keyup";
+        this.context.continue = true;
       }
       
-      this.controller.peopleName = this.controller.peopleName.replace(this.controller.peopleName.substring(this.controller.peopleName.indexOf("_") + 1), destination)
-      this.peopleImage.src = "resources/images/" + this.controller.peopleName + ".png";
-      this.move(this.controller.destinations[destination]);
-    } else if (this.controller.isProgress) {
-      this.controller.nextKey = key;
-      this.controller.nextKey.state = "keydown";
+      this.context.peopleName = this.context.peopleName.replace(this.context.peopleName.substring(this.context.peopleName.indexOf("_") + 1), destination)
+      this.peopleImage.src = "resources/images/" + this.context.peopleName + ".png";
+
+      // 動作開始
+      this.move(this.context.getDestination(destination));
+    
+    // 動作中の場合は次のキーを格納（最新のキーのみ）
+    } else if (this.context.isProgress) {
+      this.context.nextKey = key;
+      this.context.nextKey.state = "keydown";
     }
   }
 
   // キーアップを検知する
   stop(keyCode) {
     switch (keyCode) {
-      case this.controller.leftKey.keyCode:
-        this.controller.leftKey.state = "keyup";
+      case this.context.leftKey.keyCode:
+        this.context.leftKey.state = "keyup";
         break;
-      case this.controller.rightKey.keyCode:
-        this.controller.rightKey.state = "keyup";
+      case this.context.rightKey.keyCode:
+        this.context.rightKey.state = "keyup";
         break;
-      case this.controller.topKey.keyCode:
-        this.controller.topKey.state = "keyup";
+      case this.context.topKey.keyCode:
+        this.context.topKey.state = "keyup";
         break;
-      case this.controller.bottomKey.keyCode:
-        this.controller.bottomKey.state = "keyup";
+      case this.context.bottomKey.keyCode:
+        this.context.bottomKey.state = "keyup";
         break;
     }
   }
@@ -175,21 +186,21 @@ class PeopleView {
     const peopleField = document.getElementById("people-Field");
     const people = document.createElement("div");
     people.style.position = "absolute";
-    people.style.top = ((this.controller.basePosition.y - this.controller.mapUpperLeftPosition.y) * this.controller.squareSize.y - 8) + "px";
-    people.style.left = (this.controller.basePosition.x - this.controller.mapUpperLeftPosition.x) * this.controller.squareSize.x + "px";
+    people.style.top = ((this.context.basePosition.y - this.context.mapUpperLeftPosition.y) * this.context.squareSize.y - 8) + "px";
+    people.style.left = (this.context.basePosition.x - this.context.mapUpperLeftPosition.x) * this.context.squareSize.x + "px";
 
     const image = document.createElement("img");
-    image.src = "resources/images/" + this.controller.peopleName + ".png";
-    image.style.width = this.controller.squareSize.x + "px";
-    image.style.height = this.controller.squareSize.y + "px";
+    image.src = "resources/images/" + this.context.peopleName + ".png";
+    image.style.width = this.context.squareSize.x + "px";
+    image.style.height = this.context.squareSize.y + "px";
 
     people.appendChild(image);
     peopleField.appendChild(people);
 
-    this.people = people;
+    this.peopleDom = people;
     this.peopleImage = image;
 
-    this.controller.collisionMap[this.controller.currentPosition.y][this.controller.currentPosition.x] = false;
+    this.context.collisionMap[this.context.currentPosition.y][this.context.currentPosition.x] = false;
   }
 
   autoMove() {
@@ -200,9 +211,9 @@ class PeopleView {
         baseTime = now;
       }
 
-      if (now - baseTime > this.controller.moveTimeSpan) {
-        this.controller.continue = false;
-        this.moveOn(this.controller.randomKey.keyCode);
+      if (now - baseTime > this.context.moveTimeSpan) {
+        this.context.continue = false;
+        this.moveOn(this.context.randomKey.keyCode);
         baseTime = now;
       }
 

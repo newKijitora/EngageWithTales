@@ -189,22 +189,6 @@ class Resources {
     ]
   ];
 
-  commands = [
-    [
-      [0, 5, 5, 5, 5, 3],
-      [4, -1, -1, -1, -1, 6],
-      [4, -1, -1, -1, -1, 6],
-      [1, 7, 7, 7, 7, 2],
-    ],
-    [
-      [0, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 3],
-      [4, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 6],
-      [4, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 6],
-      [4, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 6],
-      [1, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 2],
-    ]
-  ];
-
   // テクスチャー
   textures = [
     new Texture("floor", true, false),
@@ -439,7 +423,7 @@ class Resources {
     new Text("h-a", "blank", "H"),
     new Text("m-a", "blank", "M"),
     new Text("p-a", "blank", "P"),
-    new Text("arrow", "blank", "矢"),
+    new Text("arrow", "blank", "commandPointer"),
     new Text("aster", "blank", "＊"),
     new Text("ex", "blank", "！"),
     new Text("ques", "blank", "？"),

@@ -1,0 +1,6 @@
+class MovableView {
+  // コンストラクタ
+  constructor() {
+    
+  }
+}

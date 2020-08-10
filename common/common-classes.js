@@ -34,8 +34,14 @@ class Size {
 
 // テクスチャークラス
 class Texture {
-  constructor(texture, collision, next, nextIndex) {
-    this.texture = texture;
+  constructor(imageName) {
+    this.texture = imageName;
+  }
+}
+
+// マップテクスチャー
+class MapTexture extends Texture {
+  constructor(imageName, collision, next, nextIndex) { super(imageName);
     this.collision = collision;
     this.next = next;
     this.nextIndex = nextIndex;

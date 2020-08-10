@@ -27,9 +27,7 @@ class MapAreaView extends MovableView {
     // HTML要素の組成
     this.assemblingElements();
     
-    // 画像のロード：初回のマップ描画を含む
-    this.loadImages();
-
+    // ゲームイベントの設定
     this.earthQuake = new GameEvent(this.mapLayer, "earthQuake");
 
     // スタンバイマップを非表示
@@ -39,6 +37,25 @@ class MapAreaView extends MovableView {
     // イベントリスナー
     window.addEventListener("keydown", (event) => this.moveOn(event.keyCode), false);
     window.addEventListener("keyup", (event) => this.stop(event.keyCode), false);
+
+    // 画像のロード：初回のマップ描画を含む
+    const imageLoader = new ImageLoader();
+
+    imageLoader.loadImages(this.context.textures, (images) => {
+      for (let i = 0; i < this.textureCanvases.length; i++) {
+        const textureCanvas = document.createElement("canvas");
+        textureCanvas.width = this.context.squareSize.x;
+        textureCanvas.height = this.context.squareSize.y;         
+
+        const textureContext = textureCanvas.getContext("2d");
+        imageLoader.setSmoothingEnabled(textureContext, false);
+
+        textureContext.drawImage(images[i], 0, 0, images[i].width, images[i].height, 0, 0, this.context.squareSize.x, this.context.squareSize.y);
+        this.textureCanvases[i] = textureCanvas;
+      }
+
+      this.drawMapRows(this.context.activeMapIndex, this.context.mapRows, false);
+    });
   }
 
   // アクティブなマップシートを交代する
@@ -148,37 +165,6 @@ class MapAreaView extends MovableView {
     }
   }
 
-  // 画像を読み込んでキャッシュする
-  loadImages() {
-    const images = new Array(this.context.textures.length);
-    const mapChipSize = this.context.squareSize;
-    let loadedImageCount = 0;
-
-    for (let i = 0; i < this.context.textures.length; i++) {
-      images[i] = new Image();
-      images[i].src = "resources/images/" + this.context.textures[i].texture + ".png";
-      
-      // 画像ロードごとのイベントハンドラー
-      images[i].addEventListener("load", (event) => {
-        if (++loadedImageCount < this.textureCanvases.length) {
-          return;
-        }
-          
-        for (let i = 0; i < this.textureCanvases.length; i++) {
-          const textureCanvas = document.createElement("canvas");
-          textureCanvas.width = mapChipSize.x;
-          textureCanvas.height = mapChipSize.y;         
-
-          const textureContext = textureCanvas.getContext("2d");
-          textureContext.drawImage(images[i], 0, 0, images[i].width, images[i].height, 0, 0, mapChipSize.x, mapChipSize.y);
-          this.textureCanvases[i] = textureCanvas;
-        }
-
-        this.drawMapRows(this.context.activeMapIndex, this.context.mapRows, false);
-      }, false);
-    }
-  }
-
   // マップが動く => TODO：canvasに変更する
   move(destination) {
     // 起点位置
@@ -235,6 +221,7 @@ class MapAreaView extends MovableView {
         this.peopleField.style.left = presentPositionLeftForPeopleField + "px";
 
         // スタンバイマップのバックグラウンド描画（マップ行を2行ずつ描画）
+        // 描画する行は、32ピクセルに対するsquareSizeの係数を、settingsのdistanceに掛ける
         this.drawMapRows(this.context.stanbyMapIndex, 2, true);
       }
 

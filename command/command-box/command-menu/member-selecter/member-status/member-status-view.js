@@ -43,7 +43,7 @@ class MemberStatusView {
     memberStatus.setAttribute("id", "member-status");
     memberStatus.style.width = "330px";
 
-    const character = this.controller.characters[0];
+    const character = this.controller.memberCharacters[0];
     const delimiter = "：";
     
     const memberName = this.createStatus("なまえ", character.name, delimiter);

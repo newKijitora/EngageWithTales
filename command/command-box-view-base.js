@@ -1,12 +1,18 @@
 // コマンド関連の基底クラス
 class CommandBoxViewBase {
 
+  // コンストラクタ
+  constructor(context) {
+    // コンテキスト
+    this.context = context;
+  }
+
   // フレームを描画する
   drawFrame(canvas, mapChipSize, textures, rows, columns) {
     const context = canvas.getContext("2d");
 
     // 背景色の描画
-    context.fillStyle = "#020202";
+    context.fillStyle = this.context.backgroundColor;
     context.fillRect(0, 0, canvas.width, canvas.height);
 
     // フレームの描画

@@ -1,19 +1,19 @@
 // メンバーステータスのコントローラークラス
 class MemberStatusContext {
   // コンストラクタ
-  constructor(context) {
-    this.context = context;
+  constructor(memberSelecter) {
+    this.memberSelecter = memberSelecter;
 
     this.openKey = new Key(74, "keyup");
     this.closeKey = new Key(75, "keyup");
 
-    this.characters = this.context.characters;
+    this.memberCharacters = this.memberSelecter.memberCharacters;
     this.state = "closed";
   }
 
   // オープンできるかどうか
   get canOpen() {
-    if (this.state == "opened"|| this.context.state != "opened") {
+    if (this.state == "opened"|| this.memberSelecter.state != "opened") {
       return false;
     }
     return true;

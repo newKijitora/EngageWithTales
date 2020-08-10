@@ -1,9 +1,9 @@
 // テキストエリアのビュークラス
 class TextAreaView extends CommandBoxViewBase {
   // コンストラクタ
-  constructor(controller) { super();
+  constructor(context) { super(context);
     // コントローラ
-    this.controller = controller;
+    this.controller = context;
 
     // HTML要素
     this.textArea = null;
@@ -236,7 +236,6 @@ class TextAreaView extends CommandBoxViewBase {
 
   // 文字画像を読み込んでキャッシュする
   loadImageChars() {
-
     // 文字画像をすべて取得する
     const images = new Array(this.controller.textTextures.length);
     let loadedImageCount = 0;
@@ -272,20 +271,20 @@ class TextAreaView extends CommandBoxViewBase {
         }
 
         // ソロ文字を組み合わせて一文字分のキャンバスを生成する
-        for (let i = 0; i < this.controller.mojis.length; i++) {
+        for (let i = 0; i < this.controller.textElements.length; i++) {
 
           const textureCanvas = document.createElement("canvas");
           textureCanvas.width = this.controller.squareSize.x / 2;
           textureCanvas.height = this.controller.squareSize.y;    
           
-          const mainChar = soloCharCanvases[this.controller.mojis[i].texture1];
-          const subChar = soloCharCanvases[this.controller.mojis[i].texture2];
+          const mainChar = soloCharCanvases[this.controller.textElements[i].texture1];
+          const subChar = soloCharCanvases[this.controller.textElements[i].texture2];
           
           const context = textureCanvas.getContext("2d");
           context.drawImage(subChar, 0, 0);
           context.drawImage(mainChar, 0, this.controller.squareSize.y / 2);
 
-          this.charCanvases[this.controller.mojis[i].read] = textureCanvas;
+          this.charCanvases[this.controller.textElements[i].read] = textureCanvas;
         }
       }, false);
     }

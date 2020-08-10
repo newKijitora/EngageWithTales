@@ -8,10 +8,15 @@ class TextAreaContext extends Context {
     // 一コマのサイズ
     this.squareSize = commandBox.squareSize;
 
-    // テクスチャ
+    // テキストエリアの背景色
+    this.backgroundColor = commandBox.backgroundColor;
+
+    // コマンドフレームのテクスチャ
     this.commandTextures = commandBox.commandTextures;
-    this.textTextures = this.commandBox.town.resource.characters;
-    this.mojis = this.commandBox.town.resource.textElements;
+
+    // テキスト用のテクスチャーと文字エレメント
+    this.textTextures = this.commandBox.textTextures;
+    this.textElements = this.commandBox.textElements;
 
     // ビューの状態
     this.viewState = "closed";

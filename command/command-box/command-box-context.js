@@ -1,35 +1,58 @@
-// コマンドボックスのコントローラー
-// コマンド関連オブジェクトのルート
+// コマンドボックスのコンテキスト（コマンド関連オブジェクトのルート）
 class CommandBoxContext extends Context {
 
+  // コンストラクタ
   constructor(town, zIndexBase) { super();
-    // コンテキスト
+    // 町オブジェクト
     this.town = town;
 
-    // 一コマのサイズ
-    this.squareSize = town.settings.squareSize;
+    // 一コマのサイズと文字のサイズ
+    this.squareSize = this.town.settings.squareSize;
+    this.textSize = this.town.settings.textSize;
 
-    this.menus = [
-      ["はなす", "じゅもん"],
-      ["つよさ", "どうぐ"],
-      ["そうび", "しらべる"]
+    // コマンドボックスの背景色
+    this.backgroundColor = this.town.settings.commandBoxBackgroundColor;
+
+    // コマンドボックスの左上位置
+    this.commandBoxPosition = new Position(6, 2);
+
+    // コマンドのメニュー
+    this.commandMenus = [
+      [
+        ["はなす", true, false],
+        ["まほう", false, true],
+      ],
+      [
+        ["つよさ", false, true],
+        ["どうぐ", false, true],
+      ],
+      [
+        ["そうび", false, true],
+        ["しらべる", false, false],
+      ],
+      [
+        ["とびら", false, false],
+        ["ちず", false, false],
+      ]
     ];
 
-    // 文字のテクスチャー
-    this.textures = this.town.textTextures;
+    // コマンドフレームのサイズ
+    this.commandBoxRows = this.commandMenus.length + 1;
+    this.commandBoxColumns = 6; // 変数を検討
+
+    // コマンドフレームのテクスチャー
     this.commandTextures = this.town.resource.commandTextures;
 
+    // テキスト用のテクスチャーと文字エレメント
+    this.textTextures = this.town.resource.textTextures;
+    this.textElements = this.town.resource.textElements;
+
     // テキストのスピード
-    this.textSpeed = town.settings.textSpeed;
-
-    this.textTextures = this.town.resource.characters;
-
-    this.mojis = this.town.resource.textElements;
+    this.textSpeed = this.town.settings.textSpeed;
 
     // ビューの状態
     this.viewState = "closed";
     this.zIndexBase = zIndexBase;
-    this.position = new Position(5, 2);
 
     // キー
     this.leftKey = new Key(this.town.settings.keyCodes["left"], "left", "keyup");
@@ -39,8 +62,8 @@ class CommandBoxContext extends Context {
     this.openKey = new Key(this.town.settings.keyCodes["open"], "open", "keyup");
     this.closeKey = new Key(this.town.settings.keyCodes["close"], "close", "keyup");
     
-    // キャラクター
-    this.characters = this.town.characters;
+    // 冒険のパーティ
+    this.memberCharacters = this.town.memberCharacters;
 
     // 方向ごとの進み具合
     this.destinations = {
@@ -51,18 +74,20 @@ class CommandBoxContext extends Context {
     };
 
     // テキストエリアのコンテキスト
-    this.textAreaController = new TextAreaContext(this, this.zIndexBase);
+    this.textAreaContext = new TextAreaContext(this, this.zIndexBase);
 
+    // 選択中のコマンドメニュー
     this.currentCommandMenu = null;
 
-    // コマンドメニューのコントローラー
-    this.commandMenuControllers = new Array(3);
+    // コマンドメニューのコントローラーを生成する
+    this.commandMenuControllers = new Array(this.commandMenus.length);
+
     for (let i = 0; i < this.commandMenuControllers.length; i++) {
-      this.commandMenuControllers[i] = new Array(2);
+      this.commandMenuControllers[i] = new Array(this.commandMenus[i].length);
       for (let j = 0; j < this.commandMenuControllers[i].length; j++) {
-        const commandMenuName = this.commandTexts[i][j][0];
-        const isSelected = this.commandTexts[i][j][1];
-        const isMemberSelectCommand = this.commandTexts[i][j][2];
+        const commandMenuName = this.commandMenus[i][j][0];
+        const isSelected = this.commandMenus[i][j][1];
+        const isMemberSelectCommand = this.commandMenus[i][j][2];
         const position = new Position(j, i);
 
         this.commandMenuControllers[i][j] = new CommandMenuContext(this, commandMenuName, isSelected, isMemberSelectCommand, position);
@@ -82,6 +107,7 @@ class CommandBoxContext extends Context {
     if (this.viewState == "opened") {
       return false;
     }
+
     // コンテキストのチェック
     return this.checkContextForOpen();
   }
@@ -91,6 +117,7 @@ class CommandBoxContext extends Context {
     if (this.viewState == "closed") {
       return false;
     }
+
     // コンテキストのチェック
     return this.checkContextForClose();
   }
@@ -102,13 +129,13 @@ class CommandBoxContext extends Context {
     }
     
     // テキストエリアのビュー状態がopenedであればカット
-    if (this.textAreaController.viewState == "opened") {
+    if (this.textAreaContext.viewState == "opened") {
       return false;
     }
 
-    const memberSelecterController = this.currentCommandMenu.memberSelecterController;
-    
-    if (memberSelecterController && memberSelecterController.state == "opened") {
+    // メンバーセレクターメニューが選択されていて、そのステータスがopendeであればカット
+    const memberSelecterContext = this.currentCommandMenu.memberSelecterContext;
+    if (memberSelecterContext && memberSelecterContext.viewState == "opened") {
       return false;
     }
 
@@ -123,27 +150,14 @@ class CommandBoxContext extends Context {
   // クローズできるかどうか：コンテキストのチェック
   checkContextForClose() {
     // テキストボックスが進行中であれば不可
-    if (this.textAreaController && this.textAreaController.isProgress) {
+    if (this.textAreaContext && this.textAreaContext.isProgress) {
       return false;
     }
-    if (this.currentCommandMenu.isMemberSelectCommand && this.currentCommandMenu.memberSelecterController.state == "opened") {
+
+    if (this.currentCommandMenu.isMemberSelectCommand && this.currentCommandMenu.memberSelecterContext.viewState == "opened") {
       return false;
     }
+
     return true;
   }
-
-  commandTexts = [
-    [
-      ["はなす", true, false],
-      ["じゅもん", false, true],
-    ],
-    [
-      ["つよさ", false, true],
-      ["どうぐ", false, true],
-    ],
-    [
-      ["そうび", false, true],
-      ["しらべる", false, false],
-    ]
-  ];
 }

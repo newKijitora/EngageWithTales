@@ -2,16 +2,17 @@
 class CommandMenuView {
 
   // コンストラクタ
-  constructor(controller, commandText) {
-    
-    // コントローラー
-    this.controller = controller;
+  constructor(context, commandText, charCanvases) {
+    // コンテキスト
+    this.context = context;
+
+    this.charCanvases = charCanvases;
 
     // このコマンドメニューのテキスト
     this.commandTitle = commandText;
 
     // HTML要素
-    this.commandMenu = null;
+    this.commandMenuDOM = null;
     this.commandPointer = null;
     this.memberSelecter = null;
 
@@ -21,7 +22,6 @@ class CommandMenuView {
   
   // HTML要素の生成
   assemblingElements() {
-    
     // コマンドメニューのコンテナ
     const commandMenu = document.createElement("div");
     commandMenu.style.display = "flex";
@@ -41,18 +41,17 @@ class CommandMenuView {
     commandMenu.appendChild(commandText);
 
     // 参照を保存
-    this.commandMenu = commandMenu;
+    this.commandMenuDOM = commandMenu;
     this.commandPointer = commandPointer;
     this.commandText = commandText;
 
     // メンバーセレクターの生成
-    if (this.controller.isMemberSelectCommand) {
-      const memberSelecter = new MemberSelecterView(this.controller.memberSelecterController);
-      memberSelecter.memberSelecter.style.top = this.controller.memberSelecterPosition.y + "px";
-      memberSelecter.memberSelecter.style.left = this.controller.memberSelecterPosition.x + "px";
+    if (this.context.isMemberSelectCommand) {
+      const memberSelecter = new MemberSelecterView(this.context.memberSelecterContext, this.charCanvases);
+      memberSelecter.memberSelecter.style.top = this.context.memberSelecterPosition.y + "px";
+      memberSelecter.memberSelecter.style.left = this.context.memberSelecterPosition.x + "px";
     
       commandMenu.appendChild(memberSelecter.memberSelecter);
-      memberSelecter.drawMemberName();
 
       this.memberSelecter = memberSelecter;
     }
@@ -60,7 +59,6 @@ class CommandMenuView {
 
   // コマンドメニューの文字を初期化する
   initialize(textures) {
-
     // コマンドのタイトルを描画する
     const commandTitleContext = this.commandText.getContext("2d");
     for (let i = 0; i <this.commandTitle.length; i++) {
@@ -68,7 +66,7 @@ class CommandMenuView {
     }
 
     // 自身が選択されていればコマンドポインターを表示する
-    if (this.controller.isSelected) {
+    if (this.context.isSelected) {
       const commandPointerContext = this.commandPointer.getContext("2d");
       commandPointerContext.drawImage(textures["commandPointer"], 0, 0);
     }

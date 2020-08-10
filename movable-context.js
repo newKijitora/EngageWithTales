@@ -1,6 +1,7 @@
 class MovableContext extends Context {
+
+  // コンストラクタ
   constructor(town) { super();
-    
     // 設定
     this.settings = town.settings;
 

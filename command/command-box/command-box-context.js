@@ -14,31 +14,31 @@ class CommandBoxContext extends Context {
     this.backgroundColor = this.town.settings.commandBoxBackgroundColor;
 
     // コマンドボックスの左上位置
-    this.commandBoxPosition = new Position(6, 2);
+    this.commandBoxPosition = new Position(5, 2);
 
     // コマンドのメニュー
     this.commandMenus = [
       [
-        ["はなす", true, false],
-        ["まほう", false, true],
+        new Command("talk", "はなす", true, false),
+        new Command("magic", "まほう", false, true),
       ],
       [
-        ["つよさ", false, true],
-        ["どうぐ", false, true],
+        new Command("status", "つよさ", false, true),
+        new Command("tools", "もちもの", false, true),
       ],
       [
-        ["そうび", false, true],
-        ["しらべる", false, false],
+        new Command("equipment", "そうび", false, true),
+        new Command("search", "しらべる", false, false),
       ],
       [
-        ["とびら", false, false],
-        ["ちず", false, false],
+        new Command("door", "とびら", false, false),
+        new Command("map", "ちず", false, false),
       ]
     ];
 
     // コマンドフレームのサイズ
     this.commandBoxRows = this.commandMenus.length + 1;
-    this.commandBoxColumns = 6; // 変数を検討
+    this.commandBoxColumns = 7; // 変数を検討
 
     // コマンドフレームのテクスチャー
     this.commandTextures = this.town.resource.commandTextures;
@@ -85,9 +85,9 @@ class CommandBoxContext extends Context {
     for (let i = 0; i < this.commandMenuControllers.length; i++) {
       this.commandMenuControllers[i] = new Array(this.commandMenus[i].length);
       for (let j = 0; j < this.commandMenuControllers[i].length; j++) {
-        const commandMenuName = this.commandMenus[i][j][0];
-        const isSelected = this.commandMenus[i][j][1];
-        const isMemberSelectCommand = this.commandMenus[i][j][2];
+        const commandMenuName = this.commandMenus[i][j].commandName;
+        const isSelected = this.commandMenus[i][j].isSelected;
+        const isMemberSelectCommand = this.commandMenus[i][j].isMemberSelectorCommand;
         const position = new Position(j, i);
 
         this.commandMenuControllers[i][j] = new CommandMenuContext(this, commandMenuName, isSelected, isMemberSelectCommand, position);

@@ -178,7 +178,7 @@ class TextAreaView extends CommandBoxViewBase {
     const textArea = document.createElement("div");
     textArea.style.position = "absolute";
     textArea.style.top = this.controller.squareSize.y * 11 + "px";
-    textArea.style.left = this.controller.squareSize.x * 6 + "px";
+    textArea.style.left = this.controller.squareSize.x * 5 + "px";
     textArea.style.zIndex = this.controller.zIndexBase;
     textArea.style.display = "none";
 

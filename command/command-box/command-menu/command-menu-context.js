@@ -6,6 +6,10 @@ class CommandMenuContext {
     // コマンドボックス
     this.commandBox = commandBox;
 
+    // 一コマのサイズと文字サイズ
+    this.squareSize = this.commandBox.squareSize;
+    this.textSize = this.commandBox.textSize;
+
     // コマンドメニュー名
     this.menuName = menuName;
 

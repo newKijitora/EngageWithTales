@@ -36,7 +36,7 @@ class TextAreaContext extends Context {
     this.textSpeed = this.commandBox.textSpeed;
     
     this.textAreaRows = 5;
-    this.textAreaColumns = 12;
+    this.textAreaColumns = 14;
 
     // 行数と一行あたりの文字数
     this.numberOfRows = 4;
@@ -88,6 +88,11 @@ class TextAreaContext extends Context {
     ["なにも　みつからなかった"],
     ["＊「ぼくは　キングです！　　　　　　　このまちに　きてくれて　　　　　　とても　うれしいです　　　　　　　どうも　ありがとう！",
      "＊「このまちの　ことなら　　　　　　　なんでも　きいてね！　　　　　　　いろいろ　おしえるよ"],
+    [
+      "＊「ラルドという　けんしのことを\n　　しっているか？",
+      "＊「かれは　とてつもない　さいのうを\n　　もったおとこだったけれど\n　　みちを　あやまってしまったんだ。",
+      "＊「ちのはてを　もとめて　たびだったという\n　　ことだけど　そのあと　どうなったかは\n　　だれひとり　しらないんだ。"
+    ],
     [
       "ラルド「おまえの　それって\n　　じくうのけん　じゃないのか？",
     ],

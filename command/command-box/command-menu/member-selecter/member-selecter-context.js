@@ -1,4 +1,4 @@
-// キャラクターセレクタ―のコントローラークラス
+// キャラクターセレクタ―のコンテキスト
 class MemberSelecterContext extends Context {
   
   // コンストラクタ
@@ -7,12 +7,15 @@ class MemberSelecterContext extends Context {
     this.commandMenu = commandMenu;
 
     // 一コマのサイズと文字サイズ
-    this.squareSize = commandMenu.commandBox.squareSize;
-    this.textSize = commandMenu.commandBox.textSize;
+    this.squareSize = commandMenu.squareSize;
+    this.textSize = commandMenu.textSize;
 
     // キー
     this.openKey = commandMenu.commandBox.openKey;
     this.closeKey = commandMenu.commandBox.closeKey;
+
+    // コマンドボックスの左上位置
+    this.memberSelecterPosition = new Position(0, 1);
 
     // メニューの名前
     this.title = this.commandMenu.menuName;
@@ -37,7 +40,7 @@ class MemberSelecterContext extends Context {
           isSelected = true;
         }
 
-        this.commandMenus[i][j] = [this.memberCharacters[i].name, isSelected, false];
+        this.commandMenus[i][j] = new Command("", this.memberCharacters[i].name, isSelected, false);
       }
     }
 
@@ -67,20 +70,20 @@ class MemberSelecterContext extends Context {
     this.isChildOpened = false;
 
     // コマンドメニューのコンテキストを生成する
-    this.commandMenuContexts = new Array(this.commandMenus.length);
+    this.memberNameContexts = new Array(this.commandMenus.length);
 
-    for (let i = 0; i < this.commandMenuContexts.length; i++) {
-      this.commandMenuContexts[i] = new Array(this.commandMenus[i].length);
-      for (let j = 0; j < this.commandMenuContexts[i].length; j++) {
-        const commandMenuName = this.commandMenus[i][j][0];
-        const isSelected = this.commandMenus[i][j][1];
-        const isMemberSelectCommand = this.commandMenus[i][j][2];
+    for (let i = 0; i < this.memberNameContexts.length; i++) {
+      this.memberNameContexts[i] = new Array(this.commandMenus[i].length);
+      for (let j = 0; j < this.memberNameContexts[i].length; j++) {
+        const commandMenuName = this.commandMenus[i][j].commandName;
+        const isSelected = this.commandMenus[i][j].isSelected;
+        const isMemberSelectCommand = this.commandMenus[i][j].isMemberSelectorCommand;
         const position = new Position(j, i);
 
-        this.commandMenuContexts[i][j] = new CommandMenuContext(this, commandMenuName, isSelected, isMemberSelectCommand, position);
+        this.memberNameContexts[i][j] = new MemberNameContext(this, commandMenuName, isSelected, isMemberSelectCommand, position);
         
         if (isSelected) {
-          this.currentCommandMenu = this.commandMenuContexts[i][j];
+          this.currentCommandMenu = this.memberNameContexts[i][j];
         }
       }
     }
@@ -96,6 +99,7 @@ class MemberSelecterContext extends Context {
 
   // クローズできるかどうか
   get canClose() {
+    
     if (this.viewState == "closed" || this.isChildOpened) {
       this.isChildOpened = false;
       return false;
@@ -109,6 +113,10 @@ class MemberSelecterContext extends Context {
       return false;
     }
     
+    if (this.isChildOpened) {
+      return false;
+    }
+
     // テキストエリアのビュー状態がopenedであればカット
     if (this.commandMenu.commandBox.textAreaContext.viewState == "opened") {
       return false;

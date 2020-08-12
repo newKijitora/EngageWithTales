@@ -70,3 +70,14 @@ class Character {
     this.mp = mp;
   }
 }
+
+// コマンドクラス
+class Command {
+  // コンストラクタ
+  constructor(label, commandName, isSelected, isMemberSelectorCommand) {
+    this.label = label;
+    this.commandName = commandName;
+    this.isSelected = isSelected;
+    this.isMemberSelectorCommand = isMemberSelectorCommand;
+  }
+}

@@ -45,7 +45,7 @@ class CommandBoxView extends CommandBoxViewBase {
       }
   
       // コマンドボックスのフレーム描画
-      super.drawFrame(this.commandFrameDOM, this.context.squareSize, this.commandTextureCanvases, this.context.commandBoxRows, this.context.commandBoxColumns);
+      this.drawFrame(this.commandFrameDOM, this.context.squareSize, this.commandTextureCanvases, this.context.commandBoxRows, this.context.commandBoxColumns);
       
       // 画像の読み込みと描画
       imageLoader.loadImages(this.context.textTextures, (images) => {
@@ -81,6 +81,20 @@ class CommandBoxView extends CommandBoxViewBase {
 
           this.charCanvases[this.context.textElements[i].read] = textureCanvas;
         }
+
+        // コマンドメニューを生成
+        const commandMenus = new Array(this.context.commandMenus.length);
+
+        for (let i = 0; i < commandMenus.length; i++) {
+          commandMenus[i] = new Array(this.context.commandMenus[i].length);
+          for (let j = 0; j < commandMenus[i].length; j++) {
+            commandMenus[i][j] = new CommandMenuView(this.context.commandMenuControllers[i][j], this.context.commandMenus[i][j].commandName, this.commandTextureCanvases, this.charCanvases);
+            this.selectField.appendChild(commandMenus[i][j].commandMenuDOM);
+          }
+        }
+
+        // DOMではない
+        this.commandMenus = commandMenus;
 
         // コマンドボックスのコマンドメニューに文字を描画する
         for (let i = 0; i < this.context.commandMenus.length; i++) {
@@ -244,22 +258,10 @@ class CommandBoxView extends CommandBoxViewBase {
     selectField.style.position = "absolute";
     selectField.style.top = 0;
     selectField.style.left = 0;
-    selectField.style.paddingLeft = this.context.squareSize.x / 2 + "px";
     selectField.style.paddingTop = this.context.squareSize.y / 2 + "px";
     selectField.style.display = "flex";
     selectField.style.flexWrap = "wrap";
-    selectField.style.width = "160px";
-
-    // コマンドメニューを生成
-    const commandMenus = new Array(this.context.commandMenus.length);
-
-    for (let i = 0; i < commandMenus.length; i++) {
-      commandMenus[i] = new Array(this.context.commandMenus[i].length);
-      for (let j = 0; j < commandMenus[i].length; j++) {
-        commandMenus[i][j] = new CommandMenuView(this.context.commandMenuControllers[i][j], this.context.commandMenus[i][j][0], this.charCanvases);
-        selectField.appendChild(commandMenus[i][j].commandMenuDOM);
-      }
-    }
+    selectField.style.width = "192px";
 
     commandBox.appendChild(commandFrameDOM);
     commandBox.appendChild(selectField);
@@ -270,8 +272,6 @@ class CommandBoxView extends CommandBoxViewBase {
 
     this.commandBoxDOM = commandBox;
     this.commandFrameDOM = commandFrameDOM;
-
-    // DOMではない
-    this.commandMenus = commandMenus;
+    this.selectField = selectField;
   }
 }

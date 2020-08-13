@@ -1,24 +1,38 @@
 // コマンドメニューのコントローラー
 class CommandMenuContext {
-  // コンストラクタ
-  constructor(context, menuName, isSelected, isMemberSelectCommand, position) {
-    this.context = context;
-    this.characters = this.context.textTextures;
 
-    this.menuName = menuName;
-    this.isSelected = isSelected;
-    this.isMemberSelectCommand = isMemberSelectCommand;
+  // コンストラクタ
+  constructor(commandBox, menu, position) {
+    // コマンドボックス
+    this.commandBox = commandBox;
+
+    // 一コマのサイズと文字サイズ
+    this.squareSize = this.commandBox.squareSize;
+    this.textSize = this.commandBox.textSize;
+    this.menu = menu;
+
+    // コマンドメニュー名
+    this.menuName = menu.commandName;
+
+    // このメニューが選択されているかどうか
+    this.isSelected = menu.isSelected;
+
     this.position = position;
     this.memberSelecterPosition = null;
+    this.isMemberSelectCommand = menu.isMemberSelectorCommand;
+
+    // コマンドメニューのサイズ
     this.size = new Size(80, 32);
 
-    this.characters = this.context.characters;
+    // 冒険のパーティ
+    this.memberCharacters = this.commandBox.memberCharacters;
 
-    this.memberSelecterController = null;
+    this.memberSelecterContext = null;
     
-    if (isMemberSelectCommand) {
-      this.memberSelecterController = new MemberSelecterContext(this);
-      this.memberSelecterPosition = new Position(this.position.x == 0 ? -5 : 0, 0);
+    // メンバーセレクターメニューであれば、メンバーセレクターを生成
+    if (this.isMemberSelectCommand) {
+      this.memberSelecterContext = new MemberSelecterContext(this);
+      this.memberSelecterPosition = new Position(0, 0);
     }
   }
 }

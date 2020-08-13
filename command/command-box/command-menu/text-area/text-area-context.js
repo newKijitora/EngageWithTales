@@ -1,4 +1,7 @@
-// テキストエリアのコントローラークラス
+// ------------------------------------------------------------------
+// テキストエリアのコンテキストクラス
+// ------------------------------------------------------------------
+
 class TextAreaContext extends Context {
   // コンストラクタ
   constructor(commandBox, zIndexBase) { super();
@@ -8,10 +11,15 @@ class TextAreaContext extends Context {
     // 一コマのサイズ
     this.squareSize = commandBox.squareSize;
 
-    // テクスチャ
+    // テキストエリアの背景色
+    this.backgroundColor = commandBox.backgroundColor;
+
+    // コマンドフレームのテクスチャ
     this.commandTextures = commandBox.commandTextures;
-    this.textTextures = this.commandBox.town.resource.characters;
-    this.mojis = this.commandBox.town.resource.textElements;
+
+    // テキスト用のテクスチャーと文字エレメント
+    this.textTextures = this.commandBox.textTextures;
+    this.textElements = this.commandBox.textElements;
 
     // ビューの状態
     this.viewState = "closed";
@@ -31,15 +39,12 @@ class TextAreaContext extends Context {
     this.textSpeed = this.commandBox.textSpeed;
     
     this.textAreaRows = 5;
-    this.textAreaColumns = 12;
+    this.textAreaColumns = 15;
 
     // 行数と一行あたりの文字数
     this.numberOfRows = 4;
     this.numberOfCells = 22;
     this.zIndexBase = zIndexBase;
-
-    // エントリー
-    this.entry(this);
   }
 
   // オープンできるかどうか
@@ -52,6 +57,7 @@ class TextAreaContext extends Context {
     if (this.viewState == "opened") {
       return false;
     }
+
     return this.checkContextForOpen();
   }
 
@@ -66,10 +72,11 @@ class TextAreaContext extends Context {
 
   // オープンできるかどうか：コンテキストのチェック
   checkContextForOpen() {
-    console.log(this.commandBox.currentCommandMenu.menuName);
-    if (this.commandBox.currentCommandMenu.menuName != "はなす") {     
+    // 選択中のコマンドメニューが「はなす」でなければカット
+    if (this.commandBox.currentCommandMenuContext.menuName != "はなす") {     
       return false;
     }
+
     return true;
   }
 
@@ -83,6 +90,11 @@ class TextAreaContext extends Context {
     ["なにも　みつからなかった"],
     ["＊「ぼくは　キングです！　　　　　　　このまちに　きてくれて　　　　　　とても　うれしいです　　　　　　　どうも　ありがとう！",
      "＊「このまちの　ことなら　　　　　　　なんでも　きいてね！　　　　　　　いろいろ　おしえるよ"],
+    [
+      "＊「ラルドという　けんしのことを\n　　しっているか？",
+      "＊「かれは　とてつもない　さいのうを\n　　もったおとこだったけれど\n　　みちを　あやまってしまったんだ。",
+      "＊「ちのはてを　もとめて　たびだったという\n　　ことだけど　そのあと　どうなったかは\n　　だれひとり　しらないんだ。"
+    ],
     [
       "ラルド「おまえの　それって\n　　じくうのけん　じゃないのか？",
     ],

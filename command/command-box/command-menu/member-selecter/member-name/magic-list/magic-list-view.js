@@ -1,5 +1,8 @@
-// メンバーセレクターのビュークラス
-class MemberSelecterView extends CommandBoxViewBase {
+// ------------------------------------------------------------------
+// マジックリストのビュー
+// ------------------------------------------------------------------
+
+class MagicListView extends CommandBoxViewBase {
 
   // コンストラクタ
   constructor(context, frameCanvases, charCanvases) { super(context);
@@ -30,8 +33,8 @@ class MemberSelecterView extends CommandBoxViewBase {
     // コマンドのコンテナ
     const commandBox = document.createElement("div");
     commandBox.style.position = "absolute";
-    commandBox.style.left = this.context.memberSelecterPosition.x * this.context.squareSize.x + "px";
-    commandBox.style.top = (this.context.memberSelecterPosition.y * this.context.squareSize.y) - this.context.textSize.x + "px";
+    commandBox.style.left = this.context.itemListPosition.x * this.context.squareSize.x + "px";
+    commandBox.style.top = this.context.itemListPosition.y * this.context.squareSize.y + "px";
     commandBox.style.display = "none";
 
     // コマンドのフレーム（バックグラウンド）
@@ -48,7 +51,7 @@ class MemberSelecterView extends CommandBoxViewBase {
     selectField.style.paddingTop = this.context.squareSize.y / 2 + "px";
     selectField.style.display = "flex";
     selectField.style.flexWrap = "wrap";
-    selectField.style.width = "64px";
+    //selectField.style.width = "64px";
 
     // コマンドメニューを生成
     const commandMenus = new Array(this.context.commandMenus.length);
@@ -56,13 +59,22 @@ class MemberSelecterView extends CommandBoxViewBase {
     for (let i = 0; i < commandMenus.length; i++) {
       commandMenus[i] = new Array(this.context.commandMenus[i].length);
       for (let j = 0; j < commandMenus[i].length; j++) {
-        commandMenus[i][j] = new MemberNameView(this.context.memberNameContexts[i][j], this.context.commandMenus[i][j].commandName, this.frameCanvases, this.charCanvases);
+        commandMenus[i][j] = new MagicNameView(this.context.memberNameContexts[i][j], this.context.commandMenus[i][j].commandName, this.frameCanvases, this.charCanvases);
         selectField.appendChild(commandMenus[i][j].commandMenuDOM);
+
+        commandMenus[i][j].initialize(this.charCanvases);
       }
     }
 
     commandBox.appendChild(commandFrameDOM);
     commandBox.appendChild(selectField);
+
+    // まほうをおぼえていればフレームを描画
+    if (this.context.commandMenus.length != 0) {
+      super.drawFrame(commandFrameDOM, this.context.squareSize, this.frameCanvases, this.context.commandBoxRows, 5)
+    } else {
+      // まほうをおぼえていない場合
+    }
 
     this.memberSelecter = commandBox;
     this.memberSelectFrame = commandFrameDOM;
@@ -82,6 +94,7 @@ class MemberSelecterView extends CommandBoxViewBase {
     if (keyCode == this.context.openKey.keyCode && this.context.canOpen) {
       this.memberSelecter.style.display = "block";
       this.context.viewState = "opened";
+      this.context.memberName.memberSelecter.isChildOpened = true;
     }
   }
 

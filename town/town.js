@@ -13,6 +13,8 @@ class Town {
 
     // ビュー上のサイズ単位
     this.squareSize = this.settings.squareSize;
+
+    // テキストのテクスチャー
     this.textTextures = world.textTextures;
 
     // 町の情報
@@ -30,7 +32,7 @@ class Town {
     this.collisionMap = null;
 
     // 現在のキャラクターパーティ
-    this.characters = world.characters;
+    this.memberCharacters = world.memberCharacters;
 
     // 町の生成
     this.requestInformation(world, townName);

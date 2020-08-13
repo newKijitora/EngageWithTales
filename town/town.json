@@ -25,10 +25,10 @@
       ["boss", [46, 50], false, false, 0, false],
       ["boss", [65, 31], false, false, 0, false],
       ["boss", [65, 31], false, false, 0, false],
-      ["heroin_front", [40, 31], true, true, 3000, false, "talk"],
-      ["heroin_front", [44, 16], true, true, 4800, false, "talk"],
-      ["heroin_front", [41, 47], true, true, 2700, false, "talk"],
-      ["heroin_front", [59, 30], true, true, 3200, false, "talk"]
+      ["heroin_bottom", [40, 31], true, true, 3000, false, "talk"],
+      ["heroin_bottom", [44, 16], true, true, 4800, false, "talk"],
+      ["heroin_bottom", [41, 47], true, true, 2700, false, "talk"],
+      ["heroin_bottom", [59, 30], true, true, 3200, false, "talk"]
     ],
     "centerPosition": [46, 14]
   },

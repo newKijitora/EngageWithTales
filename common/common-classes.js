@@ -34,8 +34,14 @@ class Size {
 
 // テクスチャークラス
 class Texture {
-  constructor(texture, collision, next, nextIndex) {
-    this.texture = texture;
+  constructor(imageName) {
+    this.texture = imageName;
+  }
+}
+
+// マップテクスチャー
+class MapTexture extends Texture {
+  constructor(imageName, collision, next, nextIndex) { super(imageName);
     this.collision = collision;
     this.next = next;
     this.nextIndex = nextIndex;
@@ -62,5 +68,36 @@ class Character {
     this.trunk = trunk;
     this.hp = hp;
     this.mp = mp;
+    this.items = [];
+    this.magics = [];
+  }
+}
+
+// コマンドクラス
+class GameCommand {
+  // コンストラクタ
+  constructor(label, commandName, isSelected, isMemberSelectorCommand) {
+    this.label = label;
+    this.commandName = commandName;
+    this.isSelected = isSelected;
+    this.isMemberSelectorCommand = isMemberSelectorCommand;
+  }
+}
+
+class GameKeyBoard {
+  // コンストラクタ
+}
+
+class GameItem {
+  // コンストラクタ
+  constructor(name) {
+    this.name = name;
+  }
+}
+
+class Magic {
+  // コンストラクタ
+  constructor(name) {
+    this.name = name;
   }
 }

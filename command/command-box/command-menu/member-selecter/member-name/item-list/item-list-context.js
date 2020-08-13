@@ -1,39 +1,43 @@
 // ------------------------------------------------------------------
-// メンバーセレクターのコンテキスト
+// アイテムリストのコンテキスト
 // ------------------------------------------------------------------
 
-class MemberSelecterContext extends KeyManageContext {
+class ItemListContext extends KeyManageContext {
   
   // コンストラクタ
-  constructor(commandMenu) { super(commandMenu.commandBox.town);
-    // コマンドメニュー
-    this.commandMenu = commandMenu;
+  constructor(memberName) { super(memberName.memberSelecter.commandMenu.commandBox.town);
+    // メンバーネーム
+    this.memberName = memberName;
 
     // 一コマのサイズと文字サイズ
-    this.squareSize = commandMenu.squareSize;
-    this.textSize = commandMenu.textSize;
+    this.squareSize = memberName.squareSize;
+    this.textSize = memberName.textSize;
 
     // キー
-    this.openKey = commandMenu.commandBox.openKey;
-    this.closeKey = commandMenu.commandBox.closeKey;
+    this.openKey = memberName.memberSelecter.openKey;
+    this.closeKey = memberName.memberSelecter.closeKey;
 
     // コマンドボックスの左上位置
-    this.memberSelecterPosition = new Position(0, 1);
+    this.itemListPosition = new Position(6, -2);
 
     // メニューの名前
-    this.title = this.commandMenu.menu.name;
+    this.title = this.memberName.menuName;
 
     // メンバーセレクターの背景色
-    this.backgroundColor = this.commandMenu.commandBox.backgroundColor;
+    this.backgroundColor = this.memberName.memberSelecter.backgroundColor;
 
     // 初期ステータス
     this.viewState = "closed";
 
-    // 冒険のパーティ
-    this.memberCharacters = this.commandMenu.memberCharacters;
+    // どうぐのリスト
+    for (let i = 0; i < this.memberName.memberSelecter.memberCharacters.length; i++) {
+      if (this.memberName.memberSelecter.memberCharacters[i].name == this.title) {
+        this.items = this.memberName.memberSelecter.memberCharacters[i].items;
+      }
+    }
 
     // コマンドのメニュー（冒険のパーティの名前で生成）
-    this.commandMenus = new Array(this.memberCharacters.length);
+    this.commandMenus = new Array(this.items.length);
 
     for (let i = 0; i < this.commandMenus.length; i++) {
       this.commandMenus[i] = new Array(1);
@@ -43,15 +47,15 @@ class MemberSelecterContext extends KeyManageContext {
           isSelected = true;
         }
 
-        this.commandMenus[i][j] = new GameCommand(this.commandMenu.menu.label, this.memberCharacters[i].name, isSelected, false);
+        this.commandMenus[i][j] = new GameCommand("", this.items[i].name, isSelected, false);
       }
     }
 
     this.currentCommandMenu = null;
 
     // コマンドフレームのサイズ
-    this.commandBoxRows = this.memberCharacters.length + 1;
-    this.commandBoxColumns = 4; // 変数を検討
+    this.commandBoxRows = this.items.length + 1;
+    this.commandBoxColumns = 6; // 変数を検討
 
     //this.memberStatusController = new MemberStatusContext(this);
     this.isChildOpened = false;
@@ -62,7 +66,7 @@ class MemberSelecterContext extends KeyManageContext {
     for (let i = 0; i < this.memberNameContexts.length; i++) {
       this.memberNameContexts[i] = new Array(this.commandMenus[i].length);
       for (let j = 0; j < this.memberNameContexts[i].length; j++) {
-        this.memberNameContexts[i][j] = new MemberNameContext(this, this.commandMenus[i][j], new Position(j, i));
+        this.memberNameContexts[i][j] = new ItemNameContext(this, this.commandMenus[i][j], new Position(j, i));
         
         if (this.commandMenus[i][j].isSelected) {
           this.currentCommandMenu = this.memberNameContexts[i][j];
@@ -73,7 +77,7 @@ class MemberSelecterContext extends KeyManageContext {
 
   // オープンできるかどうか
   get canOpen() {
-    if (this.viewState == "opened" || !this.commandMenu.isSelected) {
+    if (this.viewState == "opened" || this.memberName.memberSelecter.viewState != "opened" || !this.memberName.isSelected) {
       return false;
     }
     return true;
@@ -100,7 +104,7 @@ class MemberSelecterContext extends KeyManageContext {
     }
 
     // テキストエリアのビュー状態がopenedであればカット
-    if (this.commandMenu.commandBox.textAreaContext.viewState == "opened") {
+    if (this.memberName.memberSelecter.commandMenu.commandBox.textAreaContext.viewState == "opened") {
       return false;
     }
 

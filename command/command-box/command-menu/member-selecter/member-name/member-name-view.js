@@ -1,8 +1,8 @@
 // コマンドメニューのビュー
-class CommandMenuView {
+class MemberNameView extends CommandBoxViewBase {
 
   // コンストラクタ
-  constructor(context, commandText, frameCanvases, charCanvases) {
+  constructor(context, commandText, frameCanvases, charCanvases) { super(context);
     // コンテキスト
     this.context = context;
 
@@ -26,18 +26,15 @@ class CommandMenuView {
   assemblingElements() {
     // コマンドメニューのコンテナ
     const commandMenu = document.createElement("div");
-    commandMenu.style.position = "relative";
     commandMenu.style.display = "flex";
 
     // コマンドポインター要素
     const commandPointer = document.createElement("canvas");
-    commandPointer.style.zIndex = 0;
     commandPointer.width = 32;
     commandPointer.height = 32;
 
     // コマンドメニュー要素
     const commandText = document.createElement("canvas");
-    commandPointer.style.zIndex = 0;
     commandText.width = 64; // 4文字分
     commandText.height = 32;
 
@@ -50,13 +47,20 @@ class CommandMenuView {
     this.commandPointer = commandPointer;
     this.commandText = commandText;
 
-    // メンバーセレクターの生成
-    if (this.context.isMemberSelectCommand) {
-      const memberSelecter = new MemberSelecterView(this.context.memberSelecterContext, this.frameCanvases, this.charCanvases);
-      memberSelecter.memberSelecter.style.zIndex = 1;
-      commandMenu.appendChild(memberSelecter.memberSelecter);
+    // メンバーステータスの生成
+    if (this.context.memberStatusContext) {
+      const memberStatus = new MemberStatusView(this.context.memberStatusContext, this.frameCanvases, this.charCanvases);
+      this.commandMenuDOM.appendChild(memberStatus.memberStatusDOM);
+    }
 
-      this.memberSelecter = memberSelecter;
+    if (this.context.itemListContext) {
+      const itemList = new ToolListView(this.context.itemListContext, this.frameCanvases, this.charCanvases);
+      this.commandMenuDOM.appendChild(itemList.memberSelecter);
+    }
+
+    if (this.context.magicListContext) {
+      const magicList = new MagicListView(this.context.magicListContext, this.frameCanvases, this.charCanvases);
+      this.commandMenuDOM.appendChild(magicList.memberSelecter);
     }
   }
 
@@ -64,7 +68,7 @@ class CommandMenuView {
   initialize(textures) {
     // コマンドのタイトルを描画する
     const commandTitleContext = this.commandText.getContext("2d");
-    for (let i = 0; i <this.commandTitle.length; i++) {
+    for (let i = 0; i < this.commandTitle.length; i++) {
       commandTitleContext.drawImage(textures[this.commandTitle[i]], i * 16, 0);
     }
 

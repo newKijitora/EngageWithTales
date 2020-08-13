@@ -191,32 +191,31 @@ class Resources {
 
   // テクスチャー
   textures = [
-    new Texture("floor", true, false),
-    new Texture("block", false, false),
-    new Texture("desert", true, false),
-    new Texture("water", false, false),
-    new Texture("block2", false, false),
-    new Texture("grass", true, false),
-    new Texture("door", false, false),
-    new Texture("table", false, false),
-    new Texture("grass", true, true),
+    new MapTexture("floor", true, false),
+    new MapTexture("block", false, false),
+    new MapTexture("desert", true, false),
+    new MapTexture("water", false, false),
+    new MapTexture("block2", false, false),
+    new MapTexture("grass", true, false),
+    new MapTexture("door", false, false),
+    new MapTexture("table", false, false),
+    new MapTexture("grass", true, true),
   ];
 
   // コマンドのテクスチャー
-  commandTextures = [
-    new Texture("frame-left-top", true, true),
-    new Texture("frame-left-bottom", true, true),
-    new Texture("frame-right-bottom", true, true),
-    new Texture("frame-right-top", true, true),
-    new Texture("frame-left", true, true),
-    new Texture("frame-top", true, true),
-    new Texture("frame-right", true, true),
-    new Texture("frame-bottom", true, true),
+  commandFrameTextures = [
+    new Texture("frame-left-top"),
+    new Texture("frame-left-bottom"),
+    new Texture("frame-right-bottom"),
+    new Texture("frame-right-top"),
+    new Texture("frame-left"),
+    new Texture("frame-top"),
+    new Texture("frame-right"),
+    new Texture("frame-bottom"),
   ];
 
   // 文字
   textElements = [
-
     // 通常ひらがなここから
 
     new Text("a", "blank", "あ"),
@@ -399,10 +398,14 @@ class Resources {
 
     // 半濁点カタカナここまで
 
+    // 拗音カタカナここから
+
     new Text("ya-s-k", "blank", "ャ"),
     new Text("tu-s-k", "blank", "ッ"),
 
-    new Text("nobasi-k", "blank", "ー"),
+    // 拗音カタカナここまで
+
+    new Text("nobasi-k", "blank", "ー"), // のばし棒
 
     // 算用数字ここから
 
@@ -433,124 +436,145 @@ class Resources {
   ];
 
   // 文字
-  characters = [
-    new Texture("a", true, true),
-    new Texture("i", true, true),
-    new Texture("u", true, true),
-    new Texture("e", true, true),
-    new Texture("o", true, true),
+  textTextures = [
+    // ひらがな
+    new Texture("a"), // あ
+    new Texture("i"), // い
+    new Texture("u"), // う
+    new Texture("e"), // え
+    new Texture("o"), // お
 
-    new Texture("ka", true, true),
-    new Texture("ki", true, true),
-    new Texture("ku", true, true),
-    new Texture("ke", true, true),
-    new Texture("ko", true, true),
+    new Texture("ka"), // か
+    new Texture("ki"), // き
+    new Texture("ku"), // く
+    new Texture("ke"), // け
+    new Texture("ko"), // こ
     
-    new Texture("sa", true, true),
-    new Texture("si", true, true),
-    new Texture("su", true, true),
-    new Texture("se", true, true),
-    new Texture("so", true, true),
+    new Texture("sa"), // さ
+    new Texture("si"), // し
+    new Texture("su"), // す
+    new Texture("se"), // せ
+    new Texture("so"), // そ
 
-    new Texture("ta", true, true),
-    new Texture("ti", true, true),
-    new Texture("tu", true, true),
-    new Texture("te", true, true),
-    new Texture("to", true, true),
+    new Texture("ta"), // た
+    new Texture("ti"), // ち
+    new Texture("tu"), // つ
+    new Texture("te"), // て
+    new Texture("to"), // と
 
-    new Texture("na", true, true),
-    new Texture("ni", true, true),
-    new Texture("nu", true, true),
-    new Texture("ne", true, true),
-    new Texture("no", true, true),
+    new Texture("na"), // な
+    new Texture("ni"), // に
+    new Texture("nu"), // ぬ
+    new Texture("ne"), // ね
+    new Texture("no"), // の
 
-    new Texture("ha", true, true),
-    new Texture("hi", true, true),
-    new Texture("fu", true, true),
-    new Texture("he", true, true),
-    new Texture("ho", true, true),
+    new Texture("ha"), // は
+    new Texture("hi"), // ひ
+    new Texture("fu"), // ふ
+    new Texture("he"), // へ
+    new Texture("ho"), // ほ
 
-    new Texture("ma", true, true),
-    new Texture("mi", true, true),
-    new Texture("mu", true, true),
-    new Texture("me", true, true),
-    new Texture("mo", true, true),
+    new Texture("ma"), // ま
+    new Texture("mi"), // み
+    new Texture("mu"), // む
+    new Texture("me"), // め
+    new Texture("mo"), // も
 
-    new Texture("ya", true, true),
-    new Texture("yu", true, true),
-    new Texture("yo", true, true),
+    new Texture("ya"), // や
+    new Texture("yu"), // ゆ
+    new Texture("yo"), // よ
 
-    new Texture("ra", true, true),
-    new Texture("ri", true, true),
-    new Texture("ru", true, true),
-    new Texture("re", true, true),
-    new Texture("ro", true, true),
+    new Texture("ra"), // ら
+    new Texture("ri"), // り
+    new Texture("ru"), // る
+    new Texture("re"), // れ
+    new Texture("ro"), // ろ
 
-    new Texture("o-k", true, true),
-    new Texture("ki-k", true, true),
-    new Texture("ra-k", true, true),
-    new Texture("ma-k", true, true),
-    new Texture("ha-k", true, true),
-    new Texture("ru-k", true, true),
-    new Texture("i-k", true, true),
-    new Texture("to-k", true, true),
-    new Texture("hi-k", true, true),
-    new Texture("ho-k", true, true),
-    new Texture("ka-k", true, true),
-    new Texture("n-k", true, true),
-    new Texture("ta-k", true, true),
-    new Texture("ni-k", true, true),
-    new Texture("si-k", true, true),
-    new Texture("so-k", true, true),
-    new Texture("mo-k", true, true),
-    new Texture("nobasi-k", true, true),
-    new Texture("me-k", true, true),
-    new Texture("ko-k", true, true),
-    new Texture("mu-k", true, true),
-    new Texture("su-k", true, true),
-    new Texture("na-k", true, true),
-    new Texture("ya-s-k", true, true),
-    new Texture("mi-k", true, true),
-    new Texture("a-k", true, true),
-    new Texture("re-k", true, true),
-    new Texture("ku-k", true, true),
-    new Texture("fu-k", true, true),
-    new Texture("te-k", true, true),
-    new Texture("ne-k", true, true),
-    new Texture("ro-k", true, true),
-    new Texture("tu-s-k", true, true),
-    new Texture("e-k", true, true),
+    new Texture("wa"), // わ
+    new Texture("wo"), // を
+    new Texture("n"), // ん
 
-    new Texture("zero", true, true),
-    new Texture("one", true, true),
-    new Texture("two", true, true),
-    new Texture("three", true, true),
-    new Texture("four", true, true),
-    new Texture("five", true, true),
-    new Texture("six", true, true),
-    new Texture("seven", true, true),
-    new Texture("eight", true, true),
-    new Texture("nine", true, true),
-    new Texture("colon", true, true),
-    new Texture("h-a", true, true),
-    new Texture("m-a", true, true),
-    new Texture("p-a", true, true),
-    new Texture("tu-s", true, true),
-    new Texture("ya-s", true, true),
-    new Texture("yo-s", true, true),
-    new Texture("yu-s", true, true),
-    new Texture("n", true, true),
-    new Texture("dakuten", true, true),
-    new Texture("handakuten", true, true),
-    new Texture("blank", true, true),
-    new Texture("arrow", true, true),
-    new Texture("ex", true, true),
-    new Texture("aster", true, true),
-    new Texture("kakko", true, true),
-    new Texture("maru", true, true),
-    new Texture("wa", true, true),
-    new Texture("wo", true, true),
-    new Texture("exp", true, true),
-    new Texture("ques", true, true),
+    // カタカナ
+    new Texture("a-k"), // ア
+    new Texture("i-k"), // イ
+    new Texture("e-k"), // エ
+    new Texture("o-k"), // オ
+
+    new Texture("ka-k"), // カ
+    new Texture("ki-k"), // キ
+    new Texture("ku-k"), // ク
+    new Texture("ko-k"), // コ
+
+    new Texture("si-k"), // シ
+    new Texture("su-k"), // ス
+    new Texture("so-k"), // ソ
+
+    new Texture("ta-k"), // タ
+    new Texture("te-k"), // テ
+    new Texture("to-k"), // ト
+
+    new Texture("na-k"), // ナ
+    new Texture("ni-k"), // ニ
+    new Texture("ne-k"), // ネ
+
+    new Texture("ha-k"), // ハ
+    new Texture("hi-k"), // ヒ
+    new Texture("fu-k"), // フ
+    new Texture("ho-k"), // ホ
+
+    new Texture("ra-k"), // ラ
+    // カタカナの「リ」は、ひらがなの「り」と同じ
+    new Texture("ru-k"), // ル
+    new Texture("re-k"), // レ
+    new Texture("ro-k"), // ロ
+
+    new Texture("ma-k"), // マ
+    new Texture("mi-k"), // ミ
+    new Texture("mu-k"), // ム
+    new Texture("me-k"), // メ
+    new Texture("mo-k"), // モ
+
+    new Texture("n-k"), // ン
+    
+    // 促音
+    new Texture("tu-s"), // っ
+    new Texture("tu-s-k"), // ッ
+
+    // 拗音
+    new Texture("ya-s"), // ゃ
+    new Texture("yu-s"), // ゅ
+    new Texture("yo-s"), // ょ
+    new Texture("ya-s-k"), // ャ
+
+    // アルファベット
+    new Texture("h-a"), // H
+    new Texture("m-a"), // M
+    new Texture("p-a"), // P
+    new Texture("exp"), // Ex
+
+    // 数字
+    new Texture("zero"), // ０
+    new Texture("one"), // １
+    new Texture("two"), // ２
+    new Texture("three"), // ３
+    new Texture("four"), // ４
+    new Texture("five"), // ５
+    new Texture("six"), // ６
+    new Texture("seven"), // ７
+    new Texture("eight"), // ８
+    new Texture("nine"), // ９
+
+    // その他
+    new Texture("arrow"), // コマンド選択の三角矢印
+    new Texture("dakuten"), // 濁点
+    new Texture("handakuten"), // 半濁点
+    new Texture("nobasi-k"), // のばし棒
+    new Texture("kakko"), // 「（開きかっこ）
+    new Texture("maru"), // 。（句点）
+    new Texture("blank"), // 空白
+    new Texture("aster"), // ＊（アスタリスク）
+    new Texture("colon"), // ：（コロン）
+    new Texture("ex"), // ！（エクスクラメンションマーク）
+    new Texture("ques"), // ？（クエスチョンマーク）
   ];
 }

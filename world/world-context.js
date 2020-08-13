@@ -35,6 +35,49 @@ class WorldContext extends Context {
       new Character(3, "けしゃ", 2, 4, 3, 12, 20),
     ];
 
+    this.memberCharacters[0].items = [
+      new GameItem("やくそう"),
+      new GameItem("どくけしそう"),
+      new GameItem("またたび"),
+      new GameItem("かわのよろい"),
+      new GameItem("いかずちのつるぎ"),
+      new GameItem("せいすい")
+    ];
+
+    this.memberCharacters[0].magics = [
+      new Magic("ホイミ"),
+      new Magic("ベホイミ"),
+      new Magic("トヘロス"),
+      new Magic("ルーラ"),
+      new Magic("パルプンテ"),
+    ];
+
+    this.memberCharacters[1].items = [
+      new GameItem("やくそう"),
+      new GameItem("どくけしそう"),
+      new GameItem("はやぶさのけん"),
+    ];
+
+    this.memberCharacters[2].items = [
+      new GameItem("やくそう"),
+      new GameItem("どうのつるぎ"),
+      new GameItem("せいすい")
+    ];
+
+    this.memberCharacters[3].items = [
+      new GameItem("よろい"),
+      new GameItem("みかがみのたて"),
+      new GameItem("せいすい")
+    ];
+
+    this.memberCharacters[3].magics = [
+      new Magic("メラ"),
+      new Magic("ギラ"),
+      new Magic("ベギラマ"),
+      new Magic("ヒャド"),
+      new Magic("ベギラゴン"),
+    ];
+
     // ビューの生成
     this.entry(this);
   }

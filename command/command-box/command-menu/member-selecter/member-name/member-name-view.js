@@ -52,6 +52,16 @@ class MemberNameView extends CommandBoxViewBase {
       const memberStatus = new MemberStatusView(this.context.memberStatusContext, this.frameCanvases, this.charCanvases);
       this.commandMenuDOM.appendChild(memberStatus.memberStatusDOM);
     }
+
+    if (this.context.itemListContext) {
+      const itemList = new ToolListView(this.context.itemListContext, this.frameCanvases, this.charCanvases);
+      this.commandMenuDOM.appendChild(itemList.memberSelecter);
+    }
+
+    if (this.context.magicListContext) {
+      const magicList = new MagicListView(this.context.magicListContext, this.frameCanvases, this.charCanvases);
+      this.commandMenuDOM.appendChild(magicList.memberSelecter);
+    }
   }
 
   // コマンドメニューの文字を初期化する

@@ -30,8 +30,24 @@ class MemberNameContext {
     // メンバーセレクターコマンドかどうか
     this.isMemberSelectCommand = menu.isMemberSelectorCommand;
     
+    // 「つよさ」コマンドの子のセレクターにはメンバーステータス
     if (menu.label == "status") {
       this.memberStatusContext = new MemberStatusContext(this);
+    }
+
+    // 「どうぐ」コマンドの子のセレクターにはツールリスト
+    if (menu.label == "item") {
+      this.itemListContext = new ItemListContext(this);
+    }
+
+    // 「まほう」コマンドの子のセレクターにはマジックリスト
+    if (menu.label == "magic") {
+      this.magicListContext = new MagicListContext(this);
+    }
+
+    // 「そうび」コマンドの子のセレクターにはエクイプメントリスト
+    if (menu.label == "equipment") {
+      console.log("そうび");
     }
   }
 }

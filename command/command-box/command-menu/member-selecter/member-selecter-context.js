@@ -43,7 +43,7 @@ class MemberSelecterContext extends KeyManageContext {
           isSelected = true;
         }
 
-        this.commandMenus[i][j] = new Command(this.commandMenu.menu.label, this.memberCharacters[i].name, isSelected, false);
+        this.commandMenus[i][j] = new GameCommand(this.commandMenu.menu.label, this.memberCharacters[i].name, isSelected, false);
       }
     }
 

@@ -16,20 +16,20 @@ class CommandBoxContext extends KeyManageContext {
     this.commandMenus = [
       [
         // new Command(label, commandName, isSelected, isMemberSelector);
-        new Command("talk", "はなす", true, false),
-        new Command("magic", "まほう", false, true),
+        new GameCommand("talk", "はなす", true, false),
+        new GameCommand("magic", "まほう", false, true),
       ],
       [
-        new Command("status", "つよさ", false, true),
-        new Command("tools", "もちもの", false, true),
+        new GameCommand("status", "つよさ", false, true),
+        new GameCommand("item", "もちもの", false, true),
       ],
       [
-        new Command("equipment", "そうび", false, true),
-        new Command("search", "しらべる", false, false),
+        new GameCommand("equipment", "そうび", false, true),
+        new GameCommand("search", "しらべる", false, false),
       ],
       [
-        new Command("door", "とびら", false, false),
-        new Command("map", "ちず", false, false),
+        new GameCommand("door", "とびら", false, false),
+        new GameCommand("map", "ちず", false, false),
       ]
     ];
 

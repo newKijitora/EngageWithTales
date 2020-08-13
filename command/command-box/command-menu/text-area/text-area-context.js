@@ -39,7 +39,7 @@ class TextAreaContext extends Context {
     this.textSpeed = this.commandBox.textSpeed;
     
     this.textAreaRows = 5;
-    this.textAreaColumns = 14;
+    this.textAreaColumns = 15;
 
     // 行数と一行あたりの文字数
     this.numberOfRows = 4;

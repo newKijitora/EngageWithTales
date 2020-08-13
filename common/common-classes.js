@@ -68,11 +68,13 @@ class Character {
     this.trunk = trunk;
     this.hp = hp;
     this.mp = mp;
+    this.items = [];
+    this.magics = [];
   }
 }
 
 // コマンドクラス
-class Command {
+class GameCommand {
   // コンストラクタ
   constructor(label, commandName, isSelected, isMemberSelectorCommand) {
     this.label = label;
@@ -84,4 +86,18 @@ class Command {
 
 class GameKeyBoard {
   // コンストラクタ
+}
+
+class GameItem {
+  // コンストラクタ
+  constructor(name) {
+    this.name = name;
+  }
+}
+
+class Magic {
+  // コンストラクタ
+  constructor(name) {
+    this.name = name;
+  }
 }

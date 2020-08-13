@@ -103,26 +103,12 @@ class MemberSelecterView extends CommandBoxViewBase {
     let key = null;
     let destination = null;
 
-    switch (keyCode) {
-      case this.context.leftKey.keyCode:
-        key = this.context.leftKey;
-        destination = this.context.destinations["left"];
-        break;
-      case this.context.rightKey.keyCode:
-        key = this.context.rightKey;
-        destination = this.context.destinations["right"];
-        break;
-      case this.context.topKey.keyCode:
-        key = this.context.topKey;
-        destination = this.context.destinations["top"];
-        break;
-      case this.context.bottomKey.keyCode:
-        key = this.context.bottomKey;
-        destination = this.context.destinations["bottom"];
-        break;
-      default:
-        return;
+    key = this.context.getKey(keyCode);
+    if (!key) {
+      return;
     }
+
+    destination = key.name;
 
     for (let i = 0; i < this.commandMenus.length; i++) {
       for (let j = 0; j < this.commandMenus[i].length; j++) {
@@ -135,7 +121,7 @@ class MemberSelecterView extends CommandBoxViewBase {
         const currentPosition = currentCommand.context.position;
 
         // キー入力に応じた次の状態
-        const nextPosition = new Position(currentPosition.x + destination.left, currentPosition.y + destination.top);
+        const nextPosition = new Position(currentPosition.x + this.context.getDestination(destination).left, currentPosition.y + this.context.getDestination(destination).top);
         const nextPositionIsOutOfRange = !((0 <= nextPosition.x && nextPosition.x <= this.context.commandMenus[0].length - 1) && (0 <= nextPosition.y && nextPosition.y <= this.context.commandMenus.length - 1));
 
         // outOfRangeならカット

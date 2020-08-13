@@ -2,7 +2,7 @@
 class MemberNameContext {
 
   // コンストラクタ
-  constructor(memberSelecter, menuName, isSelected, isMemberSelectCommand, position) {
+  constructor(memberSelecter, menu, position) {
     // メンバーセレクター
     this.memberSelecter = memberSelecter;
 
@@ -11,10 +11,10 @@ class MemberNameContext {
     this.textSize = memberSelecter.textSize;
 
     // コマンドメニュー名
-    this.menuName = menuName;
+    this.menuName = menu.commandName;
 
     // このメニューが選択されているかどうか
-    this.isSelected = isSelected;
+    this.isSelected = menu.isSelected;
 
     this.position = position;
     this.memberSelecterPosition = null;
@@ -28,8 +28,10 @@ class MemberNameContext {
     this.memberSelecterContext = null;
     
     // メンバーセレクターコマンドかどうか
-    this.isMemberSelectCommand = isMemberSelectCommand;
+    this.isMemberSelectCommand = menu.isMemberSelectorCommand;
     
-    this.memberStatusContext = new MemberStatusContext(this);
+    if (menu.label == "status") {
+      this.memberStatusContext = new MemberStatusContext(this);
+    }
   }
 }

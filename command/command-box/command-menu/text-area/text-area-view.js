@@ -1,16 +1,20 @@
-// テキストエリアのビュークラス
+// ------------------------------------------------------------------
+// テキストエリアのビュー
+// ------------------------------------------------------------------
+
 class TextAreaView extends CommandBoxViewBase {
+  
   // コンストラクタ
-  constructor(context) { super(context);
+  constructor(context, frameCanvases, charCanvases) { super(context);
     // コントローラ
     this.controller = context;
 
     // HTML要素
     this.textArea = null;
     this.textFrame = null;
-    this.textFrameCanvases = new Array(this.controller.commandTextures.length);
+    this.textFrameCanvases = frameCanvases;
 
-    this.charCanvases = {};
+    this.charCanvases = charCanvases;
 
     this.cells = new Array(this.controller.numberOfRows);
     for (let i = 0; i < this.controller.numberOfRows; i++) {
@@ -19,9 +23,6 @@ class TextAreaView extends CommandBoxViewBase {
 
     // HTML要素の組成
     this.assemblingElements();
-
-    this.loadImageChars();
-    this.loadImages();
 
     // イベントリスナ
     window.addEventListener("keydown", (event) => this.open(event.keyCode), false);
@@ -172,7 +173,6 @@ class TextAreaView extends CommandBoxViewBase {
       // インナーに行を追加
       textField.appendChild(row);
     }
-    
 
     // テキストエリアをドキュメントに追加
     const textArea = document.createElement("div");
@@ -184,9 +184,6 @@ class TextAreaView extends CommandBoxViewBase {
 
     textArea.appendChild(textFrame);
     
-    // テキストエリアにインナーを追加
-    //textArea.appendChild(textField);
-
     const monitor = document.getElementById("world");
     textArea.appendChild(textField);
     monitor.appendChild(textArea);
@@ -194,99 +191,5 @@ class TextAreaView extends CommandBoxViewBase {
     this.textArea = textArea;
     this.textFrame = textFrame;
     this.textCells = document.getElementsByClassName("textCell");
-  }
-
-  // 画像を読み込んでキャッシュする
-  loadImages() {
-    const images = new Array(this.controller.commandTextures.length);
-    const mapChipSize = this.controller.squareSize;
-    let loadedImageCount = 0;
-
-    for (let i = 0; i < this.controller.commandTextures.length; i++) {
-      images[i] = new Image();
-      images[i].src = "resources/images/" + this.controller.commandTextures[i].texture + ".png";
-
-      // 画像ロードごとのイベントハンドラー
-      images[i].addEventListener("load", (event) => {
-        if (++loadedImageCount < this.textFrameCanvases.length) {
-          return;
-        }
-        
-        for (let i = 0; i < this.textFrameCanvases.length; i++) {
-          const textureCanvas = document.createElement("canvas");
-          textureCanvas.width = mapChipSize.x;
-          textureCanvas.height = mapChipSize.y;         
-
-          const textureContext = textureCanvas.getContext("2d");
-          textureContext.mozImageSmoothingEnabled = false;
-          textureContext.webkitImageSmoothingEnabled = false;
-          textureContext.msImageSmoothingEnabled = false;
-          textureContext.imageSmoothingEnabled = false;
-
-          textureContext.drawImage(images[i], 0, 0, images[i].width, images[i].height, 0, 0, mapChipSize.x, mapChipSize.y);
-          this.textFrameCanvases[i] = textureCanvas;
-        }
-
-        // フレームの描画
-        super.drawFrame(this.textFrame, this.controller.squareSize, this.textFrameCanvases, this.controller.textAreaRows, this.controller.textAreaColumns);
-
-      }, false);
-    }
-  }
-
-  // 文字画像を読み込んでキャッシュする
-  loadImageChars() {
-    // 文字画像をすべて取得する
-    const images = new Array(this.controller.textTextures.length);
-    let loadedImageCount = 0;
-
-    // 画像の読み込みとロードイベントハンドラーの設定
-    for (let i = 0; i < this.controller.textTextures.length; i++) {
-      images[i] = new Image();
-      images[i].src = "resources/images/" + this.controller.textTextures[i].texture + ".png";
-
-      // 画像ロードごとのイベントハンドラー
-      images[i].addEventListener("load", (event) => {
-        if (++loadedImageCount < this.controller.textTextures.length) {
-          return;
-        }
-
-        // すべての文字テクスチャーのキャンバスを生成する
-        const soloCharCanvases = {};
-
-        for (let i = 0; i < this.controller.textTextures.length; i++) {
-          
-          const textureCanvas = document.createElement("canvas");
-          textureCanvas.width = this.controller.squareSize.x / 2;
-          textureCanvas.height = this.controller.squareSize.y / 2;         
-
-          const textureContext = textureCanvas.getContext("2d");
-          textureContext.mozImageSmoothingEnabled = false;
-          textureContext.webkitImageSmoothingEnabled = false;
-          textureContext.msImageSmoothingEnabled = false;
-          textureContext.imageSmoothingEnabled = false;
-
-          textureContext.drawImage(images[i], 0, 0, images[i].width, images[i].height, 0, 0, textureCanvas.width, textureCanvas.height);
-          soloCharCanvases[this.controller.textTextures[i].texture] = textureCanvas;
-        }
-
-        // ソロ文字を組み合わせて一文字分のキャンバスを生成する
-        for (let i = 0; i < this.controller.textElements.length; i++) {
-
-          const textureCanvas = document.createElement("canvas");
-          textureCanvas.width = this.controller.squareSize.x / 2;
-          textureCanvas.height = this.controller.squareSize.y;    
-          
-          const mainChar = soloCharCanvases[this.controller.textElements[i].texture1];
-          const subChar = soloCharCanvases[this.controller.textElements[i].texture2];
-          
-          const context = textureCanvas.getContext("2d");
-          context.drawImage(subChar, 0, 0);
-          context.drawImage(mainChar, 0, this.controller.squareSize.y / 2);
-
-          this.charCanvases[this.controller.textElements[i].read] = textureCanvas;
-        }
-      }, false);
-    }
   }
 }

@@ -81,3 +81,7 @@ class Command {
     this.isMemberSelectorCommand = isMemberSelectorCommand;
   }
 }
+
+class GameKeyBoard {
+  // コンストラクタ
+}

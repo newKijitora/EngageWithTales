@@ -1,8 +1,11 @@
-// キャラクターセレクタ―のコンテキスト
-class MemberSelecterContext extends Context {
+// ------------------------------------------------------------------
+// メンバーセレクターのコンテキスト
+// ------------------------------------------------------------------
+
+class MemberSelecterContext extends KeyManageContext {
   
   // コンストラクタ
-  constructor(commandMenu) { super();
+  constructor(commandMenu) { super(commandMenu.commandBox.town);
     // コマンドメニュー
     this.commandMenu = commandMenu;
 
@@ -18,7 +21,7 @@ class MemberSelecterContext extends Context {
     this.memberSelecterPosition = new Position(0, 1);
 
     // メニューの名前
-    this.title = this.commandMenu.menuName;
+    this.title = this.commandMenu.menu.name;
 
     // メンバーセレクターの背景色
     this.backgroundColor = this.commandMenu.commandBox.backgroundColor;
@@ -40,25 +43,9 @@ class MemberSelecterContext extends Context {
           isSelected = true;
         }
 
-        this.commandMenus[i][j] = new Command("", this.memberCharacters[i].name, isSelected, false);
+        this.commandMenus[i][j] = new Command(this.commandMenu.menu.label, this.memberCharacters[i].name, isSelected, false);
       }
     }
-
-    // キー
-    this.leftKey = new Key(this.commandMenu.commandBox.town.settings.keyCodes["left"], "left", "keyup");
-    this.rightKey = new Key(this.commandMenu.commandBox.town.settings.keyCodes["right"], "right", "keyup");
-    this.bottomKey = new Key(this.commandMenu.commandBox.town.settings.keyCodes["bottom"], "bottom", "keyup");
-    this.topKey = new Key(this.commandMenu.commandBox.town.settings.keyCodes["top"], "top", "keyup");
-    this.openKey = new Key(this.commandMenu.commandBox.town.settings.keyCodes["open"], "open", "keyup");
-    this.closeKey = new Key(this.commandMenu.commandBox.town.settings.keyCodes["close"], "close", "keyup");
-    
-    // 方向ごとの進み具合
-    this.destinations = {
-      "top": new Destination(-1, 0),
-      "left": new Destination(0, -1),
-      "right": new Destination(0, 1),
-      "bottom": new Destination(1, 0),
-    };
 
     this.currentCommandMenu = null;
 
@@ -75,14 +62,9 @@ class MemberSelecterContext extends Context {
     for (let i = 0; i < this.memberNameContexts.length; i++) {
       this.memberNameContexts[i] = new Array(this.commandMenus[i].length);
       for (let j = 0; j < this.memberNameContexts[i].length; j++) {
-        const commandMenuName = this.commandMenus[i][j].commandName;
-        const isSelected = this.commandMenus[i][j].isSelected;
-        const isMemberSelectCommand = this.commandMenus[i][j].isMemberSelectorCommand;
-        const position = new Position(j, i);
-
-        this.memberNameContexts[i][j] = new MemberNameContext(this, commandMenuName, isSelected, isMemberSelectCommand, position);
+        this.memberNameContexts[i][j] = new MemberNameContext(this, this.commandMenus[i][j], new Position(j, i));
         
-        if (isSelected) {
+        if (this.commandMenus[i][j].isSelected) {
           this.currentCommandMenu = this.memberNameContexts[i][j];
         }
       }

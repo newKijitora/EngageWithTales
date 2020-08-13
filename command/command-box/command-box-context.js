@@ -1,24 +1,21 @@
+// ------------------------------------------------------------------
 // コマンドボックスのコンテキスト（コマンド関連オブジェクトのルート）
-class CommandBoxContext extends Context {
+// ------------------------------------------------------------------
+
+class CommandBoxContext extends KeyManageContext {
 
   // コンストラクタ
-  constructor(town, zIndexBase) { super();
+  constructor(town, zIndexBase) { super(town);
     // 町オブジェクト
     this.town = town;
 
-    // 一コマのサイズと文字のサイズ
-    this.squareSize = this.town.settings.squareSize;
+    // 文字のサイズ
     this.textSize = this.town.settings.textSize;
-
-    // コマンドボックスの背景色
-    this.backgroundColor = this.town.settings.commandBoxBackgroundColor;
-
-    // コマンドボックスの左上位置
-    this.commandBoxPosition = new Position(5, 2);
 
     // コマンドのメニュー
     this.commandMenus = [
       [
+        // new Command(label, commandName, isSelected, isMemberSelector);
         new Command("talk", "はなす", true, false),
         new Command("magic", "まほう", false, true),
       ],
@@ -36,64 +33,52 @@ class CommandBoxContext extends Context {
       ]
     ];
 
-    // コマンドフレームのサイズ
+    // コマンドボックスのサイズ（行数と列数）
     this.commandBoxRows = this.commandMenus.length + 1;
     this.commandBoxColumns = 7; // 変数を検討
 
-    // コマンドフレームのテクスチャー
-    this.commandTextures = this.town.resource.commandTextures;
+    // コマンドボックスのフレーム用テクスチャーを格納した配列
+    this.commandTextures = this.town.resource.commandFrameTextures;
 
-    // テキスト用のテクスチャーと文字エレメント
+    // コマンドボックスの背景色
+    this.backgroundColor = this.town.settings.commandBoxBackgroundColor;
+
+    // コマンドボックスの左上位置
+    this.commandBoxPosition = new Position(5, 2);
+    
+    // テキスト用の文字テクスチャーと文字エレメント
     this.textTextures = this.town.resource.textTextures;
     this.textElements = this.town.resource.textElements;
 
     // テキストのスピード
     this.textSpeed = this.town.settings.textSpeed;
 
-    // ビューの状態
+    // ビューの初期状態
     this.viewState = "closed";
     this.zIndexBase = zIndexBase;
 
-    // キー
-    this.leftKey = new Key(this.town.settings.keyCodes["left"], "left", "keyup");
-    this.rightKey = new Key(this.town.settings.keyCodes["right"], "right", "keyup");
-    this.bottomKey = new Key(this.town.settings.keyCodes["bottom"], "bottom", "keyup");
-    this.topKey = new Key(this.town.settings.keyCodes["top"], "top", "keyup");
-    this.openKey = new Key(this.town.settings.keyCodes["open"], "open", "keyup");
-    this.closeKey = new Key(this.town.settings.keyCodes["close"], "close", "keyup");
-    
     // 冒険のパーティ
     this.memberCharacters = this.town.memberCharacters;
-
-    // 方向ごとの進み具合
-    this.destinations = {
-      "top": new Destination(-1, 0),
-      "left": new Destination(0, -1),
-      "right": new Destination(0, 1),
-      "bottom": new Destination(1, 0),
-    };
 
     // テキストエリアのコンテキスト
     this.textAreaContext = new TextAreaContext(this, this.zIndexBase);
 
-    // 選択中のコマンドメニュー
-    this.currentCommandMenu = null;
+    // 選択中のコマンドメニューのコンテキスト
+    this.currentCommandMenuContext = null;
 
-    // コマンドメニューのコントローラーを生成する
-    this.commandMenuControllers = new Array(this.commandMenus.length);
+    // コマンドメニューのコンテキストを生成する
+    this.commandMenuContexts = new Array(this.commandMenus.length);
 
-    for (let i = 0; i < this.commandMenuControllers.length; i++) {
-      this.commandMenuControllers[i] = new Array(this.commandMenus[i].length);
-      for (let j = 0; j < this.commandMenuControllers[i].length; j++) {
-        const commandMenuName = this.commandMenus[i][j].commandName;
-        const isSelected = this.commandMenus[i][j].isSelected;
-        const isMemberSelectCommand = this.commandMenus[i][j].isMemberSelectorCommand;
-        const position = new Position(j, i);
+    for (let i = 0; i < this.commandMenuContexts.length; i++) {
+      this.commandMenuContexts[i] = new Array(this.commandMenus[i].length);
+      for (let j = 0; j < this.commandMenuContexts[i].length; j++) {
 
-        this.commandMenuControllers[i][j] = new CommandMenuContext(this, commandMenuName, isSelected, isMemberSelectCommand, position);
+        // コマンドメニューのコンテキスト
+        this.commandMenuContexts[i][j] = new CommandMenuContext(this, this.commandMenus[i][j], new Position(j, i));
         
-        if (isSelected) {
-          this.currentCommandMenu = this.commandMenuControllers[i][j];
+        // 初期状態で選択されるコマンドメニューをカレントに設定
+        if (this.commandMenus[i][j].isSelected) {
+          this.currentCommandMenuContext = this.commandMenuContexts[i][j];
         }
       }
     }
@@ -102,26 +87,38 @@ class CommandBoxContext extends Context {
     this.entry(this);
   }
 
-  // オープンできるかどうか
+  // コマンドボックスを開くことができるかどうか
   get canOpen() {
+    // ビュー状態がオープンならカット
     if (this.viewState == "opened") {
       return false;
     }
 
-    // コンテキストのチェック
-    return this.checkContextForOpen();
+    return true;
   }
 
-  // クローズできるかどうか
+  // コマンドボックスを閉じることができるかどうか
   get canClose() {
+    // ビュー状態がクローズならカット
     if (this.viewState == "closed") {
       return false;
     }
 
-    // コンテキストのチェック
-    return this.checkContextForClose();
+    // テキストボックスが進行中であればカット
+    if (this.textAreaContext && this.textAreaContext.isProgress) {
+      return false;
+    }
+
+    // メンバーセレクトコマンドが選択中で、かつオープン状態ならカット
+    if (this.currentCommandMenuContext.isMemberSelectCommand &&
+      this.currentCommandMenuContext.memberSelecterContext.viewState == "opened") {
+      return false;
+    }
+
+    return true;
   }
 
+  // コマンドの選択を変更することができるかどうか
   get canSelectionChange() {
     // ビュー状態がclosedであればカット
     if (this.viewState == "closed") {
@@ -133,28 +130,9 @@ class CommandBoxContext extends Context {
       return false;
     }
 
-    // メンバーセレクターメニューが選択されていて、そのステータスがopendeであればカット
-    const memberSelecterContext = this.currentCommandMenu.memberSelecterContext;
-    if (memberSelecterContext && memberSelecterContext.viewState == "opened") {
-      return false;
-    }
-
-    return true;
-  }
-
-  // オープンできるかどうか：コンテキストのチェック
-  checkContextForOpen() {
-    return true;
-  }
-
-  // クローズできるかどうか：コンテキストのチェック
-  checkContextForClose() {
-    // テキストボックスが進行中であれば不可
-    if (this.textAreaContext && this.textAreaContext.isProgress) {
-      return false;
-    }
-
-    if (this.currentCommandMenu.isMemberSelectCommand && this.currentCommandMenu.memberSelecterContext.viewState == "opened") {
+    // メンバーセレクトコマンドが選択中で、かつオープン状態ならカット
+    if (this.currentCommandMenuContext.isMemberSelectCommand &&
+      this.currentCommandMenuContext.memberSelecterContext.viewState == "opened") {
       return false;
     }
 

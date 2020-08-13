@@ -203,7 +203,7 @@ class Resources {
   ];
 
   // コマンドのテクスチャー
-  commandTextures = [
+  commandFrameTextures = [
     new Texture("frame-left-top"),
     new Texture("frame-left-bottom"),
     new Texture("frame-right-bottom"),

@@ -1,4 +1,7 @@
-// テキストエリアのコントローラークラス
+// ------------------------------------------------------------------
+// テキストエリアのコンテキストクラス
+// ------------------------------------------------------------------
+
 class TextAreaContext extends Context {
   // コンストラクタ
   constructor(commandBox, zIndexBase) { super();
@@ -42,9 +45,6 @@ class TextAreaContext extends Context {
     this.numberOfRows = 4;
     this.numberOfCells = 22;
     this.zIndexBase = zIndexBase;
-
-    // エントリー
-    this.entry(this);
   }
 
   // オープンできるかどうか
@@ -57,6 +57,7 @@ class TextAreaContext extends Context {
     if (this.viewState == "opened") {
       return false;
     }
+
     return this.checkContextForOpen();
   }
 
@@ -71,10 +72,11 @@ class TextAreaContext extends Context {
 
   // オープンできるかどうか：コンテキストのチェック
   checkContextForOpen() {
-    console.log(this.commandBox.currentCommandMenu.menuName);
-    if (this.commandBox.currentCommandMenu.menuName != "はなす") {     
+    // 選択中のコマンドメニューが「はなす」でなければカット
+    if (this.commandBox.currentCommandMenuContext.menuName != "はなす") {     
       return false;
     }
+
     return true;
   }
 

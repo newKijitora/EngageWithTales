@@ -48,18 +48,10 @@ class MemberNameView extends CommandBoxViewBase {
     this.commandText = commandText;
 
     // メンバーステータスの生成
-    const memberStatus = new MemberStatusView(this.context.memberStatusContext, this.frameCanvases, this.charCanvases);
-    this.commandMenuDOM.appendChild(memberStatus.memberStatusDOM);
-    // // メンバーセレクターの生成
-    // if (this.context.isMemberSelectCommand) {
-    //   const memberSelecter = new MemberSelecterView(this.context.memberSelecterContext, this.charCanvases);
-    //   memberSelecter.memberSelecter.style.top = this.context.memberSelecterPosition.y + "px";
-    //   memberSelecter.memberSelecter.style.left = this.context.memberSelecterPosition.x + "px";
-    
-    //   commandMenu.appendChild(memberSelecter.memberSelecter);
-
-    //   this.memberSelecter = memberSelecter;
-    // }
+    if (this.context.memberStatusContext) {
+      const memberStatus = new MemberStatusView(this.context.memberStatusContext, this.frameCanvases, this.charCanvases);
+      this.commandMenuDOM.appendChild(memberStatus.memberStatusDOM);
+    }
   }
 
   // コマンドメニューの文字を初期化する

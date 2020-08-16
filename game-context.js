@@ -7,6 +7,5 @@ class GameContext {
 
   static main() {
     const world = new WorldContext();
-    world.open();
   }
 }

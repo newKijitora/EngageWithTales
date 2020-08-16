@@ -47,7 +47,7 @@ class MemberNameContext {
 
     // 「そうび」コマンドの子のセレクターにはエクイプメントリスト
     if (menu.label == "equipment") {
-      console.log("そうび");
+      this.equipmentPartsContext = new EquipmentPartsContext(this);
     }
   }
 }

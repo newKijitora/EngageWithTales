@@ -26,9 +26,6 @@ class PeopleContext extends MovableContext {
     this.action = action;
 
     this.zIndexBase = zIndexBase;
-    
-    // エントリー
-    this.entry(this);
   }
 
   // キーコードの乱数

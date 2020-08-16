@@ -31,9 +31,6 @@ class MapAreaContext extends MovableContext {
     
     // 進行方向の設定
     this.setDestinationStyle("backward");
-
-    // エントリー
-    this.entry(this);
   }
 
   // 動作が可能かどうか

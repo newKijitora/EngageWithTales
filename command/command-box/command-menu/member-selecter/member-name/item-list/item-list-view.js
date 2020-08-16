@@ -67,7 +67,7 @@ class ToolListView extends CommandBoxViewBase {
 
     // どうぐをもっていればフレームを描画
     if (this.context.commandMenus.length != 0) {
-      super.drawFrame(commandFrameDOM, this.context.squareSize, this.frameCanvases, this.context.commandBoxRows, 6)
+      super.drawFrame(commandFrameDOM, this.context.squareSize, this.frameCanvases, this.context.commandBoxRows, this.context.commandBoxColumns)
     } else {
       // どうぐをもっていない場合
     }

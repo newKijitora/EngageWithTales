@@ -6,28 +6,34 @@ class ItemListContext extends KeyManageContext {
   
   // コンストラクタ
   constructor(memberName) { super(memberName.memberSelecter.commandMenu.commandBox.town);
-    // メンバーネーム
+    // 親コンテキスト：メンバーネーム
     this.memberName = memberName;
 
-    // 一コマのサイズと文字サイズ
-    this.squareSize = memberName.squareSize;
-    this.textSize = memberName.textSize;
+    // 一コマのサイズ
+    this.squareSize = this.memberName.squareSize;
+
+    // 文字のサイズ
+    this.textSize = this.memberName.textSize;
 
     // キー
     this.openKey = memberName.memberSelecter.openKey;
     this.closeKey = memberName.memberSelecter.closeKey;
 
-    // コマンドボックスの左上位置
+    // アイテムリストの左上位置
     this.itemListPosition = new Position(6, -2);
 
     // メニューの名前
     this.title = this.memberName.menuName;
+    this.maxTitleLength = 8;
 
-    // メンバーセレクターの背景色
+    // アイテムリストの背景色
     this.backgroundColor = this.memberName.memberSelecter.backgroundColor;
 
     // 初期ステータス
     this.viewState = "closed";
+
+    // 選択中のコマンドメニュー
+    this.currentCommandMenu = null;
 
     // どうぐのリスト
     for (let i = 0; i < this.memberName.memberSelecter.memberCharacters.length; i++) {
@@ -36,29 +42,27 @@ class ItemListContext extends KeyManageContext {
       }
     }
 
-    // コマンドのメニュー（冒険のパーティの名前で生成）
+    // コマンドフレームのサイズ
+    this.commandBoxRows = this.items.length + 1;
+    this.commandBoxColumns = (this.maxTitleLength / 2) + 2; // 変数を検討（+2 はコマンドポインターの分）
+
+    // 子要素が開いているかどうか
+    this.isChildOpened = false;
+
+    // コマンドのメニュー（どうぐの名前で生成）
     this.commandMenus = new Array(this.items.length);
 
     for (let i = 0; i < this.commandMenus.length; i++) {
       this.commandMenus[i] = new Array(1);
       for (let j = 0; j < this.commandMenus[i].length; j++) {
         let isSelected = false;
-        if (i == 0) {
+        if (i == 0) { // 初回は先頭のアイテムが選択状態
           isSelected = true;
         }
 
         this.commandMenus[i][j] = new GameCommand("", this.items[i].name, isSelected, false);
       }
     }
-
-    this.currentCommandMenu = null;
-
-    // コマンドフレームのサイズ
-    this.commandBoxRows = this.items.length + 1;
-    this.commandBoxColumns = 6; // 変数を検討
-
-    //this.memberStatusController = new MemberStatusContext(this);
-    this.isChildOpened = false;
 
     // コマンドメニューのコンテキストを生成する
     this.memberNameContexts = new Array(this.commandMenus.length);

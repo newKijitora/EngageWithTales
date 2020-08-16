@@ -53,7 +53,6 @@ class MemberSelecterContext extends KeyManageContext {
     this.commandBoxRows = this.memberCharacters.length + 1;
     this.commandBoxColumns = 4; // 変数を検討
 
-    //this.memberStatusController = new MemberStatusContext(this);
     this.isChildOpened = false;
 
     // コマンドメニューのコンテキストを生成する
@@ -66,6 +65,10 @@ class MemberSelecterContext extends KeyManageContext {
         
         if (this.commandMenus[i][j].isSelected) {
           this.currentCommandMenu = this.memberNameContexts[i][j];
+        }
+
+        if (this.memberNameContexts[i][j].equipmentPartsContext) {
+          this.isChildChildOpened = false;
         }
       }
     }
@@ -81,15 +84,28 @@ class MemberSelecterContext extends KeyManageContext {
 
   // クローズできるかどうか
   get canClose() {
-    
+    if (this.viewState == "closed" || (this.currentCommandMenu.equipmentPartsContext && this.currentCommandMenu.equipmentPartsContext.isChildOpened)) {
+      return false;
+    }
+
+    if (this.viewState == "closed" || this.isChildChildOpened) {
+      this.isChildChildOpened = false;
+      return false;
+    }
+
     if (this.viewState == "closed" || this.isChildOpened) {
       this.isChildOpened = false;
       return false;
     }
+    
     return true;
   }
 
   get canSelectionChange() {
+    if (this.currentCommandMenu.equipmentPartsContext && this.currentCommandMenu.equipmentPartsContext.isChildOpened) {
+      return false;
+    }
+
     // ビュー状態がclosedであればカット
     if (this.viewState == "closed") {
       return false;

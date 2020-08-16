@@ -1,5 +1,5 @@
 // メンバーセレクターのビュークラス
-class ToolListView extends CommandBoxViewBase {
+class EquipmentItemListView extends CommandBoxViewBase {
 
   // コンストラクタ
   constructor(context, frameCanvases, charCanvases) { super(context);
@@ -90,6 +90,7 @@ class ToolListView extends CommandBoxViewBase {
     if (keyCode == this.context.openKey.keyCode && this.context.canOpen) {
       this.memberSelecter.style.display = "block";
       this.context.viewState = "opened";
+      this.context.memberName.memberSelecter.memberName.memberSelecter.isChildChildOpened = true;
       this.context.memberName.memberSelecter.isChildOpened = true;
     }
   }

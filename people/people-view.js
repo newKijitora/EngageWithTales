@@ -1,9 +1,14 @@
-// ピープルクラス
+// ------------------------------------------------------------------
+// マップ上のキャラクターのビュー
+// ------------------------------------------------------------------
+
 class PeopleView extends MovableView {
   // コンストラクタ   
-  constructor(context) { super();
+  constructor(context, peopleCanvases) { super();
     // コンテキスト
     this.context = context;
+
+    this.peopleCanvases = peopleCanvases;
 
     // ビュー上のオブジェクト
     this.peopleDom = null;
@@ -118,7 +123,7 @@ class PeopleView extends MovableView {
       [this.context.currentPosition.y + this.context.getDestination(destination).top / this.context.squareSize.y]
       [this.context.currentPosition.x + this.context.getDestination(destination).left / this.context.squareSize.x]) {
       this.context.peopleName = this.context.peopleName.replace(this.context.peopleName.substring(this.context.peopleName.indexOf("_") + 1), destination)
-      this.peopleImage.src = "resources/images/" + this.context.peopleName + ".png";
+      this.drawCharacter(this.peopleImage);
       return;
     }
     
@@ -151,7 +156,7 @@ class PeopleView extends MovableView {
       }
       
       this.context.peopleName = this.context.peopleName.replace(this.context.peopleName.substring(this.context.peopleName.indexOf("_") + 1), destination)
-      this.peopleImage.src = "resources/images/" + this.context.peopleName + ".png";
+      this.drawCharacter(this.peopleImage);
 
       // 動作開始
       this.move(this.context.getDestination(destination));
@@ -189,10 +194,14 @@ class PeopleView extends MovableView {
     people.style.top = ((this.context.basePosition.y - this.context.mapUpperLeftPosition.y) * this.context.squareSize.y - 8) + "px";
     people.style.left = (this.context.basePosition.x - this.context.mapUpperLeftPosition.x) * this.context.squareSize.x + "px";
 
-    const image = document.createElement("img");
-    image.src = "resources/images/" + this.context.peopleName + ".png";
-    image.style.width = this.context.squareSize.x + "px";
-    image.style.height = this.context.squareSize.y + "px";
+    // キャンバス要素
+    const image = document.createElement("canvas");
+    image.style.display = "block";
+    image.width = this.context.squareSize.x;
+    image.height = this.context.squareSize.y;
+
+    // キャラクターの描画
+    this.drawCharacter(image);
 
     people.appendChild(image);
     peopleField.appendChild(people);
@@ -201,6 +210,14 @@ class PeopleView extends MovableView {
     this.peopleImage = image;
 
     this.context.collisionMap[this.context.currentPosition.y][this.context.currentPosition.x] = false;
+  }
+
+  // キャラクターの描画
+  drawCharacter(canvas) {
+    const context = canvas.getContext("2d");
+    context.clearRect(0, 0, canvas.width, canvas.height);
+    const image = this.peopleCanvases[this.context.peopleName];
+    context.drawImage(image, 0, 0, image.width, image.height, 0, 0, canvas.width, canvas.height);
   }
 
   autoMove() {

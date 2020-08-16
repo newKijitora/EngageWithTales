@@ -1,12 +1,15 @@
 //----------------------------------------------
-// 町のクラス
+// 町のコンテキスト
 //----------------------------------------------
 
-class Town {
+class TownContext {
   // コンストラクタ
-  constructor(world, townName) {
+  constructor(world) {
     // 各種設定
     this.settings = world.settings;
+
+    // 町の情報
+    this.townInformation = world.townInformation;
 
     // リソース
     this.resource = world.resource;
@@ -16,9 +19,6 @@ class Town {
 
     // テキストのテクスチャー
     this.textTextures = world.textTextures;
-
-    // 町の情報
-    this.townInformation = null;
 
     // マップに関するデータ
     this.map = null;
@@ -33,26 +33,15 @@ class Town {
 
     // 現在のキャラクターパーティ
     this.memberCharacters = world.memberCharacters;
-
-    // 町の生成
-    this.requestInformation(world, townName);
   }
 
   // JSONから町の情報を取得する
   requestInformation(world, townName) {
-    const request = new XMLHttpRequest();
-    request.responseType = "json";
-
-    request.onload = () => {
-      // JSONにあるすべての町の情報
-      const towns = request.response;
-      
       // マップグリッドの数
       const mapWidth = this.settings.mapWidth;
       const mapHeight = this.settings.mapHeight;
 
       // 該当の町の情報を取得
-      this.townInformation = towns[townName];
       this.map = world.resource.maps[this.townInformation.mapIndex];
       this.mainTextureIndex = this.townInformation.mainTextureIndex;
       
@@ -69,10 +58,6 @@ class Town {
 
       // コマンドボックス
       this.commandBoxController = new CommandBoxContext(this, 300);
-    };
-
-    request.open("GET", world.townJsonUrl);
-    request.send();
   }
 
   talk() {

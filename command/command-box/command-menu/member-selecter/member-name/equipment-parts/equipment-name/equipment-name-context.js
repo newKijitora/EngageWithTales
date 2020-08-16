@@ -1,5 +1,5 @@
 // コマンドメニューのコントローラー
-class MemberNameContext {
+class EquipmentNameContext {
 
   // コンストラクタ
   constructor(memberSelecter, menu, position) {
@@ -20,7 +20,7 @@ class MemberNameContext {
     this.memberSelecterPosition = null;
 
     // コマンドメニューのサイズ
-    this.size = new Size(80, 32);
+    //this.size = new Size(80, 32);
 
     // 冒険のパーティ
     this.memberCharacters = this.memberSelecter.memberCharacters;
@@ -29,25 +29,10 @@ class MemberNameContext {
     
     // メンバーセレクターコマンドかどうか
     this.isMemberSelectCommand = menu.isMemberSelectorCommand;
-    
-    // 「つよさ」コマンドの子のセレクターにはメンバーステータス
-    if (menu.label == "status") {
-      this.memberStatusContext = new MemberStatusContext(this);
-    }
-
-    // 「どうぐ」コマンドの子のセレクターにはツールリスト
-    if (menu.label == "item") {
-      this.itemListContext = new ItemListContext(this);
-    }
-
-    // 「まほう」コマンドの子のセレクターにはマジックリスト
-    if (menu.label == "magic") {
-      this.magicListContext = new MagicListContext(this);
-    }
 
     // 「そうび」コマンドの子のセレクターにはエクイプメントリスト
     if (menu.label == "equipment") {
-      this.equipmentPartsContext = new EquipmentPartsContext(this);
+      this.itemListContext = new EquipmentItemListContext(this);
     }
   }
 }

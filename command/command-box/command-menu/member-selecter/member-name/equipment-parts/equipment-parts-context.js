@@ -1,8 +1,8 @@
 // ------------------------------------------------------------------
-// アイテムリストのコンテキスト
+// 装備部位のコンテキスト
 // ------------------------------------------------------------------
 
-class ItemListContext extends KeyManageContext {
+class EquipmentPartsContext extends KeyManageContext {
   
   // コンストラクタ
   constructor(memberName) { super(memberName.memberSelecter.commandMenu.commandBox.town);
@@ -20,11 +20,13 @@ class ItemListContext extends KeyManageContext {
     this.closeKey = memberName.memberSelecter.closeKey;
 
     // アイテムリストの左上位置
-    this.itemListPosition = new Position(6, -2);
+    this.itemListPosition = new Position(4, 0);
+
+    this.memberCharacters = memberName.memberSelecter.memberCharacters;
 
     // メニューの名前
     this.title = this.memberName.menuName;
-    this.maxTitleLength = 8;
+    this.maxTitleLength = 4;
 
     // アイテムリストの背景色
     this.backgroundColor = this.memberName.memberSelecter.backgroundColor;
@@ -35,45 +37,41 @@ class ItemListContext extends KeyManageContext {
     // 選択中のコマンドメニュー
     this.currentCommandMenu = null;
 
-    // どうぐのリスト
-    for (let i = 0; i < this.memberName.memberSelecter.memberCharacters.length; i++) {
-      if (this.memberName.memberSelecter.memberCharacters[i].name == this.title) {
-        this.items = this.memberName.memberSelecter.memberCharacters[i].items;
-      }
-    }
+    // コマンドのメニュー
+    this.commandMenus = [
+      [
+        // new Command(label, commandName, isSelected, isMemberSelector);
+        new GameCommand("equipment", "ぶき", true, false),
+      ],
+      [
+        new GameCommand("equipment", "ぼうぐ", false, true),
+      ],
+      [
+        new GameCommand("equipment", "たて", false, true),
+      ],
+      [
+        new GameCommand("equipment", "あたま", false, false),
+      ]
+    ];
 
     // コマンドフレームのサイズ
-    this.commandBoxRows = this.items.length + 1;
+    this.commandBoxRows = this.commandMenus.length + 1;
     this.commandBoxColumns = (this.maxTitleLength / 2) + 2; // 変数を検討（+2 はコマンドポインターの分）
 
     // 子要素が開いているかどうか
     this.isChildOpened = false;
 
-    // コマンドのメニュー（どうぐの名前で生成）
-    this.commandMenus = new Array(this.items.length);
-
-    for (let i = 0; i < this.commandMenus.length; i++) {
-      this.commandMenus[i] = new Array(1);
-      for (let j = 0; j < this.commandMenus[i].length; j++) {
-        let isSelected = false;
-        if (i == 0) { // 初回は先頭のアイテムが選択状態
-          isSelected = true;
-        }
-
-        this.commandMenus[i][j] = new GameCommand("", this.items[i].name, isSelected, false);
-      }
-    }
-
     // コマンドメニューのコンテキストを生成する
-    this.memberNameContexts = new Array(this.commandMenus.length);
+    this.equipmentNameContexts = new Array(this.commandMenus.length);
 
-    for (let i = 0; i < this.memberNameContexts.length; i++) {
-      this.memberNameContexts[i] = new Array(this.commandMenus[i].length);
-      for (let j = 0; j < this.memberNameContexts[i].length; j++) {
-        this.memberNameContexts[i][j] = new ItemNameContext(this, this.commandMenus[i][j], new Position(j, i));
+    for (let i = 0; i < this.equipmentNameContexts.length; i++) {
+      this.equipmentNameContexts[i] = new Array(this.commandMenus[i].length);
+      for (let j = 0; j < this.equipmentNameContexts[i].length; j++) {
+        this.equipmentNameContexts[i][j] = new EquipmentNameContext(this, this.commandMenus[i][j], new Position(j, i));
         
+
         if (this.commandMenus[i][j].isSelected) {
-          this.currentCommandMenu = this.memberNameContexts[i][j];
+          this.currentCommandMenu = this.equipmentNameContexts[i][j];
         }
       }
     }

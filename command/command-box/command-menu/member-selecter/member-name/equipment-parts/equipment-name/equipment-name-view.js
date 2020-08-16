@@ -1,5 +1,5 @@
 // コマンドメニューのビュー
-class MemberNameView extends CommandBoxViewBase {
+class EquipmentNameView extends CommandBoxViewBase {
 
   // コンストラクタ
   constructor(context, commandText, frameCanvases, charCanvases) { super(context);
@@ -35,7 +35,7 @@ class MemberNameView extends CommandBoxViewBase {
 
     // コマンドメニュー要素
     const commandText = document.createElement("canvas");
-    commandText.width = 64; // 4文字分
+    commandText.width = 128; // 8文字分
     commandText.height = 32;
 
     // コマンドメニューのコンテナにポインターとメニューを格納
@@ -47,25 +47,9 @@ class MemberNameView extends CommandBoxViewBase {
     this.commandPointer = commandPointer;
     this.commandText = commandText;
 
-    // メンバーステータスの生成
-    if (this.context.memberStatusContext) {
-      const memberStatus = new MemberStatusView(this.context.memberStatusContext, this.frameCanvases, this.charCanvases);
-      this.commandMenuDOM.appendChild(memberStatus.memberStatusDOM);
-    }
-
     if (this.context.itemListContext) {
-      const itemList = new ToolListView(this.context.itemListContext, this.frameCanvases, this.charCanvases);
-      this.commandMenuDOM.appendChild(itemList.memberSelecter);
-    }
-
-    if (this.context.magicListContext) {
-      const magicList = new MagicListView(this.context.magicListContext, this.frameCanvases, this.charCanvases);
-      this.commandMenuDOM.appendChild(magicList.memberSelecter);
-    }
-
-    if (this.context.equipmentPartsContext) {
-      const equipmentParts = new EquipmentPartsView(this.context.equipmentPartsContext, this.frameCanvases, this.charCanvases);
-      this.commandMenuDOM.appendChild(equipmentParts.memberSelecter);
+      const toolList = new EquipmentItemListView(this.context.itemListContext, this.frameCanvases, this.charCanvases);
+      this.commandMenuDOM.appendChild(toolList.memberSelecter);
     }
   }
 

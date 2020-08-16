@@ -214,6 +214,19 @@ class Resources {
     new Texture("frame-bottom"),
   ];
 
+  // 人物のテクスチャー
+  peopleTextures = [
+    new Texture("hero_bottom"),
+    new Texture("hero_left"),
+    new Texture("hero_right"),
+    new Texture("hero_top"),
+    new Texture("heroin_bottom"),
+    new Texture("heroin_left"),
+    new Texture("heroin_right"),
+    new Texture("heroin_top"),
+    new Texture("boss"),
+  ];
+
   // 文字
   textElements = [
     // 通常ひらがなここから

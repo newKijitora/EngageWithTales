@@ -1,5 +1,8 @@
-// メンバーセレクターのビュークラス
-class ToolListView extends CommandBoxViewBase {
+// ------------------------------------------------------------------
+// 装備部位のビュー
+// ------------------------------------------------------------------
+
+class EquipmentPartsView extends CommandBoxViewBase {
 
   // コンストラクタ
   constructor(context, frameCanvases, charCanvases) { super(context);
@@ -56,7 +59,7 @@ class ToolListView extends CommandBoxViewBase {
     for (let i = 0; i < commandMenus.length; i++) {
       commandMenus[i] = new Array(this.context.commandMenus[i].length);
       for (let j = 0; j < commandMenus[i].length; j++) {
-        commandMenus[i][j] = new ItemNameView(this.context.memberNameContexts[i][j], this.context.commandMenus[i][j].commandName, this.frameCanvases, this.charCanvases);
+        commandMenus[i][j] = new EquipmentNameView(this.context.equipmentNameContexts[i][j], this.context.commandMenus[i][j].commandName, this.frameCanvases, this.charCanvases);
         selectField.appendChild(commandMenus[i][j].commandMenuDOM);
         commandMenus[i][j].initialize(this.charCanvases);
       }

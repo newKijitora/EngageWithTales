@@ -82,9 +82,6 @@ class CommandBoxContext extends KeyManageContext {
         }
       }
     }
-
-    // エントリー
-    this.entry(this);
   }
 
   // コマンドボックスを開くことができるかどうか

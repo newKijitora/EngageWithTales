@@ -2,10 +2,10 @@
 // 装備部位のコンテキスト
 // ------------------------------------------------------------------
 
-class EquipmentPartsContext extends KeyManageContext {
-  
+class EquipmentSelectorContext extends KeyManageContext {
+
   // コンストラクタ
-  constructor(memberName) { super(memberName.memberSelecter.commandMenu.commandBox.town);
+  constructor(memberName) { super(memberName.memberSelecter.memberName.memberSelecter.memberName.memberSelecter.commandMenu.commandBox.town);
     // 親コンテキスト：メンバーネーム
     this.memberName = memberName;
 
@@ -67,7 +67,7 @@ class EquipmentPartsContext extends KeyManageContext {
     for (let i = 0; i < this.equipmentNameContexts.length; i++) {
       this.equipmentNameContexts[i] = new Array(this.commandMenus[i].length);
       for (let j = 0; j < this.equipmentNameContexts[i].length; j++) {
-        this.equipmentNameContexts[i][j] = new EquipmentNameContext(this, this.commandMenus[i][j], new Position(j, i));
+        this.equipmentNameContexts[i][j] = new EquipmentSelectMenuContext(this, this.commandMenus[i][j], new Position(j, i));
         
 
         if (this.commandMenus[i][j].isSelected) {

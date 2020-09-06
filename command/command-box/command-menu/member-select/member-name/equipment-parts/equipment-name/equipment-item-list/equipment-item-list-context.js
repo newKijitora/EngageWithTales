@@ -1,64 +1,68 @@
 // ------------------------------------------------------------------
-// マジックリストのコンテキスト
+// 装備候補リストのコンテキスト
 // ------------------------------------------------------------------
 
-class MagicListContext extends KeyManageContext {
+class EquipmentItemListContext extends KeyManageContext {
   
   // コンストラクタ
-  constructor(memberName) { super(memberName.memberSelecter.commandMenu.commandBox.town);
-    // メンバーネーム
-    this.memberName = memberName;
+  constructor(equipmentName) { super(equipmentName.memberSelecter.memberName.memberSelecter.commandMenu.commandBox.town);
+    // 親コンテキスト：装備名
+    this.memberName = equipmentName;
 
-    // 一コマのサイズと文字サイズ
-    this.squareSize = memberName.squareSize;
-    this.textSize = memberName.textSize;
+    // 一コマのサイズ
+    this.squareSize = this.memberName.squareSize;
+
+    // 文字のサイズ
+    this.textSize = this.memberName.textSize;
 
     // キー
-    this.openKey = memberName.memberSelecter.openKey;
-    this.closeKey = memberName.memberSelecter.closeKey;
+    this.openKey = this.memberName.memberSelecter.openKey;
+    this.closeKey = this.memberName.memberSelecter.closeKey;
 
-    // コマンドボックスの左上位置
-    this.itemListPosition = new Position(7, -1);
+    // アイテムリストの左上位置
+    this.itemListPosition = new Position(5, -3);
 
     // メニューの名前
-    this.title = this.memberName.menuName;
+    this.title = this.memberName.memberSelecter.memberName.menuName;
+    this.maxTitleLength = 8;
 
-    // メンバーセレクターの背景色
+    // アイテムリストの背景色
     this.backgroundColor = this.memberName.memberSelecter.backgroundColor;
 
     // 初期ステータス
     this.viewState = "closed";
 
+    // 選択中のコマンドメニュー
+    this.currentCommandMenu = null;
+
     // どうぐのリスト
     for (let i = 0; i < this.memberName.memberSelecter.memberCharacters.length; i++) {
       if (this.memberName.memberSelecter.memberCharacters[i].name == this.title) {
-        this.magics = this.memberName.memberSelecter.memberCharacters[i].magics;
+        this.items = this.memberName.memberSelecter.memberCharacters[i].items;
       }
     }
 
-    // コマンドのメニュー（冒険のパーティの名前で生成）
-    this.commandMenus = new Array(this.magics.length);
+    // コマンドフレームのサイズ
+    this.commandBoxRows = this.items.length + 1;
+    this.commandBoxColumns = (this.maxTitleLength / 2) + 2; // 変数を検討（+2 はコマンドポインターの分）
+
+    // 子要素が開いているかどうか
+    this.isChildOpened = false;
+
+    // コマンドのメニュー（どうぐの名前で生成）
+    this.commandMenus = new Array(this.items.length);
 
     for (let i = 0; i < this.commandMenus.length; i++) {
       this.commandMenus[i] = new Array(1);
       for (let j = 0; j < this.commandMenus[i].length; j++) {
         let isSelected = false;
-        if (i == 0) {
+        if (i == 0) { // 初回は先頭のアイテムが選択状態
           isSelected = true;
         }
 
-        this.commandMenus[i][j] = new GameCommand("", this.magics[i].name, isSelected, false);
+        this.commandMenus[i][j] = new GameCommand("equipment", this.items[i].name, isSelected, false);
       }
     }
-
-    this.currentCommandMenu = null;
-
-    // コマンドフレームのサイズ
-    this.commandBoxRows = this.magics.length + 1;
-    this.commandBoxColumns = 5; // 変数を検討
-
-    //this.memberStatusController = new MemberStatusContext(this);
-    this.isChildOpened = false;
 
     // コマンドメニューのコンテキストを生成する
     this.memberNameContexts = new Array(this.commandMenus.length);
@@ -66,7 +70,7 @@ class MagicListContext extends KeyManageContext {
     for (let i = 0; i < this.memberNameContexts.length; i++) {
       this.memberNameContexts[i] = new Array(this.commandMenus[i].length);
       for (let j = 0; j < this.memberNameContexts[i].length; j++) {
-        this.memberNameContexts[i][j] = new MagicNameContext(this, this.commandMenus[i][j], new Position(j, i));
+        this.memberNameContexts[i][j] = new EquipmentItemNameContext(this, this.commandMenus[i][j], new Position(j, i));
         
         if (this.commandMenus[i][j].isSelected) {
           this.currentCommandMenu = this.memberNameContexts[i][j];
@@ -104,7 +108,7 @@ class MagicListContext extends KeyManageContext {
     }
 
     // テキストエリアのビュー状態がopenedであればカット
-    if (this.memberName.memberSelecter.commandMenu.commandBox.textAreaContext.viewState == "opened") {
+    if (this.memberName.memberSelecter.memberName.memberSelecter.commandMenu.commandBox.subContexts['text-area'].viewState == "opened") {
       return false;
     }
 

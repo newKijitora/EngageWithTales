@@ -2,35 +2,18 @@
 // メンバーセレクターのコンテキスト
 // ------------------------------------------------------------------
 
-class MemberSelecterContext extends KeyManageContext {
+class MemberSelectContext extends CommandBoxContextBase {
   
   // コンストラクタ
-  constructor(commandMenu) { super(commandMenu.commandBox.town);
+  constructor(menu) { super(menu.town);
     // コマンドメニュー
-    this.commandMenu = commandMenu;
-
-    // 一コマのサイズと文字サイズ
-    this.squareSize = commandMenu.squareSize;
-    this.textSize = commandMenu.textSize;
-
-    // キー
-    this.openKey = commandMenu.commandBox.openKey;
-    this.closeKey = commandMenu.commandBox.closeKey;
-
-    // コマンドボックスの左上位置
-    this.memberSelecterPosition = new Position(0, 1);
+    this.commandMenu = menu;
 
     // メニューの名前
     this.title = this.commandMenu.menu.name;
 
-    // メンバーセレクターの背景色
-    this.backgroundColor = this.commandMenu.commandBox.backgroundColor;
-
-    // 初期ステータス
-    this.viewState = "closed";
-
-    // 冒険のパーティ
-    this.memberCharacters = this.commandMenu.memberCharacters;
+    // コマンドボックスの左上位置
+    this.memberSelecterPosition = new Position(0, 1);
 
     // コマンドのメニュー（冒険のパーティの名前で生成）
     this.commandMenus = new Array(this.memberCharacters.length);
@@ -47,8 +30,6 @@ class MemberSelecterContext extends KeyManageContext {
       }
     }
 
-    this.currentCommandMenu = null;
-
     // コマンドフレームのサイズ
     this.commandBoxRows = this.memberCharacters.length + 1;
     this.commandBoxColumns = 4; // 変数を検討
@@ -61,7 +42,7 @@ class MemberSelecterContext extends KeyManageContext {
     for (let i = 0; i < this.memberNameContexts.length; i++) {
       this.memberNameContexts[i] = new Array(this.commandMenus[i].length);
       for (let j = 0; j < this.memberNameContexts[i].length; j++) {
-        this.memberNameContexts[i][j] = new MemberNameContext(this, this.commandMenus[i][j], new Position(j, i));
+        this.memberNameContexts[i][j] = new MemberNameContext(this, this.commandMenus[i][j], new Size(80, 32), new Position(j, i));
         
         if (this.commandMenus[i][j].isSelected) {
           this.currentCommandMenu = this.memberNameContexts[i][j];
@@ -72,6 +53,9 @@ class MemberSelecterContext extends KeyManageContext {
         }
       }
     }
+
+    // ビューの初期ステータス
+    this.viewState = 'closed';
   }
 
   // オープンできるかどうか
@@ -116,7 +100,7 @@ class MemberSelecterContext extends KeyManageContext {
     }
 
     // テキストエリアのビュー状態がopenedであればカット
-    if (this.commandMenu.commandBox.textAreaContext.viewState == "opened") {
+    if (this.commandMenu.commandBox.subContexts['text-area'].viewState == "opened") {
       return false;
     }
 

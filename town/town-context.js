@@ -14,9 +14,6 @@ class TownContext {
     // リソース
     this.resource = world.resource;
 
-    // ビュー上のサイズ単位
-    this.squareSize = this.settings.squareSize;
-
     // テキストのテクスチャー
     this.textTextures = world.textTextures;
 
@@ -33,6 +30,10 @@ class TownContext {
 
     // 現在のキャラクターパーティ
     this.memberCharacters = world.memberCharacters;
+
+    // コマンドのメニュー
+    this.commandMenuLength = world.commandMenuLength;
+    this.commandMenus = world.commandMenus;
   }
 
   // JSONから町の情報を取得する
@@ -62,7 +63,7 @@ class TownContext {
 
   talk() {
     // マップから導き出す
-    console.log("しゃべらせるから！");
+    console.log('しゃべらせるから！');
   }
 
   // 衝突マップを生成する

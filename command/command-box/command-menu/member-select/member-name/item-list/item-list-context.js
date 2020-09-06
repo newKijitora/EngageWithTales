@@ -1,39 +1,20 @@
 // ------------------------------------------------------------------
-// 装備候補リストのコンテキスト
+// アイテムリストのコンテキスト
 // ------------------------------------------------------------------
 
-class EquipmentItemListContext extends KeyManageContext {
+class ItemListContext extends CommandBoxContextBase {
   
   // コンストラクタ
-  constructor(equipmentName) { super(equipmentName.memberSelecter.memberName.memberSelecter.commandMenu.commandBox.town);
-    // 親コンテキスト：装備名
-    this.memberName = equipmentName;
-
-    // 一コマのサイズ
-    this.squareSize = this.memberName.squareSize;
-
-    // 文字のサイズ
-    this.textSize = this.memberName.textSize;
-
-    // キー
-    this.openKey = this.memberName.memberSelecter.openKey;
-    this.closeKey = this.memberName.memberSelecter.closeKey;
+  constructor(memberName) { super(memberName.memberSelecter.commandMenu.commandBox.town);
+    // 親コンテキスト：メンバーネーム
+    this.memberName = memberName;
 
     // アイテムリストの左上位置
-    this.itemListPosition = new Position(6, -3);
+    this.itemListPosition = new Position(6, -2);
 
     // メニューの名前
-    this.title = this.memberName.memberSelecter.memberName.menuName;
+    this.title = this.memberName.menuName;
     this.maxTitleLength = 8;
-
-    // アイテムリストの背景色
-    this.backgroundColor = this.memberName.memberSelecter.backgroundColor;
-
-    // 初期ステータス
-    this.viewState = "closed";
-
-    // 選択中のコマンドメニュー
-    this.currentCommandMenu = null;
 
     // どうぐのリスト
     for (let i = 0; i < this.memberName.memberSelecter.memberCharacters.length; i++) {
@@ -108,7 +89,7 @@ class EquipmentItemListContext extends KeyManageContext {
     }
 
     // テキストエリアのビュー状態がopenedであればカット
-    if (this.memberName.memberSelecter.memberName.memberSelecter.commandMenu.commandBox.textAreaContext.viewState == "opened") {
+    if (this.memberName.memberSelecter.commandMenu.commandBox.subContexts['text-area'].viewState == "opened") {
       return false;
     }
 

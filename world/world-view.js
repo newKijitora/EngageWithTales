@@ -6,8 +6,8 @@ class WorldView {
     this.controller = context;
 
     // ビュー（モニター）のサイズとウィンドウ上のビューの位置
-    this.worldViewSize = this.controller.worldViewSize;
-    this.worldViewPosition = this.controller.worldViewPosition;
+    this.worldViewSize = this.controller.settings.worldViewSize;
+    this.worldViewPosition = this.controller.settings.worldViewPosition;
 
     // DOM要素
     this.worldDom = null;

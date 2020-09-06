@@ -1,5 +1,5 @@
 // コマンドメニューのビュー
-class MagicNameView extends CommandBoxViewBase {
+class EquipmentItemNameView extends CommandBoxViewBase {
 
   // コンストラクタ
   constructor(context, commandText, frameCanvases, charCanvases) { super(context);
@@ -35,7 +35,7 @@ class MagicNameView extends CommandBoxViewBase {
 
     // コマンドメニュー要素
     const commandText = document.createElement("canvas");
-    commandText.width = 96; // 6文字分
+    commandText.width = 128; // 8文字分
     commandText.height = 32;
 
     // コマンドメニューのコンテナにポインターとメニューを格納
@@ -48,14 +48,14 @@ class MagicNameView extends CommandBoxViewBase {
     this.commandText = commandText;
 
     // メンバーステータスの生成
-    if (this.context.memberStatusContext) {
-      const memberStatus = new MemberStatusView(this.context.memberStatusContext, this.frameCanvases, this.charCanvases);
-      this.commandMenuDOM.appendChild(memberStatus.memberStatusDOM);
+    if (this.context.equipmentSelectorContext) {
+      const memberStatus = new EquipmentSelectorView(this.context.equipmentSelectorContext, this.frameCanvases, this.charCanvases);
+      this.commandMenuDOM.appendChild(memberStatus.memberSelecter);
     }
 
-    if (this.context.itemListContext) {
-      const itemList = new ToolListView(this.context.itemListContext, this.frameCanvases, this.charCanvases);
-      this.commandMenuDOM.appendChild(itemList.memberSelecter);
+    if (this.context.toolListContext) {
+      const toolList = new ToolListView(this.context.toolListContext, this.frameCanvases, this.charCanvases);
+      this.commandMenuDOM.appendChild(toolList.memberSelecter);
     }
   }
 

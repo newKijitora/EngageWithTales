@@ -7,7 +7,7 @@ class TextAreaView extends CommandBoxViewBase {
   // コンストラクタ
   constructor(context, frameCanvases, charCanvases) { super(context);
     // コントローラ
-    this.controller = context;
+    this.context = context;
 
     // HTML要素
     this.textArea = null;
@@ -16,41 +16,41 @@ class TextAreaView extends CommandBoxViewBase {
 
     this.charCanvases = charCanvases;
 
-    this.cells = new Array(this.controller.numberOfRows);
-    for (let i = 0; i < this.controller.numberOfRows; i++) {
-      this.cells[i] = new Array(this.controller.numberOfCells);
+    this.cells = new Array(this.context.numberOfRows);
+    for (let i = 0; i < this.context.numberOfRows; i++) {
+      this.cells[i] = new Array(this.context.numberOfCells);
     }
 
     // HTML要素の組成
     this.assemblingElements();
 
     // イベントリスナ
-    window.addEventListener("keydown", (event) => this.open(event.keyCode), false);
-    window.addEventListener("keydown", (event) => this.close(event.keyCode), false);
+    window.addEventListener('keydown', (event) => this.open(event.keyCode), false);
+    window.addEventListener('keydown', (event) => this.close(event.keyCode), false);
   } 
   
   // オープン
   open(keyCode) {
-    if (keyCode == this.controller.openKeyCode && this.controller.canOpen) {
-      this.controller.isProgress = true;
-      this.controller.viewState = "opened";
+    if (keyCode == this.context.openKeyCode && this.context.canOpen) {
+      this.context.isProgress = true;
+      this.context.viewState = 'opened';
       this.showView();
-      this.readText(this.controller.textSet[this.controller.readIndex], this.controller.textSpeed);
-    } else if (keyCode == this.controller.openKeyCode && this.controller.canReadContinue) {
-      this.controller.canReadContinue = false;
+      this.readText(this.context.textSet[this.context.readIndex], this.context.textSpeed);
+    } else if (keyCode == this.context.openKeyCode && this.context.canReadContinue) {
+      this.context.canReadContinue = false;
       this.clearText();
-      this.readText(this.controller.textSet[this.controller.readIndex], this.controller.textSpeed);
-    } else if (keyCode == this.controller.openKeyCode) {
-      this.close(this.controller.closeKeyCode);
+      this.readText(this.context.textSet[this.context.readIndex], this.context.textSpeed);
+    } else if (keyCode == this.context.openKeyCode) {
+      this.close(this.context.closeKeyCode);
     }
   }
 
   // クローズ
   close(keyCode) {
-    if (keyCode == this.controller.closeKeyCode && !this.controller.isProgress && this.controller.canClose) {
+    if (keyCode == this.context.closeKeyCode && !this.context.isProgress && this.context.canClose) {
       this.hideView();
       this.clearText();
-      this.controller.viewState = "closed";
+      this.context.viewState = 'closed';
     }
   }
 
@@ -61,9 +61,9 @@ class TextAreaView extends CommandBoxViewBase {
     let row = 0;
     let cellPosition = 0;
 
-    for (let i = 0; i < this.controller.numberOfRows; i++) {
-      for (let j = 0; j < this.controller.numberOfCells; j++) {
-        const context = this.cells[i][j].getContext("2d");
+    for (let i = 0; i < this.context.numberOfRows; i++) {
+      for (let j = 0; j < this.context.numberOfCells; j++) {
+        const context = this.cells[i][j].getContext('2d');
         context.clearRect(0, 0, 16, 32);
       }
     }
@@ -75,14 +75,14 @@ class TextAreaView extends CommandBoxViewBase {
 
       if (now - startTime > textSpeed) {
         do {       
-          if (text[textPosition] == "\n") {
+          if (text[textPosition] == '\n') {
             row++;
             cellPosition = 0;
             textPosition++;
           }
 
-          if (text[textPosition] == "　") {
-            if (cellPosition + 1 > this.controller.numberOfCells - 1) {
+          if (text[textPosition] == '　') {
+            if (cellPosition + 1 > this.context.numberOfCells - 1) {
               row++;
               cellPosition = 0;
             } else {
@@ -90,9 +90,9 @@ class TextAreaView extends CommandBoxViewBase {
             }
             textPosition++;
           }
-        } while (text[textPosition] == "\n" || text[textPosition] == "　");
+        } while (text[textPosition] == '\n' || text[textPosition] == '　');
 
-        const context = this.cells[row][cellPosition].getContext("2d");
+        const context = this.cells[row][cellPosition].getContext('2d');
         context.drawImage(this.charCanvases[text[textPosition]], 0, 0);
 
         startTime = now;
@@ -100,22 +100,22 @@ class TextAreaView extends CommandBoxViewBase {
         cellPosition++;
       }
     
-      if (cellPosition > this.controller.numberOfCells - 1) {
+      if (cellPosition > this.context.numberOfCells - 1) {
         cellPosition = 0;
         row++;
       }
 
-      if (textPosition < text.length && row < this.controller.numberOfRows) {
+      if (textPosition < text.length && row < this.context.numberOfRows) {
         window.requestAnimationFrame(readCharacter);
       } else {
-        this.controller.readIndex++;
+        this.context.readIndex++;
         
-        if (this.controller.textSet.length > this.controller.readIndex) {
-          this.controller.canReadContinue = true;          
+        if (this.context.textSet.length > this.context.readIndex) {
+          this.context.canReadContinue = true;          
         } else {
-          this.controller.readIndex = 0;
-          this.controller.isProgress = false;
-          this.controller.canReadContinue = false;
+          this.context.readIndex = 0;
+          this.context.isProgress = false;
+          this.context.canReadContinue = false;
         }
       }
     }
@@ -126,45 +126,45 @@ class TextAreaView extends CommandBoxViewBase {
   // テキストのクリア
   clearText() {
     for (let i = 0; i < this.textCells.length; i++) {
-      this.textCells.item(i).innerText = "";
+      this.textCells.item(i).innerText = '';
     }
   }
 
   // HTML要素の表示
   showView() {
-    this.textArea.style.display = "block";
+    this.textArea.style.display = 'block';
   }
   
   // HTML要素の非表示
   hideView() {
-    this.textArea.style.display = "none";
+    this.textArea.style.display = 'none';
   }
 
   // HTML要素の生成
   assemblingElements() {
     // テキストエリアのフレーム
-    const textFrame = document.createElement("canvas");
-    textFrame.width = this.controller.squareSize.x * this.controller.textAreaColumns;
-    textFrame.height = this.controller.squareSize.y * this.controller.textAreaRows;
-    textFrame.style.display = "block";
+    const textFrame = document.createElement('canvas');
+    textFrame.width = this.context.squareSize.x * this.context.textAreaColumns;
+    textFrame.height = this.context.squareSize.y * this.context.textAreaRows;
+    textFrame.style.display = 'block';
 
     // テキストエリアのインナー
-    const textField = document.createElement("div");
-    textField.style.position = "absolute";
-    textField.style.top = "16px";
-    textField.style.left = "16px";
+    const textField = document.createElement('div');
+    textField.style.position = 'absolute';
+    textField.style.top = '16px';
+    textField.style.left = '16px';
     
     // セルの生成
-    for (let i = 0; i < this.controller.numberOfRows; i++) {
+    for (let i = 0; i < this.context.numberOfRows; i++) {
       // 行を生成
-      const row = document.createElement("p");
+      const row = document.createElement('p');
 
       // セルを生成して行に追加
-      for (let j = 0; j < this.controller.numberOfCells; j++) {
-        const cell = document.createElement("canvas");
+      for (let j = 0; j < this.context.numberOfCells; j++) {
+        const cell = document.createElement('canvas');
         cell.width = 16;
         cell.height = 32;
-        cell.style.verticalAlign = "bottom";
+        cell.style.verticalAlign = 'bottom';
 
         row.appendChild(cell);
         this.cells[i][j] = cell;
@@ -175,21 +175,21 @@ class TextAreaView extends CommandBoxViewBase {
     }
 
     // テキストエリアをドキュメントに追加
-    const textArea = document.createElement("div");
-    textArea.style.position = "absolute";
-    textArea.style.top = this.controller.squareSize.y * 11 + "px";
-    textArea.style.left = this.controller.squareSize.x * 5 + "px";
-    textArea.style.zIndex = this.controller.zIndexBase;
-    textArea.style.display = "none";
+    const textArea = document.createElement('div');
+    textArea.style.position = 'absolute';
+    textArea.style.top = this.context.squareSize.y * 11 + 'px';
+    textArea.style.left = this.context.squareSize.x * 5 + 'px';
+    textArea.style.zIndex = this.context.zIndexBase;
+    textArea.style.display = 'none';
 
     textArea.appendChild(textFrame);
     
-    const monitor = document.getElementById("world");
+    const monitor = document.getElementById('world');
     textArea.appendChild(textField);
     monitor.appendChild(textArea);
 
     this.textArea = textArea;
     this.textFrame = textFrame;
-    this.textCells = document.getElementsByClassName("textCell");
+    this.textCells = document.getElementsByClassName('textCell');
   }
 }

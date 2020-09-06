@@ -1,5 +1,5 @@
 // コマンドメニューのコントローラー
-class MagicNameContext {
+class EquipmentItemNameContext {
 
   // コンストラクタ
   constructor(memberSelecter, menu, position) {
@@ -47,7 +47,7 @@ class MagicNameContext {
 
     // 「そうび」コマンドの子のセレクターにはエクイプメントリスト
     if (menu.label == "equipment") {
-      console.log("そうび");
+      this.equipmentSelectorContext = new EquipmentSelectorContext(this);
     }
   }
 }

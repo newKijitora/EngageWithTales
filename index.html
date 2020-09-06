@@ -7,8 +7,6 @@
   <link rel="stylesheet" href="css/character-selecter-style.css">
   <link rel="stylesheet" href="css/command-box-style.css">
   <link rel="stylesheet" href="party/party-style.css">
-  <link rel="stylesheet" href="command/command-box/command-menu/member-selecter/member-name/member-status/member-status-style.css">
-
 </html>
 <body onload="GameContext.main();">
   <script type="text/javascript" src="common/common-classes.js"></script>
@@ -25,29 +23,37 @@
   <script type="text/javascript" src="world/world-context.js"></script>
   <script type="text/javascript" src="world/event.js"></script>
   <script type="text/javascript" src="common/movable-view.js"></script>
+  <script type="text/javascript" src="command/command-menu-context-base.js"></script>
+  <script type="text/javascript" src="command/command-box-context-base.js"></script>
   <script type="text/javascript" src="command/command-box-view-base.js"></script>
   <script type="text/javascript" src="command/command-box/command-menu/text-area/text-area-context.js"></script>
   <script type="text/javascript" src="command/command-box/command-menu/text-area/text-area-view.js"></script>
-  <script type="text/javascript" src="command/command-box/command-menu/member-selecter/member-name/equipment-parts/equipment-name/equipment-item-list/equipment-item-list-context.js"></script>
-  <script type="text/javascript" src="command/command-box/command-menu/member-selecter/member-name/equipment-parts/equipment-name/equipment-item-list/equipment-item-list-view.js"></script>
-  <script type="text/javascript" src="command/command-box/command-menu/member-selecter/member-name/equipment-parts/equipment-name/equipment-name-context.js"></script>
-  <script type="text/javascript" src="command/command-box/command-menu/member-selecter/member-name/equipment-parts/equipment-name/equipment-name-view.js"></script>
-  <script type="text/javascript" src="command/command-box/command-menu/member-selecter/member-name/equipment-parts/equipment-parts-context.js"></script>
-  <script type="text/javascript" src="command/command-box/command-menu/member-selecter/member-name/equipment-parts/equipment-parts-view.js"></script>
-  <script type="text/javascript" src="command/command-box/command-menu/member-selecter/member-name/magic-list/magic-name/magic-name-context.js"></script>
-  <script type="text/javascript" src="command/command-box/command-menu/member-selecter/member-name/magic-list/magic-name/magic-name-view.js"></script>
-  <script type="text/javascript" src="command/command-box/command-menu/member-selecter/member-name/magic-list/magic-list-context.js"></script>
-  <script type="text/javascript" src="command/command-box/command-menu/member-selecter/member-name/magic-list/magic-list-view.js"></script>
-  <script type="text/javascript" src="command/command-box/command-menu/member-selecter/member-name/item-list/item-name/item-name-context.js"></script>
-  <script type="text/javascript" src="command/command-box/command-menu/member-selecter/member-name/item-list/item-name/item-name-view.js"></script>
-  <script type="text/javascript" src="command/command-box/command-menu/member-selecter/member-name/item-list/item-list-context.js"></script>
-  <script type="text/javascript" src="command/command-box/command-menu/member-selecter/member-name/item-list/item-list-view.js"></script>
-  <script type="text/javascript" src="command/command-box/command-menu/member-selecter/member-name/member-status/member-status-context.js"></script>
-  <script type="text/javascript" src="command/command-box/command-menu/member-selecter/member-name/member-status/member-status-view.js"></script>
-  <script type="text/javascript" src="command/command-box/command-menu/member-selecter/member-name/member-name-context.js"></script>
-  <script type="text/javascript" src="command/command-box/command-menu/member-selecter/member-name/member-name-view.js"></script>
-  <script type="text/javascript" src="command/command-box/command-menu/member-selecter/member-selecter-view.js"></script>
-  <script type="text/javascript" src="command/command-box/command-menu/member-selecter/member-selecter-context.js"></script>
+  <script type="text/javascript" src="command/command-box/command-menu/member-select/member-name/equipment-parts/equipment-name/equipment-item-list/equipment-item-name/equipment-selector/equipment-select-menu/equipment-select-menu-context.js"></script>
+  <script type="text/javascript" src="command/command-box/command-menu/member-select/member-name/equipment-parts/equipment-name/equipment-item-list/equipment-item-name/equipment-selector/equipment-select-menu/equipment-select-menu-view.js"></script>
+  <script type="text/javascript" src="command/command-box/command-menu/member-select/member-name/equipment-parts/equipment-name/equipment-item-list/equipment-item-name/equipment-selector/equipment-selector-context.js"></script>
+  <script type="text/javascript" src="command/command-box/command-menu/member-select/member-name/equipment-parts/equipment-name/equipment-item-list/equipment-item-name/equipment-selector/equipment-selector-view.js"></script>
+  <script type="text/javascript" src="command/command-box/command-menu/member-select/member-name/equipment-parts/equipment-name/equipment-item-list/equipment-item-name/equipment-item-name-context.js"></script>
+  <script type="text/javascript" src="command/command-box/command-menu/member-select/member-name/equipment-parts/equipment-name/equipment-item-list/equipment-item-name/equipment-item-name-view.js"></script>
+  <script type="text/javascript" src="command/command-box/command-menu/member-select/member-name/equipment-parts/equipment-name/equipment-item-list/equipment-item-list-context.js"></script>
+  <script type="text/javascript" src="command/command-box/command-menu/member-select/member-name/equipment-parts/equipment-name/equipment-item-list/equipment-item-list-view.js"></script>
+  <script type="text/javascript" src="command/command-box/command-menu/member-select/member-name/equipment-parts/equipment-name/equipment-name-context.js"></script>
+  <script type="text/javascript" src="command/command-box/command-menu/member-select/member-name/equipment-parts/equipment-name/equipment-name-view.js"></script>
+  <script type="text/javascript" src="command/command-box/command-menu/member-select/member-name/equipment-parts/equipment-parts-context.js"></script>
+  <script type="text/javascript" src="command/command-box/command-menu/member-select/member-name/equipment-parts/equipment-parts-view.js"></script>
+  <script type="text/javascript" src="command/command-box/command-menu/member-select/member-name/magic-list/magic-name/magic-name-context.js"></script>
+  <script type="text/javascript" src="command/command-box/command-menu/member-select/member-name/magic-list/magic-name/magic-name-view.js"></script>
+  <script type="text/javascript" src="command/command-box/command-menu/member-select/member-name/magic-list/magic-list-context.js"></script>
+  <script type="text/javascript" src="command/command-box/command-menu/member-select/member-name/magic-list/magic-list-view.js"></script>
+  <script type="text/javascript" src="command/command-box/command-menu/member-select/member-name/item-list/item-name/item-name-context.js"></script>
+  <script type="text/javascript" src="command/command-box/command-menu/member-select/member-name/item-list/item-name/item-name-view.js"></script>
+  <script type="text/javascript" src="command/command-box/command-menu/member-select/member-name/item-list/item-list-context.js"></script>
+  <script type="text/javascript" src="command/command-box/command-menu/member-select/member-name/item-list/item-list-view.js"></script>
+  <script type="text/javascript" src="command/command-box/command-menu/member-select/member-name/member-status/member-status-context.js"></script>
+  <script type="text/javascript" src="command/command-box/command-menu/member-select/member-name/member-status/member-status-view.js"></script>
+  <script type="text/javascript" src="command/command-box/command-menu/member-select/member-name/member-name-context.js"></script>
+  <script type="text/javascript" src="command/command-box/command-menu/member-select/member-name/member-name-view.js"></script>
+  <script type="text/javascript" src="command/command-box/command-menu/member-select/member-select-view.js"></script>
+  <script type="text/javascript" src="command/command-box/command-menu/member-select/member-select-context.js"></script>
   <script type="text/javascript" src="command/command-box/command-menu/command-menu-context.js"></script>
   <script type="text/javascript" src="command/command-box/command-menu/command-menu-view.js"></script>
   <script type="text/javascript" src="command/command-box/command-box-context.js"></script>

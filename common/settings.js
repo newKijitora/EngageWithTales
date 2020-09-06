@@ -21,17 +21,29 @@ class Settings {
     this.mapWidth = 27;
     this.mapHeight = 21;
 
+    // ゲームのビュー（モニター）のサイズとウィンドウ上の位置
+    this.worldViewSize = new Size(this.squareSize.x * 25, this.squareSize.y * 19);
+    this.worldViewPosition = new Position(5, 2);
+
     // コマンド関連の背景色
-    this.commandBoxBackgroundColor = "#020202";
+    this.commandBoxBackgroundColor = '#020202';
 
     // キーコード
     this.keyCodes = {
-      "left": 65,
-      "right": 68,
-      "bottom": 83,
-      "top": 87,
-      "open": 74,
-      "close": 75
+      'left': 65,
+      'right': 68,
+      'bottom': 83,
+      'top': 87,
+      'open': 74,
+      'close': 75
     };
+
+    // キーコード
+    this.leftKeyCode = this.keyCodes['left'];
+    this.rightKeyCode = this.keyCodes['right'];
+    this.bottomKeyCode = this.keyCodes['bottom'];
+    this.topKeyCode = this.keyCodes['top'];
+    this.openKeyCode = this.keyCodes['open'];
+    this.closeKeyCode = this.keyCodes['close'];
   }
 }

@@ -23,15 +23,15 @@ class CommandBoxView extends CommandBoxViewBase {
     this.charCanvases = {};
 
     // テキストエリアのビューオブジェクト（イベントの登録順に注意！）
-    this.textAreaView = new TextAreaView(this.context.textAreaContext, this.commandTextureCanvases, this.charCanvases);
+    this.textAreaView = new TextAreaView(this.context.subContexts['text-area'], this.commandTextureCanvases, this.charCanvases);
 
     // HTML要素の組成
     this.assemblingElements();    
 
     // イベントリスナの設定（テキストエリアより先に登録しない）
-    window.addEventListener("keydown", (event) => this.open(event.keyCode), false);
-    window.addEventListener("keydown", (event) => this.close(event.keyCode), false);
-    window.addEventListener("keydown", (event) => this.selectionChange(event.keyCode), false);
+    window.addEventListener('keydown', (event) => this.open(event.keyCode), false);
+    window.addEventListener('keydown', (event) => this.close(event.keyCode), false);
+    window.addEventListener('keydown', (event) => this.selectionChange(event.keyCode), false);
     
     // 画像の読み込みオブジェクト
     const imageLoader = new ImageLoader();
@@ -40,11 +40,11 @@ class CommandBoxView extends CommandBoxViewBase {
     imageLoader.loadImages(this.context.commandTextures, (images) => {
       // コマンドボックスのフレーム用のキャンバスを生成する
       for (let i = 0; i < this.context.commandTextures.length; i++) {
-        const canvas = document.createElement("canvas");
+        const canvas = document.createElement('canvas');
         canvas.width = this.context.squareSize.x;
         canvas.height = this.context.squareSize.y;       
   
-        const context = canvas.getContext("2d");
+        const context = canvas.getContext('2d');
         imageLoader.setSmoothingEnabled(context, false);
   
         context.drawImage(images[i], 0, 0, images[i].width, images[i].height, 0, 0, canvas.width, canvas.height);
@@ -61,11 +61,11 @@ class CommandBoxView extends CommandBoxViewBase {
 
         // 文字エレメント生成用の部分文字キャンバスを生成する
         for (let i = 0; i < this.context.textTextures.length; i++) {
-          const canvas = document.createElement("canvas");
+          const canvas = document.createElement('canvas');
           canvas.width = textureSize.x;
           canvas.height = textureSize.y;
 
-          const context = canvas.getContext("2d");
+          const context = canvas.getContext('2d');
           imageLoader.setSmoothingEnabled(context, false);
 
           context.drawImage(images[i], 0, 0, images[i].width, images[i].height, 0, 0, canvas.width, canvas.height);
@@ -74,14 +74,14 @@ class CommandBoxView extends CommandBoxViewBase {
 
         // 部分文字を組み合わせて一文字分のキャンバスを生成する
         for (let i = 0; i < this.context.textElements.length; i++) {
-          const canvas = document.createElement("canvas");
+          const canvas = document.createElement('canvas');
           canvas.width = this.context.textSize.x;
           canvas.height = this.context.textSize.y;    
           
           const mainChar = partCharCanvases[this.context.textElements[i].texture1]; // メイン文字
           const subChar = partCharCanvases[this.context.textElements[i].texture2]; // 濁点などのサブ文字
           
-          const context = canvas.getContext("2d");
+          const context = canvas.getContext('2d');
           context.drawImage(subChar, 0, 0);
           context.drawImage(mainChar, 0, textureSize.y);
 
@@ -127,7 +127,7 @@ class CommandBoxView extends CommandBoxViewBase {
         this.commandMenus = commandMenus;
 
         // テキストエリアのビュー TODO: インスタンス生成に検討の必要あり
-        this.textAreaView.drawFrame(this.textAreaView.textFrame, this.textAreaView.controller.squareSize, this.commandTextureCanvases, this.textAreaView.controller.textAreaRows, this.textAreaView.controller.textAreaColumns);
+        this.textAreaView.drawFrame(this.textAreaView.textFrame, this.textAreaView.context.squareSize, this.commandTextureCanvases, this.textAreaView.context.textAreaRows, this.textAreaView.context.textAreaColumns);
       });
     });
   }
@@ -135,7 +135,7 @@ class CommandBoxView extends CommandBoxViewBase {
   // コマンドボックスを開く
   open(keyCode) {
     if (keyCode == this.context.openKey.keyCode && this.context.canOpen) {
-      this.context.viewState = "opened";
+      this.context.viewState = 'opened';
       this.showView();
     } else if (keyCode == this.context.openKey.keyCode && !this.context.currentCommandMenuContext.isMemberSelectCommand) {
       this.close(this.context.closeKey.keyCode);
@@ -147,7 +147,7 @@ class CommandBoxView extends CommandBoxViewBase {
     if (keyCode == this.context.closeKey.keyCode && this.context.canClose) {
       this.hideView();
       this.resetCommandMenuSelection();
-      this.context.viewState = "closed";
+      this.context.viewState = 'closed';
     }
   }
 
@@ -169,7 +169,7 @@ class CommandBoxView extends CommandBoxViewBase {
 
         // コマンドメニューのコンテキストを初期化
         this.context.currentCommandMenuContext = this.commandMenus[0][0].context;
-        this.context.textAreaContext.firstThrough = true;
+        this.context.subContexts['text-area'].firstThrough = true;
       }
     }
   }
@@ -231,45 +231,45 @@ class CommandBoxView extends CommandBoxViewBase {
 
   // ビューの表示
   showView() {
-    this.commandBoxDOM.style.display = "block";
+    this.commandBoxDOM.style.display = 'block';
   }
 
   // ビューの非表示
   hideView() {
-    this.commandBoxDOM.style.display = "none";
+    this.commandBoxDOM.style.display = 'none';
   }
 
   // HTML要素の生成
   assemblingElements() {
     // コマンドのコンテナ
-    const commandBox = document.createElement("div");
-    commandBox.style.position = "absolute";
+    const commandBox = document.createElement('div');
+    commandBox.style.position = 'absolute';
     commandBox.style.zIndex = this.context.zIndexBase;
-    commandBox.style.left = this.context.commandBoxPosition.x * this.context.squareSize.x + "px";
-    commandBox.style.top = this.context.commandBoxPosition.y * this.context.squareSize.y + "px";
-    commandBox.style.display = "none";
+    commandBox.style.left = this.context.commandBoxPosition.x * this.context.squareSize.x + 'px';
+    commandBox.style.top = this.context.commandBoxPosition.y * this.context.squareSize.y + 'px';
+    commandBox.style.display = 'none';
 
     // コマンドのフレーム（バックグラウンド）
-    const commandFrameDOM = document.createElement("canvas");
-    commandFrameDOM.style.display = "block"
+    const commandFrameDOM = document.createElement('canvas');
+    commandFrameDOM.style.display = 'block'
     commandFrameDOM.width = this.context.squareSize.x * this.context.commandBoxColumns;
     commandFrameDOM.height = this.context.squareSize.y * this.context.commandBoxRows;
 
     // コマンドメニューのセットを格納するコンテナ
-    const selectField = document.createElement("div");
-    selectField.style.position = "absolute";
+    const selectField = document.createElement('div');
+    selectField.style.position = 'absolute';
     selectField.style.top = 0;
     selectField.style.left = 0;
-    selectField.style.paddingTop = this.context.squareSize.y / 2 + "px";
-    selectField.style.display = "flex";
-    selectField.style.flexWrap = "wrap";
-    selectField.style.width = "192px";
+    selectField.style.paddingTop = this.context.squareSize.y / 2 + 'px';
+    selectField.style.display = 'flex';
+    selectField.style.flexWrap = 'wrap';
+    selectField.style.width = '192px';
 
     commandBox.appendChild(commandFrameDOM);
     commandBox.appendChild(selectField);
 
     // モニターにコマンドボックスを格納
-    const monitor = document.getElementById("world");
+    const monitor = document.getElementById('world');
     monitor.appendChild(commandBox);
 
     this.commandBoxDOM = commandBox;

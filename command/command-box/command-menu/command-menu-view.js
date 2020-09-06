@@ -52,7 +52,7 @@ class CommandMenuView {
 
     // メンバーセレクターの生成
     if (this.context.isMemberSelectCommand) {
-      const memberSelecter = new MemberSelecterView(this.context.memberSelecterContext, this.frameCanvases, this.charCanvases);
+      const memberSelecter = new MemberSelectView(this.context.memberSelecterContext, this.frameCanvases, this.charCanvases);
       memberSelecter.memberSelecter.style.zIndex = 1;
       commandMenu.appendChild(memberSelecter.memberSelecter);
 

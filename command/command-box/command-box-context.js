@@ -31,7 +31,7 @@ class CommandBoxContext extends CommandBoxContextBase {
 
       for (let j = 0; j < menuContexts[i].length; j++) {
 
-        menuContexts[i][j] = new MenuContext({
+        menuContexts[i][j] = new CommandMenuContext({
           commandBox: this,
           menu: menus[i][j],
           size: this.menuSize,

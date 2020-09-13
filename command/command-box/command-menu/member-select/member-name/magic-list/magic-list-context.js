@@ -52,7 +52,7 @@ class MagicListContext extends CommandBoxContextBase {
     for (let i = 0; i < this.memberNameContexts.length; i++) {
       this.memberNameContexts[i] = new Array(this.commandMenus[i].length);
       for (let j = 0; j < this.memberNameContexts[i].length; j++) {
-        this.memberNameContexts[i][j] = new MenuContext({
+        this.memberNameContexts[i][j] = new CommandMenuContext({
           commandBox: this,
           menu: this.commandMenus[i][j],
           size: this.menuSize,

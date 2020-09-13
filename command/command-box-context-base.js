@@ -66,7 +66,7 @@ class CommandBoxContextBase extends KeyManageContext {
     for (let i = 0; i < contexts.length; i++) {
       contexts[i] = new Array(commandMenus[i].length);
       for (let j = 0; j < contexts[i].length; j++) {
-        contexts[i][j] = new MenuContext({
+        contexts[i][j] = new CommandMenuContext({
           commandBox: this,
           menu: commandMenus[i][j],
           size: new Size(80, 32),
@@ -89,7 +89,7 @@ class CommandBoxContextBase extends KeyManageContext {
     for (let i = 0; i < contexts.length; i++) {
       contexts[i] = new Array(commandMenus[i].length);
       for (let j = 0; j < contexts[i].length; j++) {
-        contexts[i][j] = new MenuContext({
+        contexts[i][j] = new CommandMenuContext({
           commandBox: this,
           menu: commandMenus[i][j],
           size: new Size(80, 32),
@@ -113,7 +113,7 @@ class CommandBoxContextBase extends KeyManageContext {
     for (let i = 0; i < contexts.length; i++) {
       contexts[i] = new Array(commandMenus[i].length);
       for (let j = 0; j < contexts[i].length; j++) {
-        contexts[i][j] = new MenuContext({
+        contexts[i][j] = new CommandMenuContext({
           commandBox: this,
           menu: commandMenus[i][j],
           size: new Size(80, 32),

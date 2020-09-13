@@ -5,7 +5,7 @@
 class CommandBoxContext extends CommandBoxContextBase {
 
   // コンストラクタ
-  constructor(town, zIndexBase) { super(town);
+  constructor(town, zIndexBase) { super(null, town);
     // コマンドボックスのサイズ（列数）
     this.commandBoxColumns = 7; // 変数を検討
 
@@ -31,7 +31,15 @@ class CommandBoxContext extends CommandBoxContextBase {
 
       for (let j = 0; j < menuContexts[i].length; j++) {
 
-        menuContexts[i][j] = new CommandMenuContext(this, menus[i][j], this.menuSize, new Position(j, i));
+        menuContexts[i][j] = new MenuContext({
+          commandBox: this,
+          menu: menus[i][j],
+          size: this.menuSize,
+          position: new Position(j, i),
+          label: 'first'
+        });
+
+        
 
         if (menus[i][j].isSelected) {
           this.currentCommandMenuContext = menuContexts[i][j];

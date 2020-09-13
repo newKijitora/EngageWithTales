@@ -47,8 +47,8 @@ class EquipmentNameView extends CommandBoxViewBase {
     this.commandPointer = commandPointer;
     this.commandText = commandText;
 
-    if (this.context.itemListContext) {
-      const toolList = new EquipmentItemListView(this.context.itemListContext, this.frameCanvases, this.charCanvases);
+    if (this.context.contexts['equipment-item']) {
+      const toolList = new EquipmentItemListView(this.context.contexts['equipment-item'], this.frameCanvases, this.charCanvases);
       this.commandMenuDOM.appendChild(toolList.memberSelecter);
     }
   }

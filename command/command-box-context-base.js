@@ -5,7 +5,14 @@
 class CommandBoxContextBase extends KeyManageContext {
 
   // コンストラクタ
-  constructor(town) { super(town);
+  constructor(commandMenu, town) { super(town);
+    // コマンドメニュー
+    this.commandMenu = null;
+    
+    if (commandMenu) {
+      this.commandMenu = commandMenu;
+    }
+
     // 町オブジェクト
     this.town = town;
 
@@ -50,6 +57,78 @@ class CommandBoxContextBase extends KeyManageContext {
 
     // コマンドボックスのサイズ
     this.commandBoxRows = this.commandMenus.length + 1;
+  }
+
+  createMenus(commandMenus) {
+    // コマンドメニューのコンテキストを生成する
+    const contexts = new Array(commandMenus.length);
+
+    for (let i = 0; i < contexts.length; i++) {
+      contexts[i] = new Array(commandMenus[i].length);
+      for (let j = 0; j < contexts[i].length; j++) {
+        contexts[i][j] = new MenuContext({
+          commandBox: this,
+          menu: commandMenus[i][j],
+          size: new Size(80, 32),
+          position: new Position(j, i)
+        });
+
+        if (commandMenus[i][j].isSelected) {
+          this.currentCommandMenuContext = contexts[i][j];
+        }
+      }
+    }
+
+    return contexts;
+  }
+
+  createMenus2(commandMenus) {
+    // コマンドメニューのコンテキストを生成する
+    const contexts = new Array(commandMenus.length);
+
+    for (let i = 0; i < contexts.length; i++) {
+      contexts[i] = new Array(commandMenus[i].length);
+      for (let j = 0; j < contexts[i].length; j++) {
+        contexts[i][j] = new MenuContext({
+          commandBox: this,
+          menu: commandMenus[i][j],
+          size: new Size(80, 32),
+          position: new Position(j, i),
+          label: 'equipment-select',
+        });
+
+        if (commandMenus[i][j].isSelected) {
+          this.currentCommandMenuContext = contexts[i][j];
+        }
+      }
+    }
+
+    return contexts;
+  }
+
+  createMenus3(commandMenus) {
+    // コマンドメニューのコンテキストを生成する
+    const contexts = new Array(commandMenus.length);
+
+    for (let i = 0; i < contexts.length; i++) {
+      contexts[i] = new Array(commandMenus[i].length);
+      for (let j = 0; j < contexts[i].length; j++) {
+        contexts[i][j] = new MenuContext({
+          commandBox: this,
+          menu: commandMenus[i][j],
+          size: new Size(80, 32),
+          position: new Position(j, i),
+          label: 'equipment-item',
+        });
+        
+
+        if (commandMenus[i][j].isSelected) {
+          this.currentCommandMenuContext = contexts[i][j];
+        }
+      }
+    }
+
+    return contexts;
   }
 
   // 子ウィンドウが開いているかどうかを表す

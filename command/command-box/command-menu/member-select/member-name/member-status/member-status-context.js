@@ -14,7 +14,7 @@ class MemberStatusContext {
     this.memberCharacters = this.memberName.memberCharacters;
     this.viewState = "closed";
 
-    this.memberSelecter = this.memberName.memberSelecter;
+    this.memberSelecter = this.memberName.commandBox;
   }
 
   // オープンできるかどうか

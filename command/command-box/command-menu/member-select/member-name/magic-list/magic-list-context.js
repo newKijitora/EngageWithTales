@@ -5,20 +5,20 @@
 class MagicListContext extends CommandBoxContextBase {
   
   // コンストラクタ
-  constructor(memberName) { super(memberName.memberSelecter.commandMenu.commandBox.town);
+  constructor(commandMenu) { super(commandMenu, commandMenu.town);
     // メンバーネーム
-    this.memberName = memberName;
+    this.commandMenu = commandMenu;
 
     // コマンドボックスの左上位置
     this.itemListPosition = new Position(6, -1);
 
     // メニューの名前
-    this.title = this.memberName.menuName;
+    this.title = this.commandMenu.menuName;
 
     // どうぐのリスト
-    for (let i = 0; i < this.memberName.memberSelecter.memberCharacters.length; i++) {
-      if (this.memberName.memberSelecter.memberCharacters[i].name == this.title) {
-        this.magics = this.memberName.memberSelecter.memberCharacters[i].magics;
+    for (let i = 0; i < this.commandMenu.commandBox.memberCharacters.length; i++) {
+      if (this.commandMenu.commandBox.memberCharacters[i].name == this.title) {
+        this.magics = this.commandMenu.commandBox.memberCharacters[i].magics;
       }
     }
 
@@ -52,7 +52,12 @@ class MagicListContext extends CommandBoxContextBase {
     for (let i = 0; i < this.memberNameContexts.length; i++) {
       this.memberNameContexts[i] = new Array(this.commandMenus[i].length);
       for (let j = 0; j < this.memberNameContexts[i].length; j++) {
-        this.memberNameContexts[i][j] = new MagicNameContext(this, this.commandMenus[i][j], this.menuSize, new Position(j, i));
+        this.memberNameContexts[i][j] = new MenuContext({
+          commandBox: this,
+          menu: this.commandMenus[i][j],
+          size: this.menuSize,
+          position: new Position(j, i)
+        });
         
         if (this.commandMenus[i][j].isSelected) {
           this.currentCommandMenu = this.memberNameContexts[i][j];
@@ -63,7 +68,7 @@ class MagicListContext extends CommandBoxContextBase {
 
   // オープンできるかどうか
   get canOpen() {
-    if (this.viewState == "opened" || this.memberName.memberSelecter.viewState != "opened" || !this.memberName.isSelected) {
+    if (this.viewState == "opened" || this.commandMenu.commandBox.viewState != "opened" || !this.commandMenu.isSelected) {
       return false;
     }
     return true;
@@ -90,7 +95,7 @@ class MagicListContext extends CommandBoxContextBase {
     }
 
     // テキストエリアのビュー状態がopenedであればカット
-    if (this.memberName.memberSelecter.commandMenu.commandBox.subContexts['text-area'].viewState == "opened") {
+    if (this.commandMenu.commandBox.commandMenu.commandBox.subContexts['text-area'].viewState == "opened") {
       return false;
     }
 

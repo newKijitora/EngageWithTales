@@ -5,34 +5,16 @@
 class EquipmentPartsContext extends CommandBoxContextBase {
   
   // コンストラクタ
-  constructor(memberName) { super(memberName.town);
-    // 親コンテキスト：メンバーネーム
-    this.memberName = memberName;
-
+  constructor(commandMenu) { super(commandMenu, commandMenu.town);
     // アイテムリストの左上位置
     this.itemListPosition = new Position(4, 0);
 
     // メニューの名前
-    this.title = this.memberName.menuName;
+    this.title = this.commandMenu.menuName;
     this.maxTitleLength = 4;
 
-    // コマンドのメニュー
-    this.commandMenus = [
-      [
-        // new Command(label, commandName, isSelected, isMemberSelector);
-        new GameCommand("equipment", "ぶき", true, false),
-      ],
-      [
-        new GameCommand("equipment", "ぼうぐ", false, true),
-      ],
-      [
-        new GameCommand("equipment", "たて", false, true),
-      ],
-      [
-        new GameCommand("equipment", "あたま", false, false),
-      ]
-    ];
-
+    this.commandMenus = this.town.equipmentCommandMenus;
+    
     // コマンドフレームのサイズ
     this.commandBoxColumns = (this.maxTitleLength / 2) + 2; // 変数を検討（+2 はコマンドポインターの分）
 
@@ -40,24 +22,12 @@ class EquipmentPartsContext extends CommandBoxContextBase {
     this.isChildOpened = false;
 
     // コマンドメニューのコンテキストを生成する
-    this.equipmentNameContexts = new Array(this.commandMenus.length);
-
-    for (let i = 0; i < this.equipmentNameContexts.length; i++) {
-      this.equipmentNameContexts[i] = new Array(this.commandMenus[i].length);
-      for (let j = 0; j < this.equipmentNameContexts[i].length; j++) {
-        this.equipmentNameContexts[i][j] = new EquipmentNameContext(this, this.commandMenus[i][j], new Position(j, i));
-        
-
-        if (this.commandMenus[i][j].isSelected) {
-          this.currentCommandMenu = this.equipmentNameContexts[i][j];
-        }
-      }
-    }
+    this.equipmentNameContexts = this.createMenus3(this.commandMenus);
   }
 
   // オープンできるかどうか
   get canOpen() {
-    if (this.viewState == "opened" || this.memberName.memberSelecter.viewState != "opened" || !this.memberName.isSelected) {
+    if (this.viewState == "opened" || this.commandMenu.commandBox.viewState != "opened" || !this.commandMenu.isSelected) {
       return false;
     }
     return true;
@@ -84,7 +54,7 @@ class EquipmentPartsContext extends CommandBoxContextBase {
     }
 
     // テキストエリアのビュー状態がopenedであればカット
-    if (this.memberName.memberSelecter.commandMenu.commandBox.subContexts['text-area'].viewState == "opened") {
+    if (this.commandMenu.commandBox.commandMenu.commandBox.subContexts['text-area'].viewState == "opened") {
       return false;
     }
 

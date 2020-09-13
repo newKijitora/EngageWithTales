@@ -25,16 +25,16 @@ class EquipmentItemNameView extends CommandBoxViewBase {
   // HTML要素の生成
   assemblingElements() {
     // コマンドメニューのコンテナ
-    const commandMenu = document.createElement("div");
-    commandMenu.style.display = "flex";
+    const commandMenu = document.createElement('div');
+    commandMenu.style.display = 'flex';
 
     // コマンドポインター要素
-    const commandPointer = document.createElement("canvas");
+    const commandPointer = document.createElement('canvas');
     commandPointer.width = 32;
     commandPointer.height = 32;
 
     // コマンドメニュー要素
-    const commandText = document.createElement("canvas");
+    const commandText = document.createElement('canvas');
     commandText.width = 128; // 8文字分
     commandText.height = 32;
 
@@ -48,8 +48,8 @@ class EquipmentItemNameView extends CommandBoxViewBase {
     this.commandText = commandText;
 
     // メンバーステータスの生成
-    if (this.context.equipmentSelectorContext) {
-      const memberStatus = new EquipmentSelectorView(this.context.equipmentSelectorContext, this.frameCanvases, this.charCanvases);
+    if (this.context.contexts['equipment-select']) {
+      const memberStatus = new EquipmentSelectorView(this.context.contexts['equipment-select'], this.frameCanvases, this.charCanvases);
       this.commandMenuDOM.appendChild(memberStatus.memberSelecter);
     }
 
@@ -62,27 +62,27 @@ class EquipmentItemNameView extends CommandBoxViewBase {
   // コマンドメニューの文字を初期化する
   initialize(textures) {
     // コマンドのタイトルを描画する
-    const commandTitleContext = this.commandText.getContext("2d");
+    const commandTitleContext = this.commandText.getContext('2d');
     for (let i = 0; i < this.commandTitle.length; i++) {
       commandTitleContext.drawImage(textures[this.commandTitle[i]], i * 16, 0);
     }
 
     // 自身が選択されていればコマンドポインターを表示する
     if (this.context.isSelected) {
-      const commandPointerContext = this.commandPointer.getContext("2d");
-      commandPointerContext.drawImage(textures["commandPointer"], 16, 0);
+      const commandPointerContext = this.commandPointer.getContext('2d');
+      commandPointerContext.drawImage(textures['commandPointer'], 16, 0);
     }
   }
 
   // コマンドポインターを表示
   showCommandPointer(textures) {
-    const context = this.commandPointer.getContext("2d");
-    context.drawImage(textures["commandPointer"], 16, 0);
+    const context = this.commandPointer.getContext('2d');
+    context.drawImage(textures['commandPointer'], 16, 0);
   }
 
   // コマンドポインターを非表示
   hideCommandPointer() {
-    const context = this.commandPointer.getContext("2d");
+    const context = this.commandPointer.getContext('2d');
     context.clearRect(0, 0, 32, 32);
   }
 }

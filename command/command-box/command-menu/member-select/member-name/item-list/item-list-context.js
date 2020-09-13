@@ -5,21 +5,18 @@
 class ItemListContext extends CommandBoxContextBase {
   
   // コンストラクタ
-  constructor(memberName) { super(memberName.memberSelecter.commandMenu.commandBox.town);
-    // 親コンテキスト：メンバーネーム
-    this.memberName = memberName;
-
+  constructor(commandMenu) { super(commandMenu, commandMenu.town);
     // アイテムリストの左上位置
     this.itemListPosition = new Position(6, -2);
 
     // メニューの名前
-    this.title = this.memberName.menuName;
+    this.title = this.commandMenu.menuName;
     this.maxTitleLength = 8;
 
     // どうぐのリスト
-    for (let i = 0; i < this.memberName.memberSelecter.memberCharacters.length; i++) {
-      if (this.memberName.memberSelecter.memberCharacters[i].name == this.title) {
-        this.items = this.memberName.memberSelecter.memberCharacters[i].items;
+    for (let i = 0; i < this.commandMenu.commandBox.memberCharacters.length; i++) {
+      if (this.commandMenu.commandBox.memberCharacters[i].name == this.title) {
+        this.items = this.commandMenu.commandBox.memberCharacters[i].items;
       }
     }
 
@@ -62,7 +59,7 @@ class ItemListContext extends CommandBoxContextBase {
 
   // オープンできるかどうか
   get canOpen() {
-    if (this.viewState == "opened" || this.memberName.memberSelecter.viewState != "opened" || !this.memberName.isSelected) {
+    if (this.viewState == "opened" || this.commandMenu.commandBox.viewState != "opened" || !this.commandMenu.isSelected) {
       return false;
     }
     return true;
@@ -89,7 +86,7 @@ class ItemListContext extends CommandBoxContextBase {
     }
 
     // テキストエリアのビュー状態がopenedであればカット
-    if (this.memberName.memberSelecter.commandMenu.commandBox.subContexts['text-area'].viewState == "opened") {
+    if (this.commandMenu.commandBox.commandMenu.commandBox.subContexts['text-area'].viewState == "opened") {
       return false;
     }
 

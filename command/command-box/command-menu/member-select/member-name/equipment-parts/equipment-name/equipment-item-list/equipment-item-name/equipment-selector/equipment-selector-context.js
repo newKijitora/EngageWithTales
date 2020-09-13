@@ -2,56 +2,24 @@
 // 装備部位のコンテキスト
 // ------------------------------------------------------------------
 
-class EquipmentSelectorContext extends KeyManageContext {
+class EquipmentSelectorContext extends CommandBoxContextBase {
 
   // コンストラクタ
-  constructor(memberName) { super(memberName.memberSelecter.memberName.memberSelecter.memberName.memberSelecter.commandMenu.commandBox.town);
-    // 親コンテキスト：メンバーネーム
-    this.memberName = memberName;
-
-    // 一コマのサイズ
-    this.squareSize = this.memberName.squareSize;
-
-    // 文字のサイズ
-    this.textSize = this.memberName.textSize;
-
-    // キー
-    this.openKey = memberName.memberSelecter.openKey;
-    this.closeKey = memberName.memberSelecter.closeKey;
-
+  constructor(commandMenu) { super(commandMenu, commandMenu.town);
     // アイテムリストの左上位置
     this.itemListPosition = new Position(4, 0);
 
-    this.memberCharacters = memberName.memberSelecter.memberCharacters;
-
     // メニューの名前
-    this.title = this.memberName.menuName;
+    this.title = this.commandMenu.menuName;
     this.maxTitleLength = 4;
 
-    // アイテムリストの背景色
-    this.backgroundColor = this.memberName.memberSelecter.backgroundColor;
-
-    // 初期ステータス
-    this.viewState = "closed";
-
-    // 選択中のコマンドメニュー
-    this.currentCommandMenu = null;
-
-    // コマンドのメニュー
     this.commandMenus = [
       [
-        // new Command(label, commandName, isSelected, isMemberSelector);
-        new GameCommand("equipment", "ぶき", true, false),
+        new GameCommand("equip", "そうび", true, false),
       ],
       [
-        new GameCommand("equipment", "ぼうぐ", false, true),
+        new GameCommand("out", "はずす", false, false),
       ],
-      [
-        new GameCommand("equipment", "たて", false, true),
-      ],
-      [
-        new GameCommand("equipment", "あたま", false, false),
-      ]
     ];
 
     // コマンドフレームのサイズ
@@ -62,24 +30,12 @@ class EquipmentSelectorContext extends KeyManageContext {
     this.isChildOpened = false;
 
     // コマンドメニューのコンテキストを生成する
-    this.equipmentNameContexts = new Array(this.commandMenus.length);
-
-    for (let i = 0; i < this.equipmentNameContexts.length; i++) {
-      this.equipmentNameContexts[i] = new Array(this.commandMenus[i].length);
-      for (let j = 0; j < this.equipmentNameContexts[i].length; j++) {
-        this.equipmentNameContexts[i][j] = new EquipmentSelectMenuContext(this, this.commandMenus[i][j], new Position(j, i));
-        
-
-        if (this.commandMenus[i][j].isSelected) {
-          this.currentCommandMenu = this.equipmentNameContexts[i][j];
-        }
-      }
-    }
+    this.equipmentNameContexts = this.createMenus(this.commandMenus);
   }
 
   // オープンできるかどうか
   get canOpen() {
-    if (this.viewState == "opened" || this.memberName.memberSelecter.viewState != "opened" || !this.memberName.isSelected) {
+    if (this.viewState == 'opened' || this.commandMenu.commandBox.viewState != 'opened' || !this.commandMenu.isSelected) {
       return false;
     }
     return true;
@@ -88,7 +44,7 @@ class EquipmentSelectorContext extends KeyManageContext {
   // クローズできるかどうか
   get canClose() {
     
-    if (this.viewState == "closed" || this.isChildOpened) {
+    if (this.viewState == 'closed' || this.isChildOpened) {
       this.isChildOpened = false;
       return false;
     }
@@ -97,16 +53,16 @@ class EquipmentSelectorContext extends KeyManageContext {
 
   get canSelectionChange() {
     // ビュー状態がclosedであればカット
-    if (this.viewState == "closed") {
+    if (this.viewState == 'closed') {
       return false;
     }
     
     if (this.isChildOpened) {
       return false;
     }
-
+    
     // テキストエリアのビュー状態がopenedであればカット
-    if (this.memberName.memberSelecter.commandMenu.commandBox.textAreaContext.viewState == "opened") {
+    if (this.commandMenu.commandBox.commandMenu.commandBox.commandMenu.commandBox.commandMenu.commandBox.subContexts['text-area'].viewState == 'opened') {
       return false;
     }
 

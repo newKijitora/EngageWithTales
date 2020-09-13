@@ -2,9 +2,13 @@
 class Settings {
   
   // コンストラクタ
-  constructor() {
+  constructor(obj) {
     // テキストの速度と１フレームの移動距離
-    this.textSpeed = 16;
+    if (obj.settings.textSpeed) {
+      this.textSpeed = obj.settings.textSpeed;
+    } else {
+      this.textSpeed = 16; // デフォルト
+    }
     
     // 一コマのサイズ
     this.squareWidth = 32;

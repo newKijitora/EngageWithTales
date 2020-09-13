@@ -2,15 +2,18 @@
 class WorldContext extends Context {
 
   // コンストラクタ
-  constructor() { super();
+  constructor(initialize) { super();
+    // ゲームタイトル
+    this.title = initialize.title;
+
     // リソース
     this.resource = new Resources();
 
     // ゲームの設定
-    this.settings = new Settings();
+    this.settings = new Settings(initialize);
 
     // 町のJSONファイルURL
-    this.townJsonUrl = 'town/town.json';
+    this.townJsonUrl = initialize.url;
 
     // 現在の町
     this.currentTown = null;
@@ -114,12 +117,33 @@ class WorldContext extends Context {
       ]
     ];
 
+    // 装備コマンドのメニュー
+    this.equipmentCommandMenus = [
+      [
+        // new Command(label, commandName, isSelected, isMemberSelector);
+        new GameCommand("equipment", "ぶき", true, false),
+      ],
+      [
+        new GameCommand("equipment", "ぼうぐ", false, true),
+      ],
+      [
+        new GameCommand("equipment", "たて", false, true),
+      ],
+      [
+        new GameCommand("equipment", "あたま", false, false),
+      ]
+    ];
+  }
+
+  // ゲームを開始する
+  start() {
     // 町の情報を読み込み
     this.requestInformation(this, 'rokarito');
   }
 
   // JSONから町の情報を取得する
   requestInformation(world, townName) {
+    // リクエスト
     const request = new XMLHttpRequest();
     request.responseType = 'json';
 

@@ -5,10 +5,7 @@
 class MemberSelectContext extends CommandBoxContextBase {
   
   // コンストラクタ
-  constructor(menu) { super(menu.town);
-    // コマンドメニュー
-    this.commandMenu = menu;
-
+  constructor(menu) { super(menu, menu.town);
     // メニューの名前
     this.title = this.commandMenu.menu.name;
 
@@ -42,7 +39,12 @@ class MemberSelectContext extends CommandBoxContextBase {
     for (let i = 0; i < this.memberNameContexts.length; i++) {
       this.memberNameContexts[i] = new Array(this.commandMenus[i].length);
       for (let j = 0; j < this.memberNameContexts[i].length; j++) {
-        this.memberNameContexts[i][j] = new MemberNameContext(this, this.commandMenus[i][j], new Size(80, 32), new Position(j, i));
+        this.memberNameContexts[i][j] = new CommandMenuContext({
+          commandBox: this,
+          menu: this.commandMenus[i][j],
+          size: new Size(80, 32),
+          position: new Position(j, i),
+        });
         
         if (this.commandMenus[i][j].isSelected) {
           this.currentCommandMenu = this.memberNameContexts[i][j];

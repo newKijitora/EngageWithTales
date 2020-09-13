@@ -34,6 +34,9 @@ class TownContext {
     // コマンドのメニュー
     this.commandMenuLength = world.commandMenuLength;
     this.commandMenus = world.commandMenus;
+
+    // 装備コマンドのメニュー
+    this.equipmentCommandMenus = world.equipmentCommandMenus;
   }
 
   // JSONから町の情報を取得する

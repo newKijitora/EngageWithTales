@@ -25,7 +25,7 @@ class MemberStatusView extends CommandBoxViewBase {
     if (keyCode == this.context.openKey.keyCode && this.context.canOpen) {
       this.memberStatusDOM.style.display = "block";
       this.context.viewState = "opened";
-      this.context.memberName.memberSelecter.isChildOpened = true;
+      this.context.memberName.commandBox.isChildOpened = true;
     }
   }
 

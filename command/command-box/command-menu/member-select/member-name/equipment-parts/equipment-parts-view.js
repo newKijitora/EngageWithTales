@@ -93,7 +93,7 @@ class EquipmentPartsView extends CommandBoxViewBase {
     if (keyCode == this.context.openKey.keyCode && this.context.canOpen) {
       this.memberSelecter.style.display = "block";
       this.context.viewState = "opened";
-      this.context.memberName.memberSelecter.isChildOpened = true;
+      this.context.commandMenu.commandBox.isChildOpened = true;
     }
   }
 

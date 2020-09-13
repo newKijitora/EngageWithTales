@@ -90,8 +90,8 @@ class EquipmentItemListView extends CommandBoxViewBase {
     if (keyCode == this.context.openKey.keyCode && this.context.canOpen) {
       this.memberSelecter.style.display = "block";
       this.context.viewState = "opened";
-      this.context.memberName.memberSelecter.memberName.memberSelecter.isChildChildOpened = true;
-      this.context.memberName.memberSelecter.isChildOpened = true;
+      this.context.commandMenu.commandBox.commandMenu.commandBox.isChildChildOpened = true;
+      this.context.commandMenu.commandBox.isChildOpened = true;
     }
   }
 

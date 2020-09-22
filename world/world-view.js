@@ -1,4 +1,7 @@
+// ------------------------------------------------------------------
 // ゲーム世界のビュークラス
+// ------------------------------------------------------------------
+
 class WorldView {
   // コンストラクタ
   constructor(context) {
@@ -140,6 +143,6 @@ class WorldView {
     this.worldDom = world;
 
     // ゲーム開始
-    this.town = new TownView(this.controller.currentTown, this.peopleCanvases);
+    this.town = new TownView(this.controller.currentTown, this.peopleCanvases, this.commandFrameCanvases, this.charCanvases);
   }
 }

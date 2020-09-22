@@ -1,5 +1,8 @@
-// メンバーセレクターのビュークラス
-class EquipmentItemListView extends CommandBoxViewBase {
+// ------------------------------------------------------------------
+// 装備品目のアイテム名リストのビュークラス
+// ------------------------------------------------------------------
+
+class EquipmentItemListView extends SelectMenuView {
 
   // コンストラクタ
   constructor(context, frameCanvases, charCanvases) { super(context, frameCanvases, charCanvases);
@@ -7,9 +10,9 @@ class EquipmentItemListView extends CommandBoxViewBase {
     this.assemblingElements();
 
     // イベントリスナの設定
-    window.addEventListener("keydown", (event) => this.open(event.keyCode), false);
-    window.addEventListener("keyup", (event) => this.close(event.keyCode), false);
-    window.addEventListener("keydown", (event) => this.selectionChange(event.keyCode), false);
+    window.addEventListener('keydown', (event) => this.open(event.keyCode), false);
+    window.addEventListener('keydown', (event) => this.close(event.keyCode), false);
+    window.addEventListener('keydown', (event) => this.selectionChange(event.keyCode), false);
   }
   
   // HTML要素の生成
@@ -77,24 +80,5 @@ class EquipmentItemListView extends CommandBoxViewBase {
     }
 
     return commandMenus;
-  }
-
-  // オープン
-  open(keyCode) {
-    if (keyCode == this.context.openKey.keyCode && this.context.canOpen) {
-      this.memberSelecter.style.display = "block";
-      this.context.viewState = "opened";
-      this.context.commandMenu.commandBox.commandMenu.commandBox.isChildChildOpened = true;
-      this.context.commandMenu.commandBox.isChildOpened = true;
-    }
-  }
-
-  // クローズ
-  close(keyCode) {
-    if (keyCode == this.context.closeKey.keyCode && this.context.canClose) {
-      this.memberSelecter.style.display = "none";
-      this.resetCommandMenuSelection();
-      this.context.viewState = "closed";
-    }
   }
 }

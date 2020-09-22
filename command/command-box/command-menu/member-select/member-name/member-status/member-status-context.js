@@ -1,4 +1,7 @@
-// メンバーステータスのコントローラークラス
+// ------------------------------------------------------------------
+// メンバーのステータスのコンテキストクラス
+// ------------------------------------------------------------------
+
 class MemberStatusContext {
   // コンストラクタ
   constructor(memberName) {
@@ -15,6 +18,8 @@ class MemberStatusContext {
     this.viewState = "closed";
 
     this.memberSelecter = this.memberName.commandBox;
+
+    this.canSelectionChange = false;
   }
 
   // オープンできるかどうか

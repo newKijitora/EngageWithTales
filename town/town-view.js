@@ -1,11 +1,11 @@
 //----------------------------------------------
-// 町のビュー
+// 町のビュークラス
 //----------------------------------------------
 
 class TownView {
 
   // コンストラクタ
-  constructor(context, peopleCanvases) {
+  constructor(context, peopleCanvases, frameCanvases, charCanvases) {
     // コンテキスト
     this.context = context;
 
@@ -22,7 +22,7 @@ class TownView {
     }
 
     // コマンドボックス
-    this.commandBox = new CommandBoxView(this.context.commandBoxController, 300);
+    this.commandBox = new CommandBoxView(this.context.commandBoxController, frameCanvases, charCanvases);
   }
 
   assemblingElements() {

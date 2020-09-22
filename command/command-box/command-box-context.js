@@ -1,37 +1,30 @@
 // ------------------------------------------------------------------
-// コマンドボックスのコンテキスト（コマンド関連オブジェクトのルート）
+// コマンドボックスのコンテキスト
 // ------------------------------------------------------------------
 
-class CommandBoxContext extends CommandBoxContextBase {
+class CommandBoxContext extends SelectMenuContext {
 
   // コンストラクタ
-  constructor(town, zIndexBase) { super(null, town);
-    // コマンドボックスのサイズ（列数）
-    this.commandBoxColumns = 7; // 変数を検討
-
-    // コマンドボックスの左上位置
-    this.commandBoxPosition = new Position(5, 2);
-
+  constructor(town, zIndexBase, position) { super(null, town, position); // コマンドメニューはnull
+    // 重ね位置
     this.zIndexBase = zIndexBase;
 
     // サブコンテキスト
     this.subContexts['text-area'] = new TextAreaContext(this, this.zIndexBase);
 
-    // コマンドメニューのコンテキストを生成する
     this.commandMenuContexts = this.createMenuContexts(this.commandMenus);
   }
 
   // コマンドメニューのコンテキストを生成する
   createMenuContexts(menus) {
-    const menuContexts = new Array(menus.length);
+    const contexts = new Array(menus.length);
 
-    for (let i = 0; i < menuContexts.length; i++) {
-      
-      menuContexts[i] = new Array(menus[i].length);
+    for (let i = 0; i < contexts.length; i++) {
+      contexts[i] = new Array(menus[i].length);
+      for (let j = 0; j < contexts[i].length; j++) {
 
-      for (let j = 0; j < menuContexts[i].length; j++) {
-
-        menuContexts[i][j] = new CommandMenuContext({
+        // コマンドメニュー
+        contexts[i][j] = new CommandMenuContext({
           commandBox: this,
           menu: menus[i][j],
           size: this.menuSize,
@@ -39,15 +32,13 @@ class CommandBoxContext extends CommandBoxContextBase {
           label: 'first'
         });
 
-        
-
         if (menus[i][j].isSelected) {
-          this.currentCommandMenuContext = menuContexts[i][j];
+          this.currentCommandMenuContext = contexts[i][j];
         }
       }
     }
 
-    return menuContexts;
+    return contexts;
   }
 
   // コマンドボックスを開くことができるかどうか

@@ -1,22 +1,18 @@
 // ------------------------------------------------------------------
-// テキストエリアのビュー
+// テキストエリアのビュークラス
 // ------------------------------------------------------------------
 
-class TextAreaView extends CommandBoxViewBase {
+class TextAreaView extends FrameView {
   
   // コンストラクタ
-  constructor(context, frameCanvases, charCanvases) { super(context);
-    // コントローラ
-    this.context = context;
-
+  constructor(context, frameCanvases, charCanvases) { super(context, frameCanvases, charCanvases);
     // HTML要素
     this.textArea = null;
     this.textFrame = null;
     this.textFrameCanvases = frameCanvases;
 
-    this.charCanvases = charCanvases;
-
     this.cells = new Array(this.context.numberOfRows);
+    
     for (let i = 0; i < this.context.numberOfRows; i++) {
       this.cells[i] = new Array(this.context.numberOfCells);
     }
@@ -24,7 +20,7 @@ class TextAreaView extends CommandBoxViewBase {
     // HTML要素の組成
     this.assemblingElements();
 
-    // イベントリスナ
+    // イベントリスナの設定
     window.addEventListener('keydown', (event) => this.open(event.keyCode), false);
     window.addEventListener('keydown', (event) => this.close(event.keyCode), false);
   } 

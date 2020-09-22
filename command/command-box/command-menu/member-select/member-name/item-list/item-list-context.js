@@ -2,7 +2,7 @@
 // アイテムリストのコンテキスト
 // ------------------------------------------------------------------
 
-class ItemListContext extends CommandBoxContextBase {
+class ItemListContext extends SelectMenuContext {
   
   // コンストラクタ
   constructor(commandMenu) { super(commandMenu, commandMenu.town);
@@ -48,7 +48,12 @@ class ItemListContext extends CommandBoxContextBase {
     for (let i = 0; i < this.memberNameContexts.length; i++) {
       this.memberNameContexts[i] = new Array(this.commandMenus[i].length);
       for (let j = 0; j < this.memberNameContexts[i].length; j++) {
-        this.memberNameContexts[i][j] = new ItemNameContext(this, this.commandMenus[i][j], new Position(j, i));
+        this.memberNameContexts[i][j] = new MenuContext({
+          commandBox: this,
+          menu: this.commandMenus[i][j],
+          size: new Size(80, 32),
+          position: new Position(j, i)
+        });
         
         if (this.commandMenus[i][j].isSelected) {
           this.currentCommandMenu = this.memberNameContexts[i][j];

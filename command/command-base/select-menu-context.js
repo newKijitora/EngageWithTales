@@ -2,15 +2,20 @@
 // コマンドボックスのコンテキスト基底クラス
 // ------------------------------------------------------------------
 
-class CommandBoxContextBase extends KeyManageContext {
+class SelectMenuContext extends KeyManageContext {
 
   // コンストラクタ
-  constructor(commandMenu, town) { super(town);
+  constructor(commandMenu, town, position, commandMenus, name) { super(town);
     // コマンドメニュー
-    this.commandMenu = null;
+    this.commandMenu = commandMenu;
     
     if (commandMenu) {
       this.commandMenu = commandMenu;
+      
+      // メニューの名前
+      if (this.commandMenu.menuName) {
+        this.title = this.commandMenu.menuName;
+      }
     }
 
     // 町オブジェクト
@@ -46,7 +51,7 @@ class CommandBoxContextBase extends KeyManageContext {
     this.viewState = 'closed';
 
     // コマンドボックスの左上位置（画面上での配置）
-    this.commandBoxPosition = null;
+    this.commandBoxPosition = position;
 
     // メニューのサイズ
     this.menuSize = new Size(this.textSize.x * this.commandMenuLength, this.textSize.y);
@@ -55,8 +60,25 @@ class CommandBoxContextBase extends KeyManageContext {
     // 1次配列は行、2次配列は列を表す
     this.commandMenus = this.town.commandMenus;
 
-    // コマンドボックスのサイズ
+    if (commandMenus) {
+      this.commandMenus = commandMenus;
+    }
+
+    // コマンドボックスのサイズ（行数）
     this.commandBoxRows = this.commandMenus.length + 1;
+    // コマンドボックスのサイズ（列数）
+    this.commandBoxColumns = 7; // 変数を検討
+
+    this.isChidOpened = false;
+
+    if (name == 'equipselect') {
+      this.maxTitleLength = 4;
+
+      // コマンドフレームのサイズ
+      this.commandBoxColumns = (this.maxTitleLength / 2) + 2; // 変数を検討（+2 はコマンドポインターの分）
+
+      this.menuContexts =  this.createMenus(commandMenus);
+    }
   }
 
   createMenus(commandMenus) {
@@ -66,7 +88,7 @@ class CommandBoxContextBase extends KeyManageContext {
     for (let i = 0; i < contexts.length; i++) {
       contexts[i] = new Array(commandMenus[i].length);
       for (let j = 0; j < contexts[i].length; j++) {
-        contexts[i][j] = new CommandMenuContext({
+        contexts[i][j] = new MenuContext({
           commandBox: this,
           menu: commandMenus[i][j],
           size: new Size(80, 32),
@@ -82,58 +104,45 @@ class CommandBoxContextBase extends KeyManageContext {
     return contexts;
   }
 
-  createMenus2(commandMenus) {
-    // コマンドメニューのコンテキストを生成する
-    const contexts = new Array(commandMenus.length);
-
-    for (let i = 0; i < contexts.length; i++) {
-      contexts[i] = new Array(commandMenus[i].length);
-      for (let j = 0; j < contexts[i].length; j++) {
-        contexts[i][j] = new CommandMenuContext({
-          commandBox: this,
-          menu: commandMenus[i][j],
-          size: new Size(80, 32),
-          position: new Position(j, i),
-          label: 'equipment-select',
-        });
-
-        if (commandMenus[i][j].isSelected) {
-          this.currentCommandMenuContext = contexts[i][j];
-        }
-      }
-    }
-
-    return contexts;
-  }
-
-  createMenus3(commandMenus) {
-    // コマンドメニューのコンテキストを生成する
-    const contexts = new Array(commandMenus.length);
-
-    for (let i = 0; i < contexts.length; i++) {
-      contexts[i] = new Array(commandMenus[i].length);
-      for (let j = 0; j < contexts[i].length; j++) {
-        contexts[i][j] = new CommandMenuContext({
-          commandBox: this,
-          menu: commandMenus[i][j],
-          size: new Size(80, 32),
-          position: new Position(j, i),
-          label: 'equipment-item',
-        });
-        
-
-        if (commandMenus[i][j].isSelected) {
-          this.currentCommandMenuContext = contexts[i][j];
-        }
-      }
-    }
-
-    return contexts;
-  }
-
   // 子ウィンドウが開いているかどうかを表す
   childOpened() {
     this.isChildOpened++;
     parent.childOpened();
+  }
+
+  // オープンできるかどうか
+  get canOpen() {
+    if (this.viewState == 'opened' || this.commandMenu.commandBox.viewState != 'opened' || !this.commandMenu.isSelected) {
+      return false;
+    }
+    return true;
+  }
+
+  // クローズできるかどうか
+  get canClose() {
+    
+    if (this.viewState == 'closed' || this.isChildOpened) {
+      this.isChildOpened = false;
+      return false;
+    }
+    return true;
+  }
+
+  get canSelectionChange() {
+    // ビュー状態がclosedであればカット
+    if (this.viewState == 'closed') {
+      return false;
+    }
+    
+    if (this.isChildOpened) {
+      return false;
+    }
+    
+    // テキストエリアのビュー状態がopenedであればカット
+    if (this.commandMenu.commandBox.commandMenu.commandBox.commandMenu.commandBox.commandMenu.commandBox.subContexts['text-area'].viewState == 'opened') {
+      return false;
+    }
+
+    return true;
   }
 }

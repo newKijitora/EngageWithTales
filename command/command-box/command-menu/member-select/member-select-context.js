@@ -2,7 +2,7 @@
 // メンバーセレクターのコンテキスト
 // ------------------------------------------------------------------
 
-class MemberSelectContext extends CommandBoxContextBase {
+class MemberSelectContext extends SelectMenuContext {
   
   // コンストラクタ
   constructor(menu) { super(menu, menu.town);
@@ -33,13 +33,13 @@ class MemberSelectContext extends CommandBoxContextBase {
 
     this.isChildOpened = false;
 
-    // コマンドメニューのコンテキストを生成する
+    // メンバー名のコンテキストを生成する
     this.memberNameContexts = new Array(this.commandMenus.length);
 
     for (let i = 0; i < this.memberNameContexts.length; i++) {
       this.memberNameContexts[i] = new Array(this.commandMenus[i].length);
       for (let j = 0; j < this.memberNameContexts[i].length; j++) {
-        this.memberNameContexts[i][j] = new CommandMenuContext({
+        this.memberNameContexts[i][j] = new MemberNameContext({
           commandBox: this,
           menu: this.commandMenus[i][j],
           size: new Size(80, 32),

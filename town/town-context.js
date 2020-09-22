@@ -61,7 +61,7 @@ class TownContext {
       this.people = this.createPeople(this);
 
       // コマンドボックス
-      this.commandBoxController = new CommandBoxContext(this, 300);
+      this.commandBoxController = new CommandBoxContext(this, 300, new Position(5, 2));
   }
 
   talk() {

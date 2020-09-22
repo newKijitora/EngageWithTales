@@ -1,8 +1,8 @@
 // ------------------------------------------------------------------
-// メンバー選択コマンドのビュークラス
+// 装備部位のビュークラス
 // ------------------------------------------------------------------
 
-class MemberSelectView extends SelectMenuView {
+class EquipmentPartListView extends SelectMenuView {
 
   // コンストラクタ
   constructor(context, frameCanvases, charCanvases) { super(context, frameCanvases, charCanvases);
@@ -20,8 +20,8 @@ class MemberSelectView extends SelectMenuView {
     // コマンドのコンテナ
     const commandBox = document.createElement("div");
     commandBox.style.position = "absolute";
-    commandBox.style.left = this.context.memberSelecterPosition.x * this.context.squareSize.x + "px";
-    commandBox.style.top = (this.context.memberSelecterPosition.y * this.context.squareSize.y) - this.context.textSize.x + "px";
+    commandBox.style.left = this.context.itemListPosition.x * this.context.squareSize.x + "px";
+    commandBox.style.top = this.context.itemListPosition.y * this.context.squareSize.y + "px";
     commandBox.style.display = "none";
 
     // コマンドのフレーム（バックグラウンド）
@@ -38,7 +38,7 @@ class MemberSelectView extends SelectMenuView {
     selectField.style.paddingTop = this.context.squareSize.y / 2 + "px";
     selectField.style.display = "flex";
     selectField.style.flexWrap = "wrap";
-    selectField.style.width = "64px";
+    //selectField.style.width = "64px";
 
     // コマンドメニューを生成
     const commandMenus = new Array(this.context.commandMenus.length);
@@ -46,13 +46,21 @@ class MemberSelectView extends SelectMenuView {
     for (let i = 0; i < commandMenus.length; i++) {
       commandMenus[i] = new Array(this.context.commandMenus[i].length);
       for (let j = 0; j < commandMenus[i].length; j++) {
-        commandMenus[i][j] = new MemberNameView(this.context.memberNameContexts[i][j], this.context.commandMenus[i][j].commandName, this.frameCanvases, this.charCanvases);
+        commandMenus[i][j] = new EquipmentPartNameView(this.context.equipmentNameContexts[i][j], this.context.commandMenus[i][j].commandName, this.frameCanvases, this.charCanvases);
         selectField.appendChild(commandMenus[i][j].commandMenuDOM);
+        commandMenus[i][j].initialize(this.charCanvases);
       }
     }
 
     commandBox.appendChild(commandFrameDOM);
     commandBox.appendChild(selectField);
+
+    // どうぐをもっていればフレームを描画
+    if (this.context.commandMenus.length != 0) {
+      super.drawFrame(commandFrameDOM, this.context.squareSize, this.frameCanvases, this.context.commandBoxRows, this.context.commandBoxColumns)
+    } else {
+      // どうぐをもっていない場合
+    }
 
     this.memberSelecter = commandBox;
     this.memberSelectFrame = commandFrameDOM;

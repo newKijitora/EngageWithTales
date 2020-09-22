@@ -2,7 +2,7 @@
 // コマンドメニューのコンテキストクラス
 // ------------------------------------------------------------------
 
-class CommandMenuContext {
+class MenuContext {
 
   // コンストラクタ
   constructor(obj) {
@@ -39,9 +39,17 @@ class CommandMenuContext {
       this.memberSelecterPosition = new Position(0, 0);
     }
 
+    // 装備部位のコンテキスト
     if (this.label == 'equipment-select') {
       this.contexts = {
-        'equipment-select': new EquipmentSelectorContext(this),
+        'equipment-select': new SelectMenuContext(this, this.town, new Position(4, 0), [
+          [
+            new GameCommand("equip", "そうび", true, false),
+          ],
+          [
+            new GameCommand("out", "はずす", false, false),
+          ],
+        ], 'equipselect'),
       };
     }
 
@@ -68,7 +76,7 @@ class CommandMenuContext {
 
     // 「そうび」コマンドの子のセレクターにはエクイプメントリスト
     if (this.label != 'first' && this.menu.label == 'equipment' && this.label != 'equipment-select' && this.label != 'equipment-item') {
-      this.equipmentPartsContext = new EquipmentPartsContext(this);
+      this.equipmentPartsContext = new EquipmentPartListContext(this);
     }
   }
 }

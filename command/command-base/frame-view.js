@@ -1,13 +1,19 @@
-// コマンド関連の基底クラス
-class CommandBoxViewBase {
+// ------------------------------------------------------------------
+// コマンドフレームを持つビューの基底クラス
+// ------------------------------------------------------------------
 
+class FrameView {
   // コンストラクタ
-  constructor(context) {
+  constructor(context, frameCanvases, charCanvases) {
     // コンテキスト
     this.context = context;
+
+    // フレームキャンバスと文字キャンバス
+    this.frameCanvases = frameCanvases;
+    this.charCanvases = charCanvases;
   }
 
-  // フレームを描画する
+    // フレームを描画する
   drawFrame(canvas, mapChipSize, textures, rows, columns) {
     const context = canvas.getContext("2d");
 
@@ -66,6 +72,26 @@ class CommandBoxViewBase {
           continue;
         }
       }
+    }
+  }
+
+  // オープン
+  open(keyCode) {
+    if (keyCode == this.context.openKey.keyCode && this.context.canOpen) {
+      
+      this.memberSelecter.style.display = "block";
+
+      this.context.viewState = "opened";
+      this.context.commandMenu.commandBox.isChildOpened = true;
+    }
+  }
+
+  // クローズ
+  close(keyCode) {
+    if (keyCode == this.context.closeKey.keyCode && this.context.canClose) {
+      this.memberSelecter.style.display = "none";
+      this.resetCommandMenuSelection();
+      this.context.viewState = "closed";
     }
   }
 }

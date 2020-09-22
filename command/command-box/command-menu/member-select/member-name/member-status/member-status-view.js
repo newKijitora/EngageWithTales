@@ -1,42 +1,18 @@
-// メンバーステータスのコントローラークラス
-class MemberStatusView extends CommandBoxViewBase {
+// ------------------------------------------------------------------
+// メンバーのステータスのビュークラス
+// ------------------------------------------------------------------
+
+class MemberStatusView extends FrameView {
   // コンストラクタ
-  constructor(context, frameCanvases, charCanvases) { super(context);
-    // コンテキスト
-    this.context = context;
-
-    // フレームキャンバスと文字キャンバス
-    this.frameCanvases = frameCanvases;
-    this.charCanvases = charCanvases;
-
-    // HTML要素
-    this.memberStatusDOM = null;
-
+  constructor(context, frameCanvases, charCanvases) { super(context, frameCanvases, charCanvases);
     // HTML要素の組成
     this.assemblingElements();
-
-    // イベントリスナー
-    window.addEventListener("keydown", (event) => this.open(event.keyCode));
-    window.addEventListener("keydown", (event) => this.close(event.keyCode));
+    
+    // イベントリスナの設定
+    window.addEventListener('keydown', (event) => this.open(event.keyCode), false);
+    window.addEventListener('keydown', (event) => this.close(event.keyCode), false);
   }
-
-  // オープン
-  open(keyCode) {
-    if (keyCode == this.context.openKey.keyCode && this.context.canOpen) {
-      this.memberStatusDOM.style.display = "block";
-      this.context.viewState = "opened";
-      this.context.memberName.commandBox.isChildOpened = true;
-    }
-  }
-
-  // クローズ
-  close(keyCode) {
-    if (keyCode == this.context.closeKey.keyCode && this.context.canClose) {
-      this.memberStatusDOM.style.display = "none";
-      this.context.viewState = "closed";
-    }
-  }
-
+  
   // HTML要素の生成
   assemblingElements() {
     // メンバーステータスのコンテナ

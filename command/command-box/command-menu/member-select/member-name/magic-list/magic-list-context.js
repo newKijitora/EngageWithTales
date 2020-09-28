@@ -12,9 +12,6 @@ class MagicListContext extends SelectMenuContext {
     // コマンドボックスの左上位置
     this.itemListPosition = new Position(6, -1);
 
-    // メニューの名前
-    this.title = this.commandMenu.menuName;
-
     // どうぐのリスト
     for (let i = 0; i < this.commandMenu.commandBox.memberCharacters.length; i++) {
       if (this.commandMenu.commandBox.memberCharacters[i].name == this.title) {
@@ -42,9 +39,6 @@ class MagicListContext extends SelectMenuContext {
     // コマンドフレームのサイズ
     this.commandBoxRows = this.magics.length + 1;
     this.commandBoxColumns = 6; // 変数を検討
-
-    //this.memberStatusController = new MemberStatusContext(this);
-    this.isChildOpened = false;
 
     // コマンドメニューのコンテキストを生成する
     this.memberNameContexts = new Array(this.commandMenus.length);
@@ -74,23 +68,13 @@ class MagicListContext extends SelectMenuContext {
     return true;
   }
 
-  // クローズできるかどうか
-  get canClose() {
-    
-    if (this.viewState == "closed" || this.isChildOpened) {
-      this.isChildOpened = false;
-      return false;
-    }
-    return true;
-  }
-
   get canSelectionChange() {
     // ビュー状態がclosedであればカット
     if (this.viewState == "closed") {
       return false;
     }
     
-    if (this.isChildOpened) {
+    if (this.isChildOpened > 0) {
       return false;
     }
 

@@ -115,16 +115,6 @@ class CommandBoxView extends SelectMenuView {
     }
   }
 
-  // ビューの表示
-  showView() {
-    this.memberSelecter.style.display = 'block';
-  }
-
-  // ビューの非表示
-  hideView() {
-    this.memberSelecter.style.display = 'none';
-  }
-
   // HTML要素の生成
   assemblingElements() {
     // コマンドのコンテナ
@@ -158,7 +148,7 @@ class CommandBoxView extends SelectMenuView {
     const monitor = document.getElementById('world');
     monitor.appendChild(commandBox);
 
-    this.memberSelecter = commandBox;
+    this.htmlElement = commandBox;
     this.memberSelecterFrame = commandFrameDOM;
     this.selectField = selectField;
 
@@ -189,12 +179,12 @@ class CommandBoxView extends SelectMenuView {
         }
 
         // メンバーセレクターのフレーム描画
-        commandMenus[i][j].memberSelecter.drawFrame(this.frameCanvases);
+        commandMenus[i][j].htmlElement.drawFrame(this.frameCanvases);
 
         // メンバーセレクターのコマンドメニューに文字を描画する
-        for (let k = 0; k < commandMenus[i][j].memberSelecter.commandMenus.length; k++) {
-          for (let l = 0; l < commandMenus[i][j].memberSelecter.commandMenus[k].length; l++) {
-            commandMenus[i][j].memberSelecter.commandMenus[k][l].initialize(this.charCanvases);
+        for (let k = 0; k < commandMenus[i][j].htmlElement.commandMenus.length; k++) {
+          for (let l = 0; l < commandMenus[i][j].htmlElement.commandMenus[k].length; l++) {
+            commandMenus[i][j].htmlElement.commandMenus[k][l].initialize(this.charCanvases);
           }
         }
       }

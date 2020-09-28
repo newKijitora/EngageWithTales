@@ -7,7 +7,7 @@ class SelectMenuView extends FrameView {
   // コンストラクタ
   constructor(context, frameCanvases, charCanvases) { super(context, frameCanvases, charCanvases);
     // HTML要素
-    this.memberSelecter = null;
+    this.htmlElement = null;
 
     this.memberSelectFrame = null;
     this.commandMenus = null;

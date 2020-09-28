@@ -15,7 +15,6 @@ class MemberStatusContext {
     this.closeKey = new Key(75, "keyup");
 
     this.memberCharacters = this.memberName.memberCharacters;
-    this.viewState = "closed";
 
     this.memberSelecter = this.memberName.commandBox;
 
@@ -24,16 +23,7 @@ class MemberStatusContext {
 
   // オープンできるかどうか
   get canOpen() {
-    if (this.viewState == "opened"|| this.memberSelecter.viewState != "opened") {
-      return false;
-    }
-
-    return true;
-  }
-
-  // クローズできるかどうか
-  get canClose() {
-    if (this.viewState == "closed") {
+    if (this.viewState == "opened" || this.memberSelecter.viewState != "opened") {
       return false;
     }
 

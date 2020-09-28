@@ -5,12 +5,9 @@
 class MemberSelectContext extends SelectMenuContext {
   
   // コンストラクタ
-  constructor(menu) { super(menu, menu.town);
+  constructor(menu, position) { super(menu, menu.town, position);
     // メニューの名前
     this.title = this.commandMenu.menu.name;
-
-    // コマンドボックスの左上位置
-    this.memberSelecterPosition = new Position(0, 1);
 
     // コマンドのメニュー（冒険のパーティの名前で生成）
     this.commandMenus = new Array(this.memberCharacters.length);
@@ -31,8 +28,6 @@ class MemberSelectContext extends SelectMenuContext {
     this.commandBoxRows = this.memberCharacters.length + 1;
     this.commandBoxColumns = 4; // 変数を検討
 
-    this.isChildOpened = false;
-
     // メンバー名のコンテキストを生成する
     this.memberNameContexts = new Array(this.commandMenus.length);
 
@@ -49,15 +44,8 @@ class MemberSelectContext extends SelectMenuContext {
         if (this.commandMenus[i][j].isSelected) {
           this.currentCommandMenu = this.memberNameContexts[i][j];
         }
-
-        if (this.memberNameContexts[i][j].equipmentPartsContext) {
-          this.isChildChildOpened = false;
-        }
       }
     }
-
-    // ビューの初期ステータス
-    this.viewState = 'closed';
   }
 
   // オープンできるかどうか
@@ -65,30 +53,12 @@ class MemberSelectContext extends SelectMenuContext {
     if (this.viewState == "opened" || !this.commandMenu.isSelected) {
       return false;
     }
-    return true;
-  }
 
-  // クローズできるかどうか
-  get canClose() {
-    if (this.viewState == "closed" || (this.currentCommandMenu.equipmentPartsContext && this.currentCommandMenu.equipmentPartsContext.isChildOpened)) {
-      return false;
-    }
-
-    if (this.viewState == "closed" || this.isChildChildOpened) {
-      this.isChildChildOpened = false;
-      return false;
-    }
-
-    if (this.viewState == "closed" || this.isChildOpened) {
-      this.isChildOpened = false;
-      return false;
-    }
-    
     return true;
   }
 
   get canSelectionChange() {
-    if (this.currentCommandMenu.equipmentPartsContext && this.currentCommandMenu.equipmentPartsContext.isChildOpened) {
+    if (this.currentCommandMenu.equipmentPartsContext && this.currentCommandMenu.equipmentPartsContext.isChildOpened > 0) {
       return false;
     }
 

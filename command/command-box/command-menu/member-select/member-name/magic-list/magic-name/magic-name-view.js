@@ -35,12 +35,12 @@ class MagicNameView extends MenuView {
     // メンバーステータスの生成
     if (this.context.memberStatusContext) {
       const memberStatus = new MemberStatusView(this.context.memberStatusContext, this.frameCanvases, this.charCanvases);
-      this.commandMenuDOM.appendChild(memberStatus.memberStatusDOM);
+      this.commandMenuDOM.appendChild(memberStatus.htmlElement);
     }
 
     if (this.context.itemListContext) {
       const itemList = new ToolListView(this.context.itemListContext, this.frameCanvases, this.charCanvases);
-      this.commandMenuDOM.appendChild(itemList.memberSelecter);
+      this.commandMenuDOM.appendChild(itemList.htmlElement);
     }
   }
 }

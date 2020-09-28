@@ -28,29 +28,29 @@ class MemberNameView extends MenuView {
     commandMenu.appendChild(commandText);
 
     // 参照を保存
-    this.commandMenuDOM = commandMenu;
+    this.htmlElement = commandMenu;
     this.commandPointer = commandPointer;
     this.commandText = commandText;
 
     // メンバーステータスの生成
     if (this.context.memberStatusContext) {
       const memberStatus = new MemberStatusView(this.context.memberStatusContext, this.frameCanvases, this.charCanvases);
-      this.commandMenuDOM.appendChild(memberStatus.memberStatusDOM);
+      this.htmlElement.appendChild(memberStatus.htmlElement);
     }
 
     if (this.context.itemListContext) {
       const itemList = new ToolListView(this.context.itemListContext, this.frameCanvases, this.charCanvases);
-      this.commandMenuDOM.appendChild(itemList.memberSelecter);
+      this.htmlElement.appendChild(itemList.htmlElement);
     }
 
     if (this.context.magicListContext) {
       const magicList = new MagicListView(this.context.magicListContext, this.frameCanvases, this.charCanvases);
-      this.commandMenuDOM.appendChild(magicList.memberSelecter);
+      this.htmlElement.appendChild(magicList.htmlElement);
     }
 
     if (this.context.equipmentPartsContext) {
       const equipmentParts = new EquipmentPartListView(this.context.equipmentPartsContext, this.frameCanvases, this.charCanvases);
-      this.commandMenuDOM.appendChild(equipmentParts.memberSelecter);
+      this.htmlElement.appendChild(equipmentParts.htmlElement);
     }
   }
 }

@@ -5,53 +5,25 @@
 class SelectMenuContext extends KeyManageContext {
 
   // コンストラクタ
-  constructor(commandMenu, town, position, commandMenus, name) { super(town);
+  constructor(commandMenu, town, position, commandMenus, name) { super(town, position);
     // コマンドメニュー
-    this.commandMenu = commandMenu;
-    
+    this.commandMenu = null;
+
+    // 親コマンドボックス
+    this.parent = null;
+
     if (commandMenu) {
       this.commandMenu = commandMenu;
-      
+      this.parent = this.commandMenu.commandBox;
+
       // メニューの名前
       if (this.commandMenu.menuName) {
         this.title = this.commandMenu.menuName;
       }
     }
 
-    // 町オブジェクト
-    this.town = town;
-
-    // 文字のサイズ
-    this.textSize = this.town.settings.textSize;
-    this.squareSize = this.town.settings.squareSize;
-
-    // テキストのスピード
-    this.textSpeed = this.town.settings.textSpeed;
-
-    // テキスト用の文字テクスチャーと文字オブジェクト
-    this.textTextures = this.town.resource.textTextures;
-    this.textElements = this.town.resource.textElements;
-
-    // フレーム描画用テクスチャー
-    this.commandTextures = this.town.resource.commandFrameTextures;
-
-    // コマンドボックスの背景色
-    this.backgroundColor = this.town.settings.commandBoxBackgroundColor;
-
-    // 冒険のパーティ
-    this.memberCharacters = this.town.memberCharacters;
-
-    // サブコンテキスト
-    this.subContexts = {};
-
     // 選択中のコマンドメニューのコンテキスト
     this.currentCommandMenuContext = null;
-
-    // ビューの初期状態
-    this.viewState = 'closed';
-
-    // コマンドボックスの左上位置（画面上での配置）
-    this.commandBoxPosition = position;
 
     // メニューのサイズ
     this.menuSize = new Size(this.textSize.x * this.commandMenuLength, this.textSize.y);
@@ -69,7 +41,7 @@ class SelectMenuContext extends KeyManageContext {
     // コマンドボックスのサイズ（列数）
     this.commandBoxColumns = 7; // 変数を検討
 
-    this.isChidOpened = false;
+    this.isChildOpened = 0;
 
     if (name == 'equipselect') {
       this.maxTitleLength = 4;
@@ -104,25 +76,20 @@ class SelectMenuContext extends KeyManageContext {
     return contexts;
   }
 
-  // 子ウィンドウが開いているかどうかを表す
-  childOpened() {
-    this.isChildOpened++;
-    parent.childOpened();
+  // ウィンドウが開いたことを親ウィンドウに通知する
+  notifyChildOpened(parent) {
+    // 親ウィンドウの子ウィンドウ管理変数をインクリメント
+    parent.isChildOpened++;
+
+    // 親ウィンドウに親ウィンドウがあればメソッドを伝達する
+    if (parent.parent) {
+      parent.notifyChildOpened(parent.parent);
+    }
   }
 
   // オープンできるかどうか
   get canOpen() {
     if (this.viewState == 'opened' || this.commandMenu.commandBox.viewState != 'opened' || !this.commandMenu.isSelected) {
-      return false;
-    }
-    return true;
-  }
-
-  // クローズできるかどうか
-  get canClose() {
-    
-    if (this.viewState == 'closed' || this.isChildOpened) {
-      this.isChildOpened = false;
       return false;
     }
     return true;
@@ -134,7 +101,7 @@ class SelectMenuContext extends KeyManageContext {
       return false;
     }
     
-    if (this.isChildOpened) {
+    if (this.isChildOpened > 0) {
       return false;
     }
     

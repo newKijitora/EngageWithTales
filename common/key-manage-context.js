@@ -2,23 +2,15 @@
 // キー操作系ビューのコンテキスト基底クラス
 // ------------------------------------------------------------------
 
-class KeyManageContext extends Context {
+class KeyManageContext extends FrameContext {
 
   // コンストラクタ
-  constructor(town) { super();
-    // 設定
-    this.settings = town.settings;
-
-    // 一コマのサイズ
-    this.squareSize = town.settings.squareSize;
-
+  constructor(town, position) { super(town, position);
     // キー
     this.leftKey = new Key(this.settings.keyCodes['left'], 'left', 'keyup');
     this.rightKey = new Key(this.settings.keyCodes['right'], 'right', 'keyup');
     this.bottomKey = new Key(this.settings.keyCodes['bottom'], 'bottom', 'keyup');
     this.topKey = new Key(this.settings.keyCodes['top'], 'top', 'keyup');
-    this.openKey = new Key(this.settings.keyCodes['open'], 'open', 'keyup');
-    this.closeKey = new Key(this.settings.keyCodes['close'], 'close', 'keyup');
 
     // 進行方向コレクションの初期化
     this.destinations = {
@@ -59,9 +51,9 @@ class KeyManageContext extends Context {
       case this.settings.keyCodes['bottom']:
         return this.bottomKey;
       case this.settings.keyCodes['open']:
-        return !keyAll ? null : this.settings.openKey;
+        return !keyAll ? null : super.getKey(keyCode);
       case this.settings.keyCodes['close']:
-        return !keyAll ? null : this.settings.closeKey;
+        return !keyAll ? null : super.getKey(keyCode);
       default:
         return null;
     }

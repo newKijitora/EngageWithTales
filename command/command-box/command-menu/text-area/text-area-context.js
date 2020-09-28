@@ -2,41 +2,22 @@
 // テキストエリアのコンテキストクラス
 // ------------------------------------------------------------------
 
-class TextAreaContext extends Context {
+class TextAreaContext extends FrameContext {
   // コンストラクタ
-  constructor(commandBox, zIndexBase) { super();
+  constructor(commandBox, zIndexBase, position) { super(commandBox.town, position);
     // コンテキスト
     this.commandBox = commandBox;
 
-    // 一コマのサイズ
-    this.squareSize = commandBox.squareSize;
-
-    // テキストエリアの背景色
-    this.backgroundColor = commandBox.backgroundColor;
-
-    // コマンドフレームのテクスチャ
-    this.commandTextures = commandBox.commandTextures;
-
-    // テキスト用のテクスチャーと文字エレメント
-    this.textTextures = this.commandBox.textTextures;
-    this.textElements = this.commandBox.textElements;
-
-    // ビューの状態
-    this.viewState = 'closed';
-    
-    // ビューが進行中かどうか
+    // ビューが進行中かどうか（テキストエリア固有）
     this.isProgress = false;
     
-    // キーコード
-    this.openKeyCode = 74;
-    this.closeKeyCode = 75;
+    // 最初にコマンドボックスが開いたときのオープン操作はキャンセルする
     this.firstThrough = true;
     
     // テキスト関連のプロパティ
     this.textSet = this.list[2];
     this.readIndex = 0;
     this.canReadContinue = false;
-    this.textSpeed = this.commandBox.textSpeed;
     
     this.textAreaRows = 5;
     this.textAreaColumns = 15;
@@ -61,15 +42,6 @@ class TextAreaContext extends Context {
     return this.checkContextForOpen();
   }
 
-  // クローズできるかどうか
-  get canClose() {
-    // ビューがクローズ中であればクローズ不可    
-    if (this.viewState == 'closed') {
-      return false;
-    }
-    return this.checkContextForClose();
-  }
-
   // オープンできるかどうか：コンテキストのチェック
   checkContextForOpen() {
     // 選択中のコマンドメニューが「はなす」でなければカット
@@ -77,11 +49,6 @@ class TextAreaContext extends Context {
       return false;
     }
 
-    return true;
-  }
-
-  // クローズできるかどうか：コンテキストのチェック
-  checkContextForClose() {
     return true;
   }
 

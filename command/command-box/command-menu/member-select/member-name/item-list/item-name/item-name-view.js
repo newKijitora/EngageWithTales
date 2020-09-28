@@ -40,7 +40,7 @@ class ItemNameView extends MenuView {
 
     if (this.context.toolListContext) {
       const toolList = new ToolListView(this.context.toolListContext, this.frameCanvases, this.charCanvases);
-      this.commandMenuDOM.appendChild(toolList.memberSelecter);
+      this.commandMenuDOM.appendChild(toolList.htmlElement);
     }
   }
 }

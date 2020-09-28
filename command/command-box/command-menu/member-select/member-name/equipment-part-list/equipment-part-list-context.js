@@ -18,9 +18,6 @@ class EquipmentPartListContext extends SelectMenuContext {
     // コマンドフレームのサイズ
     this.commandBoxColumns = (this.maxTitleLength / 2) + 2; // 変数を検討（+2 はコマンドポインターの分）
 
-    // 子要素が開いているかどうか
-    this.isChildOpened = false;
-
     // コマンドメニューのコンテキストを生成する
     this.equipmentNameContexts = this.createMenus(this.commandMenus);
   }
@@ -58,23 +55,13 @@ class EquipmentPartListContext extends SelectMenuContext {
     return true;
   }
 
-  // クローズできるかどうか
-  get canClose() {
-    
-    if (this.viewState == "closed" || this.isChildOpened) {
-      this.isChildOpened = false;
-      return false;
-    }
-    return true;
-  }
-
   get canSelectionChange() {
     // ビュー状態がclosedであればカット
     if (this.viewState == "closed") {
       return false;
     }
     
-    if (this.isChildOpened) {
+    if (this.isChildOpened > 0) {
       return false;
     }
 

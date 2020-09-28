@@ -31,9 +31,6 @@ class EquipmentItemListContext extends SelectMenuContext {
 
     // アイテムリストの左上位置
     this.itemListPosition = new Position(5, -3);
-
-    // 子要素が開いているかどうか
-    this.isChildOpened = false;
   }
 
   // 装備品目のアイテム名のリストを生成する
@@ -88,23 +85,13 @@ class EquipmentItemListContext extends SelectMenuContext {
     return true;
   }
 
-  // クローズできるかどうか
-  get canClose() {
-    
-    if (this.viewState == 'closed' || this.isChildOpened) {
-      this.isChildOpened = false;
-      return false;
-    }
-    return true;
-  }
-
   get canSelectionChange() {
     // ビュー状態がclosedであればカット
     if (this.viewState == 'closed') {
       return false;
     }
     
-    if (this.isChildOpened) {
+    if (this.isChildOpened > 0) {
       return false;
     }
 

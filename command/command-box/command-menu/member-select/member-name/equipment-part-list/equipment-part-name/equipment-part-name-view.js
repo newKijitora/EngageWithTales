@@ -34,7 +34,7 @@ class EquipmentPartNameView extends MenuView {
 
     if (this.context.contexts['equipment-item']) {
       const toolList = new EquipmentItemListView(this.context.contexts['equipment-item'], this.frameCanvases, this.charCanvases);
-      this.commandMenuDOM.appendChild(toolList.memberSelecter);
+      this.commandMenuDOM.appendChild(toolList.htmlElement);
     }
   }
 }

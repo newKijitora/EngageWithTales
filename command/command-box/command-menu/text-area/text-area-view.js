@@ -7,9 +7,8 @@ class TextAreaView extends FrameView {
   // コンストラクタ
   constructor(context, frameCanvases, charCanvases) { super(context, frameCanvases, charCanvases);
     // HTML要素
-    this.textArea = null;
+    this.htmlElement = null;
     this.textFrame = null;
-    this.textFrameCanvases = frameCanvases;
 
     this.cells = new Array(this.context.numberOfRows);
     
@@ -27,23 +26,23 @@ class TextAreaView extends FrameView {
   
   // オープン
   open(keyCode) {
-    if (keyCode == this.context.openKeyCode && this.context.canOpen) {
+    if (keyCode == this.context.openKey.keyCode && this.context.canOpen) {
       this.context.isProgress = true;
       this.context.viewState = 'opened';
       this.showView();
       this.readText(this.context.textSet[this.context.readIndex], this.context.textSpeed);
-    } else if (keyCode == this.context.openKeyCode && this.context.canReadContinue) {
+    } else if (keyCode == this.context.openKey.keyCode && this.context.canReadContinue) {
       this.context.canReadContinue = false;
       this.clearText();
       this.readText(this.context.textSet[this.context.readIndex], this.context.textSpeed);
-    } else if (keyCode == this.context.openKeyCode) {
-      this.close(this.context.closeKeyCode);
+    } else if (keyCode == this.context.openKey.keyCode) {
+      this.close(this.context.closeKey.keyCode);
     }
   }
 
   // クローズ
   close(keyCode) {
-    if (keyCode == this.context.closeKeyCode && !this.context.isProgress && this.context.canClose) {
+    if (keyCode == this.context.closeKey.keyCode && !this.context.isProgress && this.context.canClose) {
       this.hideView();
       this.clearText();
       this.context.viewState = 'closed';
@@ -53,7 +52,10 @@ class TextAreaView extends FrameView {
   // テキストのリード
   readText(text, textSpeed) {
     let startTime = null;
+    
+    // テキストの現在位置
     let textPosition = 0;
+
     let row = 0;
     let cellPosition = 0;
 
@@ -64,6 +66,7 @@ class TextAreaView extends FrameView {
       }
     }
 
+    // 文字を読み込む
     const readCharacter = (now) => {
       if (!startTime) {
         startTime = now;
@@ -126,16 +129,6 @@ class TextAreaView extends FrameView {
     }
   }
 
-  // HTML要素の表示
-  showView() {
-    this.textArea.style.display = 'block';
-  }
-  
-  // HTML要素の非表示
-  hideView() {
-    this.textArea.style.display = 'none';
-  }
-
   // HTML要素の生成
   assemblingElements() {
     // テキストエリアのフレーム
@@ -158,8 +151,8 @@ class TextAreaView extends FrameView {
       // セルを生成して行に追加
       for (let j = 0; j < this.context.numberOfCells; j++) {
         const cell = document.createElement('canvas');
-        cell.width = 16;
-        cell.height = 32;
+        cell.width = this.context.textSize.x;
+        cell.height = this.context.textSize.y;
         cell.style.verticalAlign = 'bottom';
 
         row.appendChild(cell);
@@ -173,8 +166,8 @@ class TextAreaView extends FrameView {
     // テキストエリアをドキュメントに追加
     const textArea = document.createElement('div');
     textArea.style.position = 'absolute';
-    textArea.style.top = this.context.squareSize.y * 11 + 'px';
-    textArea.style.left = this.context.squareSize.x * 5 + 'px';
+    textArea.style.top = this.context.squareSize.y * this.context.commandBoxPosition.y + 'px';
+    textArea.style.left = this.context.squareSize.x * this.context.commandBoxPosition.x + 'px';
     textArea.style.zIndex = this.context.zIndexBase;
     textArea.style.display = 'none';
 
@@ -184,7 +177,7 @@ class TextAreaView extends FrameView {
     textArea.appendChild(textField);
     monitor.appendChild(textArea);
 
-    this.textArea = textArea;
+    this.htmlElement = textArea;
     this.textFrame = textFrame;
     this.textCells = document.getElementsByClassName('textCell');
   }

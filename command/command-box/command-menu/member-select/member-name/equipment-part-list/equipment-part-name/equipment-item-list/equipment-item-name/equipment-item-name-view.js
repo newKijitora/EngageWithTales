@@ -31,7 +31,7 @@ class EquipmentItemNameView extends MenuView {
     commandMenu.appendChild(commandText);
 
     // 参照を保存
-    this.commandMenuDOM = commandMenu;
+    this.htmlElement = commandMenu;
     this.commandPointer = commandPointer;
     this.commandText = commandText;
   }

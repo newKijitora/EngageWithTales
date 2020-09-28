@@ -35,7 +35,7 @@ class MenuContext {
     this.memberSelecterContext = null;
 
     if (this.label == 'first' && this.isMemberSelectCommand) {
-      this.memberSelecterContext = new MemberSelectContext(this);
+      this.memberSelecterContext = new MemberSelectContext(this, new Position(0, 1));
       this.memberSelecterPosition = new Position(0, 0);
     }
 

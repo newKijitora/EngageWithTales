@@ -45,7 +45,7 @@ class EquipmentItemListView extends SelectMenuView {
     // コマンドボックスにメニューを追加していく
     for (let i = 0; i < commandMenus.length; i++) {
       for (let j = 0; j < commandMenus[i].length; j++) {
-        selectField.appendChild(commandMenus[i][j].commandMenuDOM);
+        selectField.appendChild(commandMenus[i][j].htmlElement);
       }
     }
 
@@ -60,7 +60,7 @@ class EquipmentItemListView extends SelectMenuView {
       // テキストエリアでメッセージを出すようにする
     }
 
-    this.memberSelecter = commandBox;
+    this.htmlElement = commandBox;
     this.memberSelectFrame = commandFrameDOM;
 
     // DOMではない

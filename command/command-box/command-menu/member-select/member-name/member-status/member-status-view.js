@@ -45,7 +45,7 @@ class MemberStatusView extends FrameView {
 
     this.drawFrame(memberStatusFrame, this.context.squareSize, this.frameCanvases, 7, 6);
 
-    this.memberStatusDOM = memberStatus;
+    this.htmlElement = memberStatus;
     this.memberStatusFrameCanvase = memberStatusFrame;
   }
 

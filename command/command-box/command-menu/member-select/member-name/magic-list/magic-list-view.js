@@ -63,7 +63,7 @@ class MagicListView extends SelectMenuView {
       // まほうをおぼえていない場合
     }
 
-    this.memberSelecter = commandBox;
+    this.htmlElement = commandBox;
     this.memberSelectFrame = commandFrameDOM;
 
     // DOMではない

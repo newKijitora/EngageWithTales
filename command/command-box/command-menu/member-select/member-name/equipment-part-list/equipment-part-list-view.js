@@ -62,7 +62,7 @@ class EquipmentPartListView extends SelectMenuView {
       // どうぐをもっていない場合
     }
 
-    this.memberSelecter = commandBox;
+    this.htmlElement = commandBox;
     this.memberSelectFrame = commandFrameDOM;
 
     // DOMではない

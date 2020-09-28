@@ -15,7 +15,7 @@ class FrameView {
 
     // フレームを描画する
   drawFrame(canvas, mapChipSize, textures, rows, columns) {
-    const context = canvas.getContext("2d");
+    const context = canvas.getContext('2d');
 
     // 背景色の描画
     context.fillStyle = this.context.backgroundColor;
@@ -79,19 +79,33 @@ class FrameView {
   open(keyCode) {
     if (keyCode == this.context.openKey.keyCode && this.context.canOpen) {
       
-      this.memberSelecter.style.display = "block";
+      this.htmlElement.style.display = 'block';
 
-      this.context.viewState = "opened";
-      this.context.commandMenu.commandBox.isChildOpened = true;
+      // 親ウィンドウがあれば親ウィンドウにコマンドのオープンを通知する
+      if (this.context.parent) {
+        this.context.notifyChildOpened(this.context.parent);
+      }
+
+      this.context.viewState = 'opened';
     }
   }
 
   // クローズ
   close(keyCode) {
     if (keyCode == this.context.closeKey.keyCode && this.context.canClose) {
-      this.memberSelecter.style.display = "none";
+      this.htmlElement.style.display = 'none';
       this.resetCommandMenuSelection();
-      this.context.viewState = "closed";
+      this.context.viewState = 'closed';
     }
+  }
+
+  // HTML要素の表示
+  showView() {
+    this.htmlElement.style.display = 'block';
+  }
+  
+  // HTML要素の非表示
+  hideView() {
+    this.htmlElement.style.display = 'none';
   }
 }

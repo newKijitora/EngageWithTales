@@ -9,8 +9,6 @@ class ItemListContext extends SelectMenuContext {
     // アイテムリストの左上位置
     this.itemListPosition = new Position(6, -2);
 
-    // メニューの名前
-    this.title = this.commandMenu.menuName;
     this.maxTitleLength = 8;
 
     // どうぐのリスト
@@ -23,9 +21,6 @@ class ItemListContext extends SelectMenuContext {
     // コマンドフレームのサイズ
     this.commandBoxRows = this.items.length + 1;
     this.commandBoxColumns = (this.maxTitleLength / 2) + 2; // 変数を検討（+2 はコマンドポインターの分）
-
-    // 子要素が開いているかどうか
-    this.isChildOpened = false;
 
     // コマンドのメニュー（どうぐの名前で生成）
     this.commandMenus = new Array(this.items.length);
@@ -70,23 +65,13 @@ class ItemListContext extends SelectMenuContext {
     return true;
   }
 
-  // クローズできるかどうか
-  get canClose() {
-    
-    if (this.viewState == "closed" || this.isChildOpened) {
-      this.isChildOpened = false;
-      return false;
-    }
-    return true;
-  }
-
   get canSelectionChange() {
     // ビュー状態がclosedであればカット
     if (this.viewState == "closed") {
       return false;
     }
     
-    if (this.isChildOpened) {
+    if (this.isChildOpened > 0) {
       return false;
     }
 

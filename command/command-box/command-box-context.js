@@ -10,7 +10,7 @@ class CommandBoxContext extends SelectMenuContext {
     this.zIndexBase = zIndexBase;
 
     // サブコンテキスト
-    this.subContexts['text-area'] = new TextAreaContext(this, this.zIndexBase);
+    this.subContexts['text-area'] = new TextAreaContext(this, this.zIndexBase, new Position(5, 11));
 
     this.commandMenuContexts = this.createMenuContexts(this.commandMenus);
   }
@@ -45,27 +45,6 @@ class CommandBoxContext extends SelectMenuContext {
   get canOpen() {
     // ビュー状態がオープンならカット
     if (this.viewState == 'opened') {
-      return false;
-    }
-
-    return true;
-  }
-
-  // コマンドボックスを閉じることができるかどうか
-  get canClose() {
-    // ビュー状態がクローズならカット
-    if (this.viewState == 'closed') {
-      return false;
-    }
-
-    // テキストボックスが進行中であればカット
-    if (this.subContexts['text-area'] && this.subContexts['text-area'].isProgress) {
-      return false;
-    }
-
-    // メンバーセレクトコマンドが選択中で、かつオープン状態ならカット
-    if (this.currentCommandMenuContext.isMemberSelectCommand &&
-      this.currentCommandMenuContext.memberSelecterContext.viewState == 'opened') {
       return false;
     }
 

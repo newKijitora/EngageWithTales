@@ -20,8 +20,8 @@ class MemberSelectView extends SelectMenuView {
     // コマンドのコンテナ
     const commandBox = document.createElement("div");
     commandBox.style.position = "absolute";
-    commandBox.style.left = this.context.memberSelecterPosition.x * this.context.squareSize.x + "px";
-    commandBox.style.top = (this.context.memberSelecterPosition.y * this.context.squareSize.y) - this.context.textSize.x + "px";
+    commandBox.style.left = this.context.commandBoxPosition.x * this.context.squareSize.x + "px";
+    commandBox.style.top = (this.context.commandBoxPosition.y * this.context.squareSize.y) - this.context.textSize.x + "px";
     commandBox.style.display = "none";
 
     // コマンドのフレーム（バックグラウンド）
@@ -47,14 +47,14 @@ class MemberSelectView extends SelectMenuView {
       commandMenus[i] = new Array(this.context.commandMenus[i].length);
       for (let j = 0; j < commandMenus[i].length; j++) {
         commandMenus[i][j] = new MemberNameView(this.context.memberNameContexts[i][j], this.context.commandMenus[i][j].commandName, this.frameCanvases, this.charCanvases);
-        selectField.appendChild(commandMenus[i][j].commandMenuDOM);
+        selectField.appendChild(commandMenus[i][j].htmlElement);
       }
     }
 
     commandBox.appendChild(commandFrameDOM);
     commandBox.appendChild(selectField);
 
-    this.memberSelecter = commandBox;
+    this.htmlElement = commandBox;
     this.memberSelectFrame = commandFrameDOM;
 
     // DOMではない

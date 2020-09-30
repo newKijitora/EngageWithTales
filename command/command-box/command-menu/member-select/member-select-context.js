@@ -72,9 +72,9 @@ class MemberSelectContext extends SelectMenuContext {
     }
 
     // テキストエリアのビュー状態がopenedであればカット
-    if (this.commandMenu.commandBox.subContexts['text-area'].viewState == "opened") {
-      return false;
-    }
+    // if (this.commandMenu.commandBox.subContexts['text-area'].viewState == "opened") {
+    //   return false;
+    // }
 
     return true;
   }

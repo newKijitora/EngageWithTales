@@ -4,9 +4,11 @@
 
 class TextAreaContext extends FrameContext {
   // コンストラクタ
-  constructor(commandBox, zIndexBase, position) { super(commandBox.town, position);
+  constructor(commandMenu, zIndexBase, position) { super(commandMenu.town, position);
     // コンテキスト
-    this.commandBox = commandBox;
+    this.commandBox = commandMenu.commandBox;
+    this.commandMenu = commandMenu;
+    this.parent = this.commandBox;
 
     // ビューが進行中かどうか（テキストエリア固有）
     this.isProgress = false;
@@ -15,7 +17,20 @@ class TextAreaContext extends FrameContext {
     this.firstThrough = true;
     
     // テキスト関連のプロパティ
-    this.textSet = this.list[2];
+    
+    if (this.commandMenu.menu.label == "talk") {
+      this.textSet = this.list[2];
+    } else if (this.commandMenu.menu.label == "search") {
+      this.textSet = this.list[16];
+    } else if (this.commandMenu.menu.label == "door") {
+      this.textSet = this.list[17];
+    } else if (this.commandMenu.menu.label == "map") {
+      this.textSet = this.list[18];
+    }
+
+
+
+
     this.readIndex = 0;
     this.canReadContinue = false;
     
@@ -25,19 +40,28 @@ class TextAreaContext extends FrameContext {
     // 行数と一行あたりの文字数
     this.numberOfRows = 4;
     this.numberOfCells = 22;
-    this.zIndexBase = zIndexBase;
+    this.zIndexBase = 500;
   }
 
   // オープンできるかどうか
   get canOpen() {
+    
+
     if (this.firstThrough) {
       this.firstThrough = false;
       return false;
     }
+
+    if (!this.commandMenu.isSelected) {
+      return false;
+    }
     
+
     if (this.viewState == 'opened') {
       return false;
     }
+
+    
 
     return this.checkContextForOpen();
   }
@@ -45,7 +69,8 @@ class TextAreaContext extends FrameContext {
   // オープンできるかどうか：コンテキストのチェック
   checkContextForOpen() {
     // 選択中のコマンドメニューが「はなす」でなければカット
-    if (this.commandBox.currentCommandMenuContext.menuName != 'はなす') {     
+    if (this.commandBox.currentCommandMenuContext.menuName != 'はなす' && this.commandBox.currentCommandMenuContext.menuName != 'しらべる' &&
+    this.commandBox.currentCommandMenuContext.menuName != 'とびら' && this.commandBox.currentCommandMenuContext.menuName != 'ちず') {     
       return false;
     }
 
@@ -109,6 +134,16 @@ class TextAreaContext extends FrameContext {
     ['つかえる　どうぐを　もっていない'],
     ['なにも　みにつけていない'],
     ['はなす　あいてが　だれもない'],
+    [
+      'ろかりとは　あしもとを　しらべた。',
+      'しかし　なにも　みつからなかった。'
+    ],
+    [
+      'ここには　とびらがない。'
+    ],
+    [
+      'つかえる　ちずを　もっていない。'
+    ],
     ['つかえる　じゅもんがない']
   ];
 }

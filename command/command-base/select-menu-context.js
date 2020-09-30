@@ -76,17 +76,6 @@ class SelectMenuContext extends KeyManageContext {
     return contexts;
   }
 
-  // ウィンドウが開いたことを親ウィンドウに通知する
-  notifyChildOpened(parent) {
-    // 親ウィンドウの子ウィンドウ管理変数をインクリメント
-    parent.isChildOpened++;
-
-    // 親ウィンドウに親ウィンドウがあればメソッドを伝達する
-    if (parent.parent) {
-      parent.notifyChildOpened(parent.parent);
-    }
-  }
-
   // オープンできるかどうか
   get canOpen() {
     if (this.viewState == 'opened' || this.commandMenu.commandBox.viewState != 'opened' || !this.commandMenu.isSelected) {
@@ -102,11 +91,6 @@ class SelectMenuContext extends KeyManageContext {
     }
     
     if (this.isChildOpened > 0) {
-      return false;
-    }
-    
-    // テキストエリアのビュー状態がopenedであればカット
-    if (this.commandMenu.commandBox.commandMenu.commandBox.commandMenu.commandBox.commandMenu.commandBox.subContexts['text-area'].viewState == 'opened') {
       return false;
     }
 

@@ -137,6 +137,8 @@ class TextAreaView extends FrameView {
     textFrame.height = this.context.squareSize.y * this.context.textAreaRows;
     textFrame.style.display = 'block';
 
+    this.drawFrame(textFrame, this.context.squareSize, this.frameCanvases, this.context.textAreaRows, this.context.textAreaColumns);
+
     // テキストエリアのインナー
     const textField = document.createElement('div');
     textField.style.position = 'absolute';

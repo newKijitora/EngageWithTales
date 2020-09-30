@@ -79,9 +79,9 @@ class MagicListContext extends SelectMenuContext {
     }
 
     // テキストエリアのビュー状態がopenedであればカット
-    if (this.commandMenu.commandBox.commandMenu.commandBox.subContexts['text-area'].viewState == "opened") {
-      return false;
-    }
+    // if (this.commandMenu.commandBox.commandMenu.commandBox.subContexts['text-area'].viewState == "opened") {
+    //   return false;
+    // }
 
     return true;
   }

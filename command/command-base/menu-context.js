@@ -59,6 +59,30 @@ class MenuContext {
       }
     }
 
+    // 「はなす」コマンドの子のセレクターにはメンバーステータス
+    if (this.menu.label == "door") {
+      // サブコンテキスト
+      this.textAreaContext = new TextAreaContext(this, this.zIndexBase, new Position(5, 11));
+    }
+
+    // 「はなす」コマンドの子のセレクターにはメンバーステータス
+    if (this.menu.label == "map") {
+      // サブコンテキスト
+      this.textAreaContext = new TextAreaContext(this, this.zIndexBase, new Position(5, 11));
+    }
+
+    // 「はなす」コマンドの子のセレクターにはメンバーステータス
+    if (this.menu.label == "search") {
+      // サブコンテキスト
+      this.textAreaContext = new TextAreaContext(this, this.zIndexBase, new Position(5, 11));
+    }
+
+    // 「はなす」コマンドの子のセレクターにはメンバーステータス
+    if (this.menu.label == "talk") {
+      // サブコンテキスト
+      this.textAreaContext = new TextAreaContext(this, this.zIndexBase, new Position(5, 11));
+    }
+
     // 「つよさ」コマンドの子のセレクターにはメンバーステータス
     if (this.label != 'first' && this.isMemberSelectCommand && this.menu.label == "status") {
       this.memberStatusContext = new MemberStatusContext(this);

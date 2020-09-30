@@ -41,27 +41,27 @@ class TownContext {
 
   // JSONから町の情報を取得する
   requestInformation(world, townName) {
-      // マップグリッドの数
-      const mapWidth = this.settings.mapWidth;
-      const mapHeight = this.settings.mapHeight;
+    // マップグリッドの数
+    const mapWidth = this.settings.mapWidth;
+    const mapHeight = this.settings.mapHeight;
 
-      // 該当の町の情報を取得
-      this.map = world.resource.maps[this.townInformation.mapIndex];
-      this.mainTextureIndex = this.townInformation.mainTextureIndex;
-      
-      // 町のマップから衝突マップを生成
-      this.collisionMap = this.createCollisionMap(this.map, world.resource.textures);
-      
-      this.mapSize = new Size(this.settings.squareSize.x * mapWidth, this.settings.squareSize.y * mapHeight);
-      this.mapCenterPosition = new Position(this.townInformation.centerPosition[0], this.townInformation.centerPosition[1]);
-      this.mapPosition = new Position(this.mapCenterPosition.x - Math.floor(mapWidth / 2), this.mapCenterPosition.y - Math.floor(mapHeight / 2));
-      this.mapAreaController = new MapAreaContext(this, 100);
+    // 該当の町の情報を取得
+    this.map = world.resource.maps[this.townInformation.mapIndex];
+    this.mainTextureIndex = this.townInformation.mainTextureIndex;
+    
+    // 町のマップから衝突マップを生成
+    this.collisionMap = this.createCollisionMap(this.map, world.resource.textures);
+    
+    this.mapSize = new Size(this.settings.squareSize.x * mapWidth, this.settings.squareSize.y * mapHeight);
+    this.mapCenterPosition = new Position(this.townInformation.centerPosition[0], this.townInformation.centerPosition[1]);
+    this.mapPosition = new Position(this.mapCenterPosition.x - Math.floor(mapWidth / 2), this.mapCenterPosition.y - Math.floor(mapHeight / 2));
+    this.mapAreaController = new MapAreaContext(this, 100);
 
-      // 町の人々を生成する
-      this.people = this.createPeople(this);
+    // 町の人々を生成する
+    this.people = this.createPeople(this);
 
-      // コマンドボックス
-      this.commandBoxController = new CommandBoxContext(this, 300, new Position(5, 2));
+    // コマンドボックス
+    this.commandBoxController = new CommandBoxContext(this, new Position(5, 2));
   }
 
   talk() {
@@ -79,7 +79,6 @@ class TownContext {
         collisionMap[i][j] = textures[baseMap[i][j]].collision;
       }
     }
-
     return collisionMap;
   }
 
@@ -100,7 +99,6 @@ class TownContext {
         // クラスメソッドを呼んでいる
         PeopleContext.actions[town.townInformation.people[i][6]], 100);
     }
-
     return people;
   }
 }

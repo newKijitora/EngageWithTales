@@ -7,7 +7,7 @@ class CommandBoxView extends SelectMenuView {
   // コンストラクタ
   constructor(context, frameCanvases, charCanvases) { super(context, frameCanvases, charCanvases);
     // テキストエリアのビューオブジェクト（イベントの登録順に注意！）
-    this.textAreaView = new TextAreaView(this.context.subContexts['text-area'], this.commandTextureCanvases, this.charCanvases);
+    //this.textAreaView = new TextAreaView(this.context.subContexts['text-area'], this.commandTextureCanvases, this.charCanvases);
 
     // HTML要素の組成
     this.assemblingElements();    
@@ -41,6 +41,11 @@ class CommandBoxView extends SelectMenuView {
   resetCommandMenuSelection() {
     for (let i = 0; i < this.commandMenus.length; i++) {
       for (let j = 0; j < this.commandMenus[i].length; j++) {
+
+        if (this.commandMenus[i][j].context.textAreaContext) {
+          this.commandMenus[i][j].context.textAreaContext.firstThrough = true;
+        }
+
         if (!this.commandMenus[i][j].context.isSelected) {
           continue;
         }
@@ -55,7 +60,6 @@ class CommandBoxView extends SelectMenuView {
 
         // コマンドメニューのコンテキストを初期化
         this.context.currentCommandMenuContext = this.commandMenus[0][0].context;
-        this.context.subContexts['text-area'].firstThrough = true;
       }
     }
   }
@@ -194,6 +198,6 @@ class CommandBoxView extends SelectMenuView {
     this.commandMenus = commandMenus;
 
     // テキストエリアのビュー TODO: インスタンス生成に検討の必要あり
-    this.textAreaView.drawFrame(this.textAreaView.textFrame, this.textAreaView.context.squareSize, this.frameCanvases, this.textAreaView.context.textAreaRows, this.textAreaView.context.textAreaColumns);
+    //this.textAreaView.drawFrame(this.textAreaView.textFrame, this.textAreaView.context.squareSize, this.frameCanvases, this.textAreaView.context.textAreaRows, this.textAreaView.context.textAreaColumns);
   }
 }

@@ -6,11 +6,21 @@ class WorldView {
   // コンストラクタ
   constructor(context) {
     // コントローラー
-    this.controller = context;
+    this.context = context;
 
     // ビュー（モニター）のサイズとウィンドウ上のビューの位置
-    this.worldViewSize = this.controller.settings.worldViewSize;
-    this.worldViewPosition = this.controller.settings.worldViewPosition;
+    this.worldViewSize = this.context.settings.worldViewSize;
+    this.worldViewPosition = this.context.settings.worldViewPosition;
+
+    // 一マスのサイズ
+    this.squareSize = this.context.settings.squareSize;
+    this.textSize = this.context.settings.textSize;
+
+    // マップの元テクスチャー
+    this.mapTextures = this.context.resource.textures;
+    this.peopleTextures = this.context.resource.peopleTextures;
+    this.frameTextures = this.context.resource.commandFrameTextures;
+    this.charTextures = this.context.resource.textTextures;
 
     // DOM要素
     this.worldDom = null;
@@ -22,97 +32,64 @@ class WorldView {
     this.peopleCanvases = {};
 
     // コマンドフレームテクスチャーのプリロード用キャンバス
-    this.commandFrameCanvases = {};
+    this.frameCanvases = {};
 
     // 文字テクスチャーのプリロード用キャンバス
     this.charCanvases = {};
 
     // プリロード用キャンバスのセット
     this.canvases = {
-      "map": this.mapCanvases,
-      "people": this.peopleCanvases,
-      "commandFrame": this.commandFrameCanvases,
-      "char": this.charCanvases,
+      'map': this.mapCanvases,
+      'people': this.peopleCanvases,
+      'commandFrame': this.frameCanvases,
+      'char': this.charCanvases,
     };
 
     // 画像読み込みオブジェクト
     const imageLoader = new ImageLoader();
     
     // 画像の読み込み（マップのテクスチャー）とプリロード用キャンバスの生成
-    imageLoader.loadImages(this.controller.resource.textures, (images) => {
-      for (let i = 0; i < this.controller.resource.textures.length; i++) {
-        const textureCanvas = document.createElement("canvas");
-        textureCanvas.width = this.controller.settings.squareSize.x;
-        textureCanvas.height = this.controller.settings.squareSize.y;         
-
-        const textureContext = textureCanvas.getContext("2d");
-        imageLoader.setSmoothingEnabled(textureContext, false);
-
-        textureContext.drawImage(images[i], 0, 0, images[i].width, images[i].height, 0, 0, this.controller.settings.squareSize.x, this.controller.settings.squareSize.y);
-        this.mapCanvases[i] = textureCanvas;
+    imageLoader.loadImages(this.mapTextures, (images) => {
+      for (let i = 0; i < this.mapTextures.length; i++) {
+        this.mapCanvases[i] = this.getCanvas(images[i], this.squareSize.x, this.squareSize.y, imageLoader);
       }
 
       // 画像の読み込み（人物のテクスチャー）とプリロード用キャンバスの生成
-      imageLoader.loadImages(this.controller.resource.peopleTextures, (images) => {
-        for (let i = 0; i < this.controller.resource.peopleTextures.length; i++) {
-          const canvas = document.createElement("canvas");
-          canvas.width = this.controller.settings.squareSize.x;
-          canvas.height = this.controller.settings.squareSize.y;         
-  
-          const context = canvas.getContext("2d");
-          imageLoader.setSmoothingEnabled(context, false);
-  
-          context.drawImage(images[i], 0, 0, images[i].width, images[i].height, 0, 0, this.controller.settings.squareSize.x, this.controller.settings.squareSize.y);
-          this.peopleCanvases[this.controller.resource.peopleTextures[i].texture] = canvas;
+      imageLoader.loadImages(this.peopleTextures, (images) => {
+        for (let i = 0; i < this.peopleTextures.length; i++) {
+          this.peopleCanvases[this.peopleTextures[i].texture] = this.getCanvas(images[i], this.squareSize.x, this.squareSize.y, imageLoader);
         }
   
         // 画像の読み込み（コマンドフレームのテクスチャー）とプリロード用キャンバスの生成
-        imageLoader.loadImages(this.controller.resource.commandFrameTextures, (images) => {
-          // コマンドボックスのフレーム用のキャンバスを生成する
-          for (let i = 0; i < this.controller.resource.commandFrameTextures.length; i++) {
-            const canvas = document.createElement("canvas");
-            canvas.width = this.controller.settings.squareSize.x;
-            canvas.height = this.controller.settings.squareSize.y;       
-            
-            const context = canvas.getContext("2d");
-            imageLoader.setSmoothingEnabled(context, false);
-  
-            context.drawImage(images[i], 0, 0, images[i].width, images[i].height, 0, 0, canvas.width, canvas.height);
-            this.commandFrameCanvases[i] = canvas;
+        imageLoader.loadImages(this.frameTextures, (images) => {
+          for (let i = 0; i < this.frameTextures.length; i++) {
+            this.frameCanvases[i] = this.getCanvas(images[i], this.squareSize.x, this.squareSize.y, imageLoader);
           }
 
           // 画像の読み込み（文字のテクスチャー）とプリロード用キャンバスの生成
-          imageLoader.loadImages(this.controller.resource.textTextures, (images) => {
+          imageLoader.loadImages(this.charTextures, (images) => {
             const partCharCanvases = {}; // 部分文字のキャンバス
-            const textureSize = new Size(this.controller.settings.textSize.x, this.controller.settings.textSize.y / 2); // テクスチャーはテキストの上半分か下半分 
+            const textureSize = new Size(this.context.settings.textSize.x, this.context.settings.textSize.y / 2); // テクスチャーはテキストの上半分か下半分 
 
-            // 文字エレメント生成用の部分文字キャンバスを生成する
-            for (let i = 0; i < this.controller.resource.textTextures.length; i++) {
-              const canvas = document.createElement("canvas");
-              canvas.width = textureSize.x;
-              canvas.height = textureSize.y;
-
-              const context = canvas.getContext("2d");
-              imageLoader.setSmoothingEnabled(context, false);
-
-              context.drawImage(images[i], 0, 0, images[i].width, images[i].height, 0, 0, canvas.width, canvas.height);
-              partCharCanvases[this.controller.resource.textTextures[i].texture] = canvas;
+            // 文字エレメント（部分文字）生成用キャンバスの生成
+            for (let i = 0; i < this.charTextures.length; i++) {
+              partCharCanvases[this.charTextures[i].texture] = this.getCanvas(images[i], textureSize.x, textureSize.y, imageLoader);
             }
 
             // 部分文字を組み合わせて一文字分のキャンバスを生成する
-            for (let i = 0; i < this.controller.resource.textElements.length; i++) {
-              const canvas = document.createElement("canvas");
-              canvas.width = this.controller.settings.textSize.x;
-              canvas.height = this.controller.settings.textSize.y;    
+            for (let i = 0; i < this.context.resource.textElements.length; i++) {
+              const canvas = document.createElement('canvas');
+              canvas.width = this.textSize.x;
+              canvas.height = this.textSize.y;    
               
-              const mainChar = partCharCanvases[this.controller.resource.textElements[i].texture1]; // メイン文字
-              const subChar = partCharCanvases[this.controller.resource.textElements[i].texture2]; // 濁点などのサブ文字
+              const mainChar = partCharCanvases[this.context.resource.textElements[i].texture1]; // メイン文字
+              const subChar = partCharCanvases[this.context.resource.textElements[i].texture2]; // 濁点などのサブ文字
               
-              const context = canvas.getContext("2d");
+              const context = canvas.getContext('2d');
               context.drawImage(subChar, 0, 0);
               context.drawImage(mainChar, 0, textureSize.y);
 
-              this.charCanvases[this.controller.resource.textElements[i].read] = canvas;
+              this.charCanvases[this.context.resource.textElements[i].read] = canvas;
             }
 
             // HTML要素の組成（画像のロードとキャンバスの準備がととのってから呼び出す）
@@ -123,26 +100,44 @@ class WorldView {
     });
   }
 
+  // 画像をもとにしたプリロード用キャンバスを生成する
+  getCanvas(image, sizeX, sizeY, imageLoader) {
+    // キャンバス
+    const canvas = document.createElement('canvas');
+    canvas.width = sizeX;
+    canvas.height = sizeY;
+
+    // 描画コンテキスト～プリロード用キャンバスへの描画
+    const context = canvas.getContext('2d');
+    imageLoader.setSmoothingEnabled(context, false);
+    context.drawImage(image, 0, 0, image.width, image.height, 0, 0, canvas.width, canvas.height);
+
+    return canvas;
+  }
+
   // HTML要素の組成
   assemblingElements() {
-    const world = document.createElement("div");
-    world.setAttribute("id", "world");
-    world.style.position = "absolute";
-    world.style.overflow = "hidden";
+    // ビュー（モニター）のHTML要素
+    const world = document.createElement('div');
+    world.setAttribute('id', 'world');
+    world.style.position = 'absolute';
+    world.style.overflow = 'hidden';
 
     // ビュー（モニター）のサイズ
-    world.style.width = this.worldViewSize.x + "px";
-    world.style.height = this.worldViewSize.y + "px";
+    world.style.width = this.worldViewSize.x + 'px';
+    world.style.height = this.worldViewSize.y + 'px';
 
     // ウィンドウ上のビューの位置
-    world.style.top = this.worldViewPosition.y * this.controller.settings.squareSize.y + "px";
-    world.style.left = this.worldViewPosition.x * this.controller.settings.squareSize.x + "px";
+    world.style.top = this.worldViewPosition.y * this.squareSize.y + 'px';
+    world.style.left = this.worldViewPosition.x * this.squareSize.x + 'px';
 
+    // ドキュメントbodyにビュー（モニター）を追加
     document.body.appendChild(world);
 
-    this.worldDom = world;
+    // HTML要素コンテナを保持する
+    this.element = world;
 
-    // ゲーム開始
-    this.town = new TownView(this.controller.currentTown, this.peopleCanvases, this.commandFrameCanvases, this.charCanvases);
+    // ゲーム開始（町のオブジェクトを生成する）
+    this.town = new TownView(this.context.currentTown, this.peopleCanvases, this.frameCanvases, this.charCanvases);
   }
 }

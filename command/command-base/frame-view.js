@@ -95,6 +95,7 @@ class FrameView {
     if (keyCode == this.context.closeKey.keyCode && this.context.canClose) {
       this.htmlElement.style.display = 'none';
       this.resetCommandMenuSelection();
+      this.context.isChildOpened = 0; // 一回性のコマンドで閉じるため
       this.context.viewState = 'closed';
     }
   }

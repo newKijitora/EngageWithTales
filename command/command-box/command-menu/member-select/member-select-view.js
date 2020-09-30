@@ -15,6 +15,16 @@ class MemberSelectView extends SelectMenuView {
     window.addEventListener('keydown', (event) => this.selectionChange(event.keyCode), false);
   }
   
+  // オープン（オーバーライド）
+  open(keyCode) {
+    if (keyCode == this.context.openKey.keyCode && this.context.canOpen) {
+      
+      this.htmlElement.style.display = 'block';
+
+      this.context.viewState = 'opened';
+    }
+  }
+
   // HTML要素の生成
   assemblingElements() {
     // コマンドのコンテナ

@@ -35,6 +35,10 @@ class CommandMenuView extends MenuView {
     this.commandPointer = commandPointer;
     this.commandText = commandText;
 
+    if (this.context.textAreaContext) {
+      this.textAreaView = new TextAreaView(this.context.textAreaContext, this.frameCanvases, this.charCanvases);
+    }
+
     // メンバーセレクターの生成
     if (this.context.isMemberSelectCommand) {
       const memberSelecter = new MemberSelectView(this.context.memberSelecterContext, this.frameCanvases, this.charCanvases);

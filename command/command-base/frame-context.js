@@ -43,17 +43,26 @@ class FrameContext extends Context {
       return false;
     }
 
-    if (this.isChildOpened > 0) {
-      this.isChildOpened--;
-      return false;
-    }
+    // if (this.isChildOpened > 0) {
+    //   this.isChildOpened--;
+    //   return false;
+    // }
 
-    // テキストボックスが進行中であればカット
-    if (this.subContexts['text-area'] && this.subContexts['text-area'].isProgress) {
-      return false;
-    }
+    
+    
 
     return true;
+  }
+
+  // ウィンドウが開いたことを親ウィンドウに通知する
+  notifyChildOpened(parent) {
+    // 親ウィンドウの子ウィンドウ管理変数をインクリメント
+    parent.isChildOpened++;
+
+    // 親ウィンドウに親ウィンドウがあればメソッドを伝達する
+    if (parent.parent) {
+      parent.notifyChildOpened(parent.parent);
+    }
   }
 
   // キーコードからキー（オープンorクローズ）を取得する

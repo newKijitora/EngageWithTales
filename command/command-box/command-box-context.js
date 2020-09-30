@@ -5,13 +5,8 @@
 class CommandBoxContext extends SelectMenuContext {
 
   // コンストラクタ
-  constructor(town, zIndexBase, position) { super(null, town, position); // コマンドメニューはnull
-    // 重ね位置
-    this.zIndexBase = zIndexBase;
-
-    // サブコンテキスト
-    this.subContexts['text-area'] = new TextAreaContext(this, this.zIndexBase, new Position(5, 11));
-
+  constructor(town, position) { super(null, town, position); // コマンドメニューはnull
+    this.zIndexBase = 500;
     this.commandMenuContexts = this.createMenuContexts(this.commandMenus);
   }
 
@@ -51,6 +46,32 @@ class CommandBoxContext extends SelectMenuContext {
     return true;
   }
 
+  get canClose() {
+    if (this.viewState == 'closed') {
+      return false;
+    }
+
+    // if (this.isChildOpened > 0) {
+    //   this.isChildOpened--;
+    //   return false;
+    // }
+
+    for (let i = 0; i < this.commandMenuContexts.length; i++) {
+      for (let j = 0; j < this.commandMenuContexts[i].length; j++) {
+        if (this.commandMenuContexts[i][j].menu.label == "talk" ||
+        this.commandMenuContexts[i][j].menu.label == "door" ||
+        this.commandMenuContexts[i][j].menu.label == "search" ||
+        this.commandMenuContexts[i][j].menu.label == "map") { // 整合性が取れてない。。。menu-context.jsと整合性をとる。。。
+          if (this.commandMenuContexts[i][j].textAreaContext && this.commandMenuContexts[i][j].textAreaContext.isProgress) {
+            return false;
+          }
+        }
+      }
+    }
+
+    return true;
+  }
+
   // コマンドの選択を変更することができるかどうか
   get canSelectionChange() {
     // ビュー状態がclosedであればカット
@@ -58,9 +79,17 @@ class CommandBoxContext extends SelectMenuContext {
       return false;
     }
     
-    // テキストエリアのビュー状態がopenedであればカット
-    if (this.subContexts['text-area'].viewState == 'opened') {
-      return false;
+    for (let i = 0; i < this.commandMenuContexts.length; i++) {
+      for (let j = 0; j < this.commandMenuContexts[i].length; j++) {
+        if (this.commandMenuContexts[i][j].menu.label == "talk" ||
+        this.commandMenuContexts[i][j].menu.label == "door" ||
+        this.commandMenuContexts[i][j].menu.label == "search" ||
+        this.commandMenuContexts[i][j].menu.label == "map") { // 整合性が取れてない。。。menu-context.jsと整合性をとる。。。
+          if (this.commandMenuContexts[i][j].textAreaContext && this.commandMenuContexts[i][j].textAreaContext.viewState != "closed") {
+            return false;
+          }
+        }
+      }
     }
 
     // メンバーセレクトコマンドが選択中で、かつオープン状態ならカット

@@ -1,8 +1,8 @@
 // コマンドメニューのビュー
-class ItemNameView extends MenuView {
+class MemberNameView extends MenuView {
 
   // コンストラクタ
-  constructor(context, commandText, frameCanvases, charCanvases) { super(context, commandText, frameCanvases, charCanvases);
+  constructor(context, canvases) { super(context, canvases);
     // HTML要素の生成
     this.assemblingElements();
   }
@@ -20,7 +20,7 @@ class ItemNameView extends MenuView {
 
     // コマンドメニュー要素
     const commandText = document.createElement("canvas");
-    commandText.width = 128; // 8文字分
+    commandText.width = 64; // 4文字分
     commandText.height = 32;
 
     // コマンドメニューのコンテナにポインターとメニューを格納
@@ -28,19 +28,29 @@ class ItemNameView extends MenuView {
     commandMenu.appendChild(commandText);
 
     // 参照を保存
-    this.commandMenuDOM = commandMenu;
+    this.htmlElement = commandMenu;
     this.commandPointer = commandPointer;
     this.commandText = commandText;
 
     // メンバーステータスの生成
     if (this.context.memberStatusContext) {
-      const memberStatus = new MemberStatusView(this.context.memberStatusContext, this.frameCanvases, this.charCanvases);
-      this.commandMenuDOM.appendChild(memberStatus.memberStatusDOM);
+      const memberStatus = new MemberStatusView(this.context.memberStatusContext, this.canvases);
+      this.htmlElement.appendChild(memberStatus.htmlElement);
     }
 
-    if (this.context.toolListContext) {
-      const toolList = new ToolListView(this.context.toolListContext, this.frameCanvases, this.charCanvases);
-      this.commandMenuDOM.appendChild(toolList.htmlElement);
+    if (this.context.itemListContext) {
+      const itemList = new ToolListView(this.context.itemListContext, this.canvases);
+      this.htmlElement.appendChild(itemList.htmlElement);
+    }
+
+    if (this.context.magicListContext) {
+      const magicList = new MagicListView(this.context.magicListContext, this.canvases);
+      this.htmlElement.appendChild(magicList.htmlElement);
+    }
+
+    if (this.context.equipmentPartsContext) {
+      const equipmentParts = new EquipmentPartListView(this.context.equipmentPartsContext, this.canvases);
+      this.htmlElement.appendChild(equipmentParts.htmlElement);
     }
   }
 }

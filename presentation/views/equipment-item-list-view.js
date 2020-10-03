@@ -3,9 +3,8 @@
 // ------------------------------------------------------------------
 
 class EquipmentItemListView extends SelectMenuView {
-
   // コンストラクタ
-  constructor(context, frameCanvases, charCanvases) { super(context, frameCanvases, charCanvases);
+  constructor(context, canvases) { super(context, canvases);
     // HTML要素の生成
     this.assemblingElements();
 
@@ -54,7 +53,7 @@ class EquipmentItemListView extends SelectMenuView {
 
     // どうぐをもっていればフレームを描画
     if (this.context.commandMenus.length != 0) {
-      this.drawFrame(commandFrameDOM, this.context.squareSize, this.frameCanvases, this.context.commandBoxRows, this.context.commandBoxColumns)
+      this.drawFrame(commandFrameDOM, this.context.squareSize, this.canvases['commandFrame'], this.context.commandBoxRows, this.context.commandBoxColumns)
     } else {
       // どうぐをもっていない場合
       // テキストエリアでメッセージを出すようにする
@@ -74,8 +73,8 @@ class EquipmentItemListView extends SelectMenuView {
     for (let i = 0; i < commandMenus.length; i++) {
       commandMenus[i] = new Array(menus[i].length);
       for (let j = 0; j < commandMenus[i].length; j++) {
-        commandMenus[i][j] = new EquipmentItemNameView(this.context.commandMenuContexts[i][j], menus[i][j].commandName, this.frameCanvases, this.charCanvases);
-        commandMenus[i][j].initialize(this.charCanvases);
+        commandMenus[i][j] = new EquipmentItemNameView(this.context.commandMenuContexts[i][j], this.canvases);
+        commandMenus[i][j].initialize(this.canvases['char']);
       }
     }
 

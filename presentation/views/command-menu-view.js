@@ -1,8 +1,10 @@
-// コマンドメニューのビュー
-class CommandMenuView extends MenuView {
+// ------------------------------------------------------------------
+// コマンドメニューのビュークラス
+// ------------------------------------------------------------------
 
+class CommandMenuView extends MenuView {
   // コンストラクタ
-  constructor(context, commandText, frameCanvases, charCanvases) { super(context, commandText, frameCanvases, charCanvases);
+  constructor(context, canvases) { super(context, canvases);
     // HTML要素の生成
     this.assemblingElements();
   }
@@ -36,12 +38,12 @@ class CommandMenuView extends MenuView {
     this.commandText = commandText;
 
     if (this.context.textAreaContext) {
-      this.textAreaView = new TextAreaView(this.context.textAreaContext, this.frameCanvases, this.charCanvases);
+      this.textAreaView = new TextAreaView(this.context.textAreaContext, this.canvases);
     }
 
     // メンバーセレクターの生成
     if (this.context.isMemberSelectCommand) {
-      const memberSelecter = new MemberSelectView(this.context.memberSelecterContext, this.frameCanvases, this.charCanvases);
+      const memberSelecter = new MemberSelectView(this.context.memberSelecterContext, this.canvases);
       memberSelecter.htmlElement.style.zIndex = 1;
       commandMenu.appendChild(memberSelecter.htmlElement);
 

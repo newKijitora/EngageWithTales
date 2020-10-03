@@ -4,11 +4,10 @@
 
 class PeopleView extends MovableView {
   // コンストラクタ   
-  constructor(context, peopleCanvases) { super();
-    // コンテキスト
+  constructor(context, canvases) { super();
+    // コンテキストとキャンバス
     this.context = context;
-
-    this.peopleCanvases = peopleCanvases;
+    this.canvases = canvases;
 
     // ビュー上のオブジェクト
     this.peopleDom = null;
@@ -216,7 +215,7 @@ class PeopleView extends MovableView {
   drawCharacter(canvas) {
     const context = canvas.getContext("2d");
     context.clearRect(0, 0, canvas.width, canvas.height);
-    const image = this.peopleCanvases[this.context.peopleName];
+    const image = this.canvases['people'][this.context.peopleName];
     context.drawImage(image, 0, 0, image.width, image.height, 0, 0, canvas.width, canvas.height);
   }
 

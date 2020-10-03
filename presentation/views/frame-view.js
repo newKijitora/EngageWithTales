@@ -4,13 +4,10 @@
 
 class FrameView {
   // コンストラクタ
-  constructor(context, frameCanvases, charCanvases) {
-    // コンテキスト
+  constructor(context, canvases) {
+    // コンテキストとキャンバス
     this.context = context;
-
-    // フレームキャンバスと文字キャンバス
-    this.frameCanvases = frameCanvases;
-    this.charCanvases = charCanvases;
+    this.canvases = canvases;
   }
 
     // フレームを描画する

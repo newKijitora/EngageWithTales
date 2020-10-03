@@ -3,7 +3,6 @@
 // ------------------------------------------------------------------
 
 class EquipmentPartListContext extends SelectMenuContext {
-  
   // コンストラクタ
   constructor(commandMenu) { super(commandMenu, commandMenu.town);
     // アイテムリストの左上位置
@@ -13,8 +12,25 @@ class EquipmentPartListContext extends SelectMenuContext {
     this.title = this.commandMenu.menuName;
     this.maxTitleLength = 4;
 
-    this.commandMenus = this.town.equipmentCommandMenus;
+    // コマンドメニュー
+    this.commandMenus = [
+      [
+        // new Command(label, commandName, isSelected, isMemberSelector);
+        new GameCommand("equipment", "ぶき", true, false),
+      ],
+      [
+        new GameCommand("equipment", "ぼうぐ", false, true),
+      ],
+      [
+        new GameCommand("equipment", "たて", false, true),
+      ],
+      [
+        new GameCommand("equipment", "あたま", false, false),
+      ]
+    ];
     
+    // コマンドボックスのサイズ（行数）
+    this.commandBoxRows = this.commandMenus.length + 1;
     // コマンドフレームのサイズ
     this.commandBoxColumns = (this.maxTitleLength / 2) + 2; // 変数を検討（+2 はコマンドポインターの分）
 

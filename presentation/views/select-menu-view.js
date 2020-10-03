@@ -5,7 +5,7 @@
 class SelectMenuView extends FrameView {
 
   // コンストラクタ
-  constructor(context, frameCanvases, charCanvases) { super(context, frameCanvases, charCanvases);
+  constructor(context, canvases) { super(context, canvases);
     // HTML要素
     this.htmlElement = null;
 
@@ -57,7 +57,7 @@ class SelectMenuView extends FrameView {
         
         // 現在のコマンドのポインターを表示
         nextCommand.context.isSelected = true;
-        nextCommand.showCommandPointer(this.charCanvases);
+        nextCommand.showCommandPointer(this.canvases['char']);
         
         this.context.currentCommandMenu = nextCommand.context;
 
@@ -78,7 +78,7 @@ class SelectMenuView extends FrameView {
         this.commandMenus[i][j].hideCommandPointer();
 
         this.commandMenus[0][0].context.isSelected = true;
-        this.commandMenus[0][0].showCommandPointer(this.charCanvases);
+        this.commandMenus[0][0].showCommandPointer(this.canvases['char']);
 
         this.context.currentCommandMenu = this.commandMenus[0][0].context;
         //this.context.textAreaContext.firstThrough = true;

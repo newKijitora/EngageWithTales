@@ -2,24 +2,30 @@
 class Settings {
   
   // コンストラクタ
-  constructor(obj) {
+  constructor(settings) {
     // テキストの速度と１フレームの移動距離
-    if (obj.settings.textSpeed) {
-      this.textSpeed = obj.settings.textSpeed;
+    if (settings.textSpeed) {
+      this.textSpeed = settings.textSpeed;
     } else {
       this.textSpeed = 16; // デフォルト
     }
     
     // 一コマのサイズ
-    this.squareWidth = 32;
-    this.squareHeight = 32;
-    this.squareSize = new Size(this.squareWidth, this.squareHeight);
+    if (settings.squareSize) {
+      this.squareSize = settings.squareSize;
+    } else {
+      this.squareSize = new Size(32, 32); // デフォルト
+    }
     
     // 文字サイズ
-    this.textSize = new Size(this.squareWidth / 2, this.squareHeight);
+    this.textSize = new Size(this.squareSize.x / 2, this.squareSize.y);
 
     // 1フレームの移動距離
-    this.distance = 2;
+    if (settings.distance) {
+      this.distance = settings.distance;
+    } else {
+      this.distance = 2; // デフォルト
+    }
 
     // マップサイズ
     this.mapWidth = 27;
@@ -33,14 +39,7 @@ class Settings {
     this.commandBoxBackgroundColor = '#020202';
 
     // キーコード
-    this.keyCodes = {
-      'left': 65,
-      'right': 68,
-      'bottom': 83,
-      'top': 87,
-      'open': 74,
-      'close': 75
-    };
+    this.keyCodes = settings.keyCodes;
 
     // キーコード
     this.leftKeyCode = this.keyCodes['left'];

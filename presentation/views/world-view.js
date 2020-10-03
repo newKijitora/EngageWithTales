@@ -24,25 +24,13 @@ class WorldView {
 
     // DOM要素
     this.worldDom = null;
-    
-    // マップテクスチャーのプリロード用キャンバス
-    this.mapCanvases = {};
 
-    // 人物テクスチャーのプリロード用キャンバス
-    this.peopleCanvases = {};
-
-    // コマンドフレームテクスチャーのプリロード用キャンバス
-    this.frameCanvases = {};
-
-    // 文字テクスチャーのプリロード用キャンバス
-    this.charCanvases = {};
-
-    // プリロード用キャンバスのセット
+    // プリロード用キャンバスのセット（マップ、人物、フレーム、文字）
     this.canvases = {
-      'map': this.mapCanvases,
-      'people': this.peopleCanvases,
-      'commandFrame': this.frameCanvases,
-      'char': this.charCanvases,
+      'map': {},
+      'people': {},
+      'commandFrame': {},
+      'char': {},
     };
 
     // 画像読み込みオブジェクト
@@ -51,19 +39,19 @@ class WorldView {
     // 画像の読み込み（マップのテクスチャー）とプリロード用キャンバスの生成
     imageLoader.loadImages(this.mapTextures, (images) => {
       for (let i = 0; i < this.mapTextures.length; i++) {
-        this.mapCanvases[i] = this.getCanvas(images[i], this.squareSize.x, this.squareSize.y, imageLoader);
+        this.canvases['map'][i] = this.getCanvas(images[i], this.squareSize.x, this.squareSize.y, imageLoader);
       }
 
       // 画像の読み込み（人物のテクスチャー）とプリロード用キャンバスの生成
       imageLoader.loadImages(this.peopleTextures, (images) => {
         for (let i = 0; i < this.peopleTextures.length; i++) {
-          this.peopleCanvases[this.peopleTextures[i].texture] = this.getCanvas(images[i], this.squareSize.x, this.squareSize.y, imageLoader);
+          this.canvases['people'][this.peopleTextures[i].texture] = this.getCanvas(images[i], this.squareSize.x, this.squareSize.y, imageLoader);
         }
   
         // 画像の読み込み（コマンドフレームのテクスチャー）とプリロード用キャンバスの生成
         imageLoader.loadImages(this.frameTextures, (images) => {
           for (let i = 0; i < this.frameTextures.length; i++) {
-            this.frameCanvases[i] = this.getCanvas(images[i], this.squareSize.x, this.squareSize.y, imageLoader);
+            this.canvases['commandFrame'][i] = this.getCanvas(images[i], this.squareSize.x, this.squareSize.y, imageLoader);
           }
 
           // 画像の読み込み（文字のテクスチャー）とプリロード用キャンバスの生成
@@ -89,7 +77,7 @@ class WorldView {
               context.drawImage(subChar, 0, 0);
               context.drawImage(mainChar, 0, textureSize.y);
 
-              this.charCanvases[this.context.resource.textElements[i].read] = canvas;
+              this.canvases['char'][this.context.resource.textElements[i].read] = canvas;
             }
 
             // HTML要素の組成（画像のロードとキャンバスの準備がととのってから呼び出す）
@@ -138,6 +126,6 @@ class WorldView {
     this.element = world;
 
     // ゲーム開始（町のオブジェクトを生成する）
-    this.town = new TownView(this.context.currentTown, this.peopleCanvases, this.frameCanvases, this.charCanvases);
+    this.town = new TownView(this.context.currentTown, this.canvases);
   }
 }

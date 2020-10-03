@@ -5,14 +5,11 @@
 class CommandBoxView extends SelectMenuView {
 
   // コンストラクタ
-  constructor(context, frameCanvases, charCanvases) { super(context, frameCanvases, charCanvases);
-    // テキストエリアのビューオブジェクト（イベントの登録順に注意！）
-    //this.textAreaView = new TextAreaView(this.context.subContexts['text-area'], this.commandTextureCanvases, this.charCanvases);
-
+  constructor(context, canvases) { super(context, canvases);
     // HTML要素の組成
     this.assemblingElements();    
 
-    // イベントリスナの設定（テキストエリアより先に登録しない）
+    // イベントリスナの設定
     window.addEventListener('keydown', (event) => this.open(event.keyCode), false);
     window.addEventListener('keydown', (event) => this.close(event.keyCode), false);
     window.addEventListener('keydown', (event) => this.selectionChange(event.keyCode), false);
@@ -56,7 +53,7 @@ class CommandBoxView extends SelectMenuView {
 
         // 初期位置のコマンドに選択状態を設定
         this.commandMenus[0][0].context.isSelected = true;
-        this.commandMenus[0][0].showCommandPointer(this.charCanvases);
+        this.commandMenus[0][0].showCommandPointer(this.canvases['char']);
 
         // コマンドメニューのコンテキストを初期化
         this.context.currentCommandMenuContext = this.commandMenus[0][0].context;
@@ -110,7 +107,7 @@ class CommandBoxView extends SelectMenuView {
         
         // 現在のコマンドのポインターを表示
         nextCommand.context.isSelected = true;
-        nextCommand.showCommandPointer(this.charCanvases);
+        nextCommand.showCommandPointer(this.canvases['char']);
         
         this.context.currentCommandMenuContext = nextCommand.context;
 
@@ -157,7 +154,7 @@ class CommandBoxView extends SelectMenuView {
     this.selectField = selectField;
 
     // コマンドボックスのフレーム描画
-    this.drawFrame(this.memberSelecterFrame, this.context.squareSize, this.frameCanvases, this.context.commandBoxRows, this.context.commandBoxColumns);
+    this.drawFrame(this.memberSelecterFrame, this.context.squareSize, this.canvases['commandFrame'], this.context.commandBoxRows, this.context.commandBoxColumns);
 
     // コマンドメニューのHTML要素を生成
     const commandMenus = new Array(this.context.commandMenus.length);
@@ -165,7 +162,7 @@ class CommandBoxView extends SelectMenuView {
     for (let i = 0; i < commandMenus.length; i++) {
       commandMenus[i] = new Array(this.context.commandMenus[i].length);
       for (let j = 0; j < commandMenus[i].length; j++) {
-        commandMenus[i][j] = new CommandMenuView(this.context.commandMenuContexts[i][j], this.context.commandMenus[i][j].commandName, this.frameCanvases, this.charCanvases);
+        commandMenus[i][j] = new CommandMenuView(this.context.commandMenuContexts[i][j], this.canvases);
         
         // コマンドボックスの選択フィールド要素の子要素として追加
         this.selectField.appendChild(commandMenus[i][j].commandMenuDOM);
@@ -175,7 +172,7 @@ class CommandBoxView extends SelectMenuView {
     // コマンドボックスのコマンドメニューに文字を描画する
     for (let i = 0; i < this.context.commandMenus.length; i++) {
       for (let j = 0; j < this.context.commandMenus[i].length; j++) {
-        commandMenus[i][j].initialize(this.charCanvases);
+        commandMenus[i][j].initialize(this.canvases['char']);
 
         // メンバーセレクトコマンド以外はカット
         if (!commandMenus[i][j].context.isMemberSelectCommand) {
@@ -183,12 +180,12 @@ class CommandBoxView extends SelectMenuView {
         }
 
         // メンバーセレクターのフレーム描画
-        commandMenus[i][j].htmlElement.drawFrame(this.frameCanvases);
+        commandMenus[i][j].htmlElement.drawFrame(this.canvases['commandFrame']);
 
         // メンバーセレクターのコマンドメニューに文字を描画する
         for (let k = 0; k < commandMenus[i][j].htmlElement.commandMenus.length; k++) {
           for (let l = 0; l < commandMenus[i][j].htmlElement.commandMenus[k].length; l++) {
-            commandMenus[i][j].htmlElement.commandMenus[k][l].initialize(this.charCanvases);
+            commandMenus[i][j].htmlElement.commandMenus[k][l].initialize(this.canvases['char']);
           }
         }
       }
@@ -196,8 +193,5 @@ class CommandBoxView extends SelectMenuView {
 
     // CommandMenuViewクラスの配列を保持
     this.commandMenus = commandMenus;
-
-    // テキストエリアのビュー TODO: インスタンス生成に検討の必要あり
-    //this.textAreaView.drawFrame(this.textAreaView.textFrame, this.textAreaView.context.squareSize, this.frameCanvases, this.textAreaView.context.textAreaRows, this.textAreaView.context.textAreaColumns);
   }
 }

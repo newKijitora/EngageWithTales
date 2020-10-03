@@ -3,10 +3,34 @@
 // ------------------------------------------------------------------
 
 class CommandBoxContext extends SelectMenuContext {
-
   // コンストラクタ
   constructor(town, position) { super(null, town, position); // コマンドメニューはnull
     this.zIndexBase = 500;
+
+    // コマンドのメニュー
+    this.commandMenus = [
+      [
+        // new Command(label, commandName, isSelected, isMemberSelector);
+        new GameCommand('talk', 'はなす', true, false),
+        new GameCommand('magic', 'まほう', false, true),
+      ],
+      [
+        new GameCommand('status', 'つよさ', false, true),
+        new GameCommand('item', 'もちもの', false, true),
+      ],
+      [
+        new GameCommand('equipment', 'そうび', false, true),
+        new GameCommand('search', 'しらべる', false, false),
+      ],
+      [
+        new GameCommand('door', 'とびら', false, false),
+        new GameCommand('map', 'ちず', false, false),
+      ]
+    ];
+
+    // コマンドボックスのサイズ（行数）
+    this.commandBoxRows = this.commandMenus.length + 1;
+
     this.commandMenuContexts = this.createMenuContexts(this.commandMenus);
   }
 

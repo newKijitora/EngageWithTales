@@ -5,7 +5,7 @@
 class TextAreaView extends FrameView {
   
   // コンストラクタ
-  constructor(context, frameCanvases, charCanvases) { super(context, frameCanvases, charCanvases);
+  constructor(context, canvases) { super(context, canvases);
     // HTML要素
     this.htmlElement = null;
     this.textFrame = null;
@@ -92,7 +92,7 @@ class TextAreaView extends FrameView {
         } while (text[textPosition] == '\n' || text[textPosition] == '　');
 
         const context = this.cells[row][cellPosition].getContext('2d');
-        context.drawImage(this.charCanvases[text[textPosition]], 0, 0);
+        context.drawImage(this.canvases['char'][text[textPosition]], 0, 0);
 
         startTime = now;
         textPosition++;
@@ -137,7 +137,7 @@ class TextAreaView extends FrameView {
     textFrame.height = this.context.squareSize.y * this.context.textAreaRows;
     textFrame.style.display = 'block';
 
-    this.drawFrame(textFrame, this.context.squareSize, this.frameCanvases, this.context.textAreaRows, this.context.textAreaColumns);
+    this.drawFrame(textFrame, this.context.squareSize, this.canvases['commandFrame'], this.context.textAreaRows, this.context.textAreaColumns);
 
     // テキストエリアのインナー
     const textField = document.createElement('div');

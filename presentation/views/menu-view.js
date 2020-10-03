@@ -1,17 +1,16 @@
-// コマンドメニューのビュー
+// ------------------------------------------------------------------
+// コマンドメニューのビュー基底クラス
+// ------------------------------------------------------------------
+
 class MenuView {
-
   // コンストラクタ
-  constructor(context, commandText, frameCanvases, charCanvases) {
-    // コンテキスト
+  constructor(context, canvases) {
+    // コンテキストとキャンバス
     this.context = context;
-
-    // フレームキャンバスと文字キャンバス
-    this.frameCanvases = frameCanvases;
-    this.charCanvases = charCanvases;
+    this.canvases = canvases;
 
     // このコマンドメニューのテキスト
-    this.commandTitle = commandText;
+    this.commandTitle = this.context.menu.commandName;
 
     // HTML要素
     this.commandMenuDOM = null;

@@ -1,19 +1,24 @@
-// ワールドのコントローラークラス
-class WorldContext extends Context {
+// ------------------------------------------------------------------
+// ゲーム世界のコンテキストクラス
+// ------------------------------------------------------------------
 
+class WorldContext extends Context {
   // コンストラクタ
   constructor(initialize) { super();
+    // 初期化オブジェクト
+    this.initialize = initialize;
+
     // ゲームタイトル
-    this.title = initialize.title;
+    this.title = this.initialize.title;
 
     // リソース
     this.resource = new Resources();
 
     // ゲームの設定
-    this.settings = new Settings(initialize);
+    this.settings = new Settings(this.initialize.settings);
 
     // 町のJSONファイルURL
-    this.townJsonUrl = initialize.url;
+    this.townJsonUrl = this.initialize.url;
 
     // 現在の町
     this.currentTown = null;
@@ -137,7 +142,7 @@ class WorldContext extends Context {
 
   // ゲームを開始する
   start() {
-    // 町の情報を読み込み
+    // 町の情報を読み込む
     this.requestInformation(this, 'rokarito');
   }
 

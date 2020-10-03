@@ -5,7 +5,7 @@
 class EquipmentItemNameView extends MenuView {
 
   // コンストラクタ
-  constructor(context, commandText, frameCanvases, charCanvases) { super(context, commandText, frameCanvases, charCanvases);
+  constructor(context, canvases) { super(context, canvases);
     // HTML要素の生成
     this.assemblingElements();
   }

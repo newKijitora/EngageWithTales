@@ -1,11 +1,11 @@
 // ------------------------------------------------------------------
-// 魔法名のリストのビュークラス
+// 道具名のリストのビュークラス
 // ------------------------------------------------------------------
 
-class MagicListView extends SelectMenuView {
+class ToolListView extends SelectMenuView {
 
   // コンストラクタ
-  constructor(context, frameCanvases, charCanvases) { super(context, frameCanvases, charCanvases);
+  constructor(context, canvases) { super(context, canvases);
     // HTML要素の生成
     this.assemblingElements();
 
@@ -46,21 +46,20 @@ class MagicListView extends SelectMenuView {
     for (let i = 0; i < commandMenus.length; i++) {
       commandMenus[i] = new Array(this.context.commandMenus[i].length);
       for (let j = 0; j < commandMenus[i].length; j++) {
-        commandMenus[i][j] = new MagicNameView(this.context.memberNameContexts[i][j], this.context.commandMenus[i][j].commandName, this.frameCanvases, this.charCanvases);
+        commandMenus[i][j] = new ItemNameView(this.context.memberNameContexts[i][j], this.canvases);
         selectField.appendChild(commandMenus[i][j].commandMenuDOM);
-
-        commandMenus[i][j].initialize(this.charCanvases);
+        commandMenus[i][j].initialize(this.canvases['char']);
       }
     }
 
     commandBox.appendChild(commandFrameDOM);
     commandBox.appendChild(selectField);
 
-    // まほうをおぼえていればフレームを描画
+    // どうぐをもっていればフレームを描画
     if (this.context.commandMenus.length != 0) {
-      super.drawFrame(commandFrameDOM, this.context.squareSize, this.frameCanvases, this.context.commandBoxRows, 6)
+      super.drawFrame(commandFrameDOM, this.context.squareSize, this.canvases['commandFrame'], this.context.commandBoxRows, this.context.commandBoxColumns)
     } else {
-      // まほうをおぼえていない場合
+      // どうぐをもっていない場合
     }
 
     this.htmlElement = commandBox;

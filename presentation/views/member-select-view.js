@@ -1,11 +1,11 @@
 // ------------------------------------------------------------------
-// 装備部位のビュークラス
+// メンバー選択コマンドのビュークラス
 // ------------------------------------------------------------------
 
-class EquipmentPartListView extends SelectMenuView {
+class MemberSelectView extends SelectMenuView {
 
   // コンストラクタ
-  constructor(context, frameCanvases, charCanvases) { super(context, frameCanvases, charCanvases);
+  constructor(context, canvases) { super(context, canvases);
     // HTML要素の生成
     this.assemblingElements();
 
@@ -15,13 +15,23 @@ class EquipmentPartListView extends SelectMenuView {
     window.addEventListener('keydown', (event) => this.selectionChange(event.keyCode), false);
   }
   
+  // オープン（オーバーライド）
+  open(keyCode) {
+    if (keyCode == this.context.openKey.keyCode && this.context.canOpen) {
+      
+      this.htmlElement.style.display = 'block';
+
+      this.context.viewState = 'opened';
+    }
+  }
+
   // HTML要素の生成
   assemblingElements() {
     // コマンドのコンテナ
     const commandBox = document.createElement("div");
     commandBox.style.position = "absolute";
-    commandBox.style.left = this.context.itemListPosition.x * this.context.squareSize.x + "px";
-    commandBox.style.top = this.context.itemListPosition.y * this.context.squareSize.y + "px";
+    commandBox.style.left = this.context.commandBoxPosition.x * this.context.squareSize.x + "px";
+    commandBox.style.top = (this.context.commandBoxPosition.y * this.context.squareSize.y) - this.context.textSize.x + "px";
     commandBox.style.display = "none";
 
     // コマンドのフレーム（バックグラウンド）
@@ -38,7 +48,7 @@ class EquipmentPartListView extends SelectMenuView {
     selectField.style.paddingTop = this.context.squareSize.y / 2 + "px";
     selectField.style.display = "flex";
     selectField.style.flexWrap = "wrap";
-    //selectField.style.width = "64px";
+    selectField.style.width = "64px";
 
     // コマンドメニューを生成
     const commandMenus = new Array(this.context.commandMenus.length);
@@ -46,21 +56,13 @@ class EquipmentPartListView extends SelectMenuView {
     for (let i = 0; i < commandMenus.length; i++) {
       commandMenus[i] = new Array(this.context.commandMenus[i].length);
       for (let j = 0; j < commandMenus[i].length; j++) {
-        commandMenus[i][j] = new EquipmentPartNameView(this.context.equipmentNameContexts[i][j], this.context.commandMenus[i][j].commandName, this.frameCanvases, this.charCanvases);
-        selectField.appendChild(commandMenus[i][j].commandMenuDOM);
-        commandMenus[i][j].initialize(this.charCanvases);
+        commandMenus[i][j] = new MemberNameView(this.context.memberNameContexts[i][j], this.canvases);
+        selectField.appendChild(commandMenus[i][j].htmlElement);
       }
     }
 
     commandBox.appendChild(commandFrameDOM);
     commandBox.appendChild(selectField);
-
-    // どうぐをもっていればフレームを描画
-    if (this.context.commandMenus.length != 0) {
-      super.drawFrame(commandFrameDOM, this.context.squareSize, this.frameCanvases, this.context.commandBoxRows, this.context.commandBoxColumns)
-    } else {
-      // どうぐをもっていない場合
-    }
 
     this.htmlElement = commandBox;
     this.memberSelectFrame = commandFrameDOM;

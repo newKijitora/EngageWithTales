@@ -5,7 +5,7 @@
 class SelectMenuContext extends KeyManageContext {
 
   // コンストラクタ
-  constructor(commandMenu, town, position, commandMenus, name) { super(town, position);
+  constructor(commandMenu, town, position) { super(town, position);
     // コマンドメニュー
     this.commandMenu = null;
 
@@ -28,29 +28,20 @@ class SelectMenuContext extends KeyManageContext {
     // メニューのサイズ
     this.menuSize = new Size(this.textSize.x * this.commandMenuLength, this.textSize.y);
 
-    // コマンドのメニュー
-    // 1次配列は行、2次配列は列を表す
-    this.commandMenus = this.town.commandMenus;
-
-    if (commandMenus) {
-      this.commandMenus = commandMenus;
-    }
-
-    // コマンドボックスのサイズ（行数）
-    this.commandBoxRows = this.commandMenus.length + 1;
+    
     // コマンドボックスのサイズ（列数）
     this.commandBoxColumns = 7; // 変数を検討
 
     this.isChildOpened = 0;
 
-    if (name == 'equipselect') {
-      this.maxTitleLength = 4;
+    // if (name == 'equipselect') {
+    //   this.maxTitleLength = 4;
 
-      // コマンドフレームのサイズ
-      this.commandBoxColumns = (this.maxTitleLength / 2) + 2; // 変数を検討（+2 はコマンドポインターの分）
+    //   // コマンドフレームのサイズ
+    //   this.commandBoxColumns = (this.maxTitleLength / 2) + 2; // 変数を検討（+2 はコマンドポインターの分）
 
-      this.menuContexts =  this.createMenus(commandMenus);
-    }
+    //   this.menuContexts =  this.createMenus(commandMenus);
+    // }
   }
 
   createMenus(commandMenus) {

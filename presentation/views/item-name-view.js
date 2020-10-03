@@ -1,8 +1,8 @@
 // コマンドメニューのビュー
-class EquipmentPartNameView extends MenuView {
+class ItemNameView extends MenuView {
 
   // コンストラクタ
-  constructor(context, commandText, frameCanvases, charCanvases) { super(context, commandText, frameCanvases, charCanvases);
+  constructor(context, canvases) { super(context, canvases);
     // HTML要素の生成
     this.assemblingElements();
   }
@@ -32,8 +32,14 @@ class EquipmentPartNameView extends MenuView {
     this.commandPointer = commandPointer;
     this.commandText = commandText;
 
-    if (this.context.contexts['equipment-item']) {
-      const toolList = new EquipmentItemListView(this.context.contexts['equipment-item'], this.frameCanvases, this.charCanvases);
+    // メンバーステータスの生成
+    if (this.context.memberStatusContext) {
+      const memberStatus = new MemberStatusView(this.context.memberStatusContext, this.canvases);
+      this.commandMenuDOM.appendChild(memberStatus.memberStatusDOM);
+    }
+
+    if (this.context.toolListContext) {
+      const toolList = new ToolListView(this.context.toolListContext, this.canvases);
       this.commandMenuDOM.appendChild(toolList.htmlElement);
     }
   }

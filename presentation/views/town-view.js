@@ -4,14 +4,12 @@
 
 class TownView {
   // コンストラクタ
-  constructor(context, peopleCanvases, frameCanvases, charCanvases) {
+  constructor(context, canvases) {
     // コンテキスト
     this.context = context;
 
     // キャンバス
-    this.peopleCanvases = peopleCanvases;
-    this.frameCanvases = frameCanvases;
-    this.charCanvases = charCanvases;
+    this.canvases = canvases;
 
     // マップエリア
     this.mapArea = new MapAreaView(this.context.mapAreaController);
@@ -20,10 +18,10 @@ class TownView {
     this.people = new Array(this.context.people.length);
 
     for (let i = 0; i < this.context.people.length; i++) {
-      this.people[i] = new PeopleView(this.context.people[i], this.peopleCanvases);
+      this.people[i] = new PeopleView(this.context.people[i], this.canvases);
     }
 
     // コマンドボックス
-    this.commandBox = new CommandBoxView(this.context.commandBoxController, this.frameCanvases, this.charCanvases);
+    this.commandBox = new CommandBoxView(this.context.commandBoxController, this.canvases);
   }
 }

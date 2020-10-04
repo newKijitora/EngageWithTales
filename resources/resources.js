@@ -189,8 +189,8 @@ class Resources {
     ]
   ];
 
-  // テクスチャー
-  textures = [
+  // マップのテクスチャー
+  mapTextures = [
     new MapTexture("floor", true, false),
     new MapTexture("block", false, false),
     new MapTexture("desert", true, false),

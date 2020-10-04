@@ -12,7 +12,7 @@ class TownView {
     this.canvases = canvases;
 
     // マップエリア
-    this.mapArea = new MapAreaView(this.context.mapAreaController);
+    this.mapArea = new MapAreaView(this.context.mapAreaController, this.canvases);
 
     // 町の人々を生成する
     this.people = new Array(this.context.people.length);

@@ -4,24 +4,31 @@
 
 class WorldContext extends Context {
   // コンストラクタ
-  constructor(initialize) { super();
+  constructor(initial) { super();
     // 初期化オブジェクト
-    this.initialize = initialize;
+    this.initial = initial;
 
-    // ゲームタイトル
-    this.title = this.initialize.title;
+    this.title = this.initial.title; // ゲームタイトル
+    this.version = this.initial.version; // ゲームのバージョン
+    
+    this.resources = new Resources(); // リソース
+    this.settings = new Settings(this.initial.settings); // ゲームの設定
 
-    // リソース
-    this.resource = new Resources();
+    // JSONファイルURL
+    this.jsonUrl = {
+      'town': this.initial.url, // 町の情報のJSON
+    };
 
-    // ゲームの設定
-    this.settings = new Settings(this.initialize.settings);
-
-    // 町のJSONファイルURL
-    this.townJsonUrl = this.initialize.url;
-
-    // 現在の町
+    // 現在の町のオブジェクト
     this.currentTown = null;
+
+    // マップの元テクスチャー
+    this.textures = {
+      'map': this.resources.mapTextures,
+      'people': this.resources.peopleTextures,
+      'commandFrame': this.resources.commandFrameTextures,
+      'char': this.resources.textTextures,
+    };
 
     // 主人公のパーティー
     this.memberCharacters = [
@@ -96,68 +103,36 @@ class WorldContext extends Context {
       new Magic('ししゃのしょ'),
     ];
 
-    this.towns = null;
-    this.currentTown = null;
-
-    // コマンドのメニュー
-    this.commandMenuLength = 5;
-
-    this.commandMenus = [
-      [
-        // new Command(label, commandName, isSelected, isMemberSelector);
-        new GameCommand('talk', 'はなす', true, false),
-        new GameCommand('magic', 'まほう', false, true),
+    // デフォルトのテキスト（話す相手がいない、道具を持っていない、など。。）
+    this.defaultTexts = {
+      'talk': [
+        'はなす　あいてが　だれもいない。'
       ],
-      [
-        new GameCommand('status', 'つよさ', false, true),
-        new GameCommand('item', 'もちもの', false, true),
+      'search': [
+        'ろかりとは　あしもとを　しらべた。',
+        'しかし　なにも　みつからなかった。'
       ],
-      [
-        new GameCommand('equipment', 'そうび', false, true),
-        new GameCommand('search', 'しらべる', false, false),
+      'door': [
+        'ここには　とびらがない。'
       ],
-      [
-        new GameCommand('door', 'とびら', false, false),
-        new GameCommand('map', 'ちず', false, false),
+      'map': [
+        'つかえる　ちずを　もっていない。'
       ]
-    ];
-
-    // 装備コマンドのメニュー
-    this.equipmentCommandMenus = [
-      [
-        // new Command(label, commandName, isSelected, isMemberSelector);
-        new GameCommand("equipment", "ぶき", true, false),
-      ],
-      [
-        new GameCommand("equipment", "ぼうぐ", false, true),
-      ],
-      [
-        new GameCommand("equipment", "たて", false, true),
-      ],
-      [
-        new GameCommand("equipment", "あたま", false, false),
-      ]
-    ];
+    };
   }
-
-  // ゲームを開始する
-  start() {
-    // 町の情報を読み込む
-    this.requestInformation(this, 'rokarito');
-  }
-
+  
   // JSONから町の情報を取得する
-  requestInformation(world, townName) {
+  requestInformation(townName) {
     // リクエスト
     const request = new XMLHttpRequest();
     request.responseType = 'json';
 
     request.onload = () => {
       // JSONにあるすべての町の情報を保存
-      this.towns = request.response;
+      const towns = request.response;
 
-      // 最初の町の情報を取得
-      this.townInformation = this.towns[townName];
+      // 指定の町の情報を取得
+      this.townInformation = towns[townName];
 
       // 町の生成
       this.currentTown = new TownContext(this);
@@ -167,7 +142,13 @@ class WorldContext extends Context {
       this.entry(this);
     };
 
-    request.open('GET', world.townJsonUrl);
+    // リクエストの実行
+    request.open('GET', this.jsonUrl['town']);
     request.send();
+  }
+
+  // ゲームを開始する
+  run() {
+    this.requestInformation('rokarito'); // 町の情報を読み込む
   }
 }

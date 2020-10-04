@@ -27,14 +27,43 @@ class TextAreaView extends FrameView {
   // オープン
   open(keyCode) {
     if (keyCode == this.context.openKey.keyCode && this.context.canOpen) {
+      let isTalk = false;
+      
       this.context.isProgress = true;
       this.context.viewState = 'opened';
+
       this.showView();
-      this.readText(this.context.textSet[this.context.readIndex], this.context.textSpeed);
+
+      for (let i = 0; i < this.context.town.people.length; i++) {
+        if (this.context.town.people[i].currentPosition.x == this.context.town.mapFocusPosition.x && this.context.town.people[i].currentPosition.y == this.context.town.mapFocusPosition.y) {
+          isTalk = true;
+          this.readText(this.context.town.people[i].textSet[this.context.readIndex], this.context.textSpeed);
+        }
+      }
+
+      // 人物がいなければ既定のテキストを表示する
+      if (!isTalk) {
+        this.readText(this.context.town.defaultTexts[this.context.commandMenu.menu.label][this.context.readIndex], this.context.textSpeed);
+      }
+
     } else if (keyCode == this.context.openKey.keyCode && this.context.canReadContinue) {
+      let isTalk = false;
+      
       this.context.canReadContinue = false;
       this.clearText();
-      this.readText(this.context.textSet[this.context.readIndex], this.context.textSpeed);
+
+      for (let i = 0; i < this.context.town.people.length; i++) {
+        if (this.context.town.people[i].currentPosition.x == this.context.town.mapFocusPosition.x && this.context.town.people[i].currentPosition.y == this.context.town.mapFocusPosition.y) {
+          isTalk = true;
+          this.readText(this.context.town.people[i].textSet[this.context.readIndex], this.context.textSpeed);
+        }
+      }
+
+      // 人物がいなければ既定のテキストを表示する
+      if (!isTalk) {
+        this.readText(this.context.town.defaultTexts[this.context.commandMenu.menu.label][this.context.readIndex], this.context.textSpeed);
+      }
+
     } else if (keyCode == this.context.openKey.keyCode) {
       this.close(this.context.closeKey.keyCode);
     }
@@ -107,14 +136,33 @@ class TextAreaView extends FrameView {
       if (textPosition < text.length && row < this.context.numberOfRows) {
         window.requestAnimationFrame(readCharacter);
       } else {
-        this.context.readIndex++;
+        let isTalk = false;
         
-        if (this.context.textSet.length > this.context.readIndex) {
-          this.context.canReadContinue = true;          
-        } else {
-          this.context.readIndex = 0;
-          this.context.isProgress = false;
-          this.context.canReadContinue = false;
+        for (let i = 0; i < this.context.town.people.length; i++) {
+          if (this.context.town.people[i].currentPosition.x == this.context.town.mapFocusPosition.x && this.context.town.people[i].currentPosition.y == this.context.town.mapFocusPosition.y) {
+            isTalk = true;
+            this.context.readIndex++;
+
+            if (this.context.town.people[i].textSet.length > this.context.readIndex) {
+              this.context.canReadContinue = true;          
+            } else {
+              this.context.readIndex = 0;
+              this.context.isProgress = false;
+              this.context.canReadContinue = false;
+            }
+          }
+        }
+
+        if (!isTalk) {
+          this.context.readIndex++;
+
+          if (this.context.town.defaultTexts[this.context.commandMenu.menu.label].length > this.context.readIndex) {
+            this.context.canReadContinue = true;          
+          } else {
+            this.context.readIndex = 0;
+            this.context.isProgress = false;
+            this.context.canReadContinue = false;
+          }
         }
       }
     }

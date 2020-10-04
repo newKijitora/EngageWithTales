@@ -9,9 +9,10 @@ class Map {
 // マップエリアクラス
 class MapAreaView extends MovableView {
   // コンストラクタ
-  constructor(context) { super();
-    // コンテキスト
+  constructor(context, canvases) { super();
+    // コンテキストとキャンバス
     this.context = context;
+    this.canvases = canvases;
 
     // マップ
     this.mapAreas = new Array(2);
@@ -20,9 +21,6 @@ class MapAreaView extends MovableView {
     this.mapLayer = null;
     this.peopleLayer = null;
     this.peopleField = null;
-
-    // テクスチャー画像のキャンバス要素
-    this.textureCanvases = new Array(this.context.textures.length);
 
     // HTML要素の組成
     this.assemblingElements();
@@ -38,24 +36,8 @@ class MapAreaView extends MovableView {
     window.addEventListener("keydown", (event) => this.moveOn(event.keyCode), false);
     window.addEventListener("keyup", (event) => this.stop(event.keyCode), false);
 
-    // 画像のロード：初回のマップ描画を含む
-    const imageLoader = new ImageLoader();
-
-    imageLoader.loadImages(this.context.textures, (images) => {
-      for (let i = 0; i < this.textureCanvases.length; i++) {
-        const textureCanvas = document.createElement("canvas");
-        textureCanvas.width = this.context.squareSize.x;
-        textureCanvas.height = this.context.squareSize.y;         
-
-        const textureContext = textureCanvas.getContext("2d");
-        imageLoader.setSmoothingEnabled(textureContext, false);
-
-        textureContext.drawImage(images[i], 0, 0, images[i].width, images[i].height, 0, 0, this.context.squareSize.x, this.context.squareSize.y);
-        this.textureCanvases[i] = textureCanvas;
-      }
-
-      this.drawMapRows(this.context.activeMapIndex, this.context.mapRows, false);
-    });
+    // マップの描画
+    this.drawMapRows(this.context.activeMapIndex, this.context.mapRows, false);
   }
 
   // アクティブなマップシートを交代する
@@ -132,7 +114,7 @@ class MapAreaView extends MovableView {
     const mainTextureIndex = this.context.mainTextureIndex;
     
     if (this.drawnRows == 0) {
-      const pattern = context.createPattern(this.textureCanvases[mainTextureIndex], "repeat");
+      const pattern = context.createPattern(this.canvases['map'][mainTextureIndex], "repeat");
       context.fillStyle = pattern;
       context.fillRect(0, 0, 972, 672);
     }
@@ -160,7 +142,7 @@ class MapAreaView extends MovableView {
         const mapChipSize = this.context.squareSize;
 
         context.clearRect(j * mapChipSize.x, i * mapChipSize.y, mapChipSize.x, mapChipSize.y);
-        context.drawImage(this.textureCanvases[textureIndex], j * mapChipSize.x, i * mapChipSize.y);
+        context.drawImage(this.canvases['map'][textureIndex], j * mapChipSize.x, i * mapChipSize.y);
       }
     }
   }
@@ -231,10 +213,14 @@ class MapAreaView extends MovableView {
 
       // 終点まで動いていて、次のキーが登録されている
       } else if (this.context.nextKey) {
-        if (this.context.textures[this.context.map[this.context.centerPosition.y][this.context.centerPosition.x]].next) {
+        if (this.context.textures[this.context.map[this.context.town.mapCenterPosition.y][this.context.town.mapCenterPosition.x]].next) {
           // ここで次のマップへ移行すること
           this.earthQuake.action();
         }
+
+        this.context.town.mapFocusPosition.y = (this.context.town.mapFocusPosition.y - (destination.top / this.context.squareSize.y));
+        this.context.town.mapFocusPosition.x = (this.context.town.mapFocusPosition.x - (destination.left / this.context.squareSize.x));
+
         this.swapMap();
         if (this.context.nextKey.state == "keyup") {
           this.context.continue = false;
@@ -246,10 +232,14 @@ class MapAreaView extends MovableView {
 
       // 終点まで動いていて、以前のキーが押しっぱなし
       } else if (this.context.currentKey.state == "keydown") {
-        if (this.context.textures[this.context.map[this.context.centerPosition.y][this.context.centerPosition.x]].next) {
+        if (this.context.textures[this.context.map[this.context.town.mapCenterPosition.y][this.context.town.mapCenterPosition.x]].next) {
           // ここで次のマップへ移行すること
           this.earthQuake.action();
         }
+
+        this.context.town.mapFocusPosition.y = (this.context.town.mapFocusPosition.y - (destination.top / this.context.squareSize.y));
+        this.context.town.mapFocusPosition.x = (this.context.town.mapFocusPosition.x - (destination.left / this.context.squareSize.x));
+
         this.swapMap();
         keyCode = this.context.currentKey.keyCode;
         this.context.currentKey = null;
@@ -258,10 +248,14 @@ class MapAreaView extends MovableView {
 
       // 次のキー操作がない
       } else {
-        if (this.context.textures[this.context.map[this.context.centerPosition.y][this.context.centerPosition.x]].next) {
+        if (this.context.textures[this.context.map[this.context.town.mapCenterPosition.y][this.context.town.mapCenterPosition.x]].next) {
           // ここで次のマップへ移行すること
           this.earthQuake.action();
         }
+
+        this.context.town.mapFocusPosition.y = (this.context.town.mapFocusPosition.y - (destination.top / this.context.squareSize.y));
+        this.context.town.mapFocusPosition.x = (this.context.town.mapFocusPosition.x - (destination.left / this.context.squareSize.x));
+
         this.swapMap();
         this.context.currentKey = null;
         this.context.nextKey = null;
@@ -287,13 +281,21 @@ class MapAreaView extends MovableView {
     // 進行方向
     destination = key.name;
 
+    if (this.context.canMove) {
+      this.context.town.mapFocusPosition.y = this.context.town.mapCenterPosition.y;
+      this.context.town.mapFocusPosition.x = this.context.town.mapCenterPosition.x;
+
+      this.context.town.mapFocusPosition.y = (this.context.upperLeftPosition.y - (this.context.getDestination(destination).top / this.context.squareSize.y)) + Math.floor(this.context.mapRows / 2);
+      this.context.town.mapFocusPosition.x = (this.context.upperLeftPosition.x - (this.context.getDestination(destination).left / this.context.squareSize.x)) + Math.floor(this.context.mapColumns / 2);
+    }
+
     // 衝突検知
     if (this.context.canMove && !this.context.collisionMap
-      [this.context.centerPosition.y - this.context.getDestination(destination).top / this.context.squareSize.y]
-      [this.context.centerPosition.x - this.context.getDestination(destination).left / this.context.squareSize.x]) {
+      [this.context.town.mapCenterPosition.y - this.context.getDestination(destination).top / this.context.squareSize.y]
+      [this.context.town.mapCenterPosition.x - this.context.getDestination(destination).left / this.context.squareSize.x]) {
       return;
     }
-    
+
     // 次のキーがすでに決まっている場合はカット
     if (this.context.nextKey && this.context.currentKey) {
       return;
@@ -307,9 +309,9 @@ class MapAreaView extends MovableView {
     // 移動処理
     if (this.context.canMove) {
       this.context.upperLeftPosition.y -= this.context.getDestination(destination).top / this.context.squareSize.y;
-      this.context.centerPosition.y = this.context.upperLeftPosition.y + Math.floor(this.context.mapRows / 2);
+      this.context.town.mapCenterPosition.y = this.context.upperLeftPosition.y + Math.floor(this.context.mapRows / 2);
       this.context.upperLeftPosition.x -= this.context.getDestination(destination).left / this.context.squareSize.x;
-      this.context.centerPosition.x = this.context.upperLeftPosition.x + Math.floor(this.context.mapColumns / 2);
+      this.context.town.mapCenterPosition.x = this.context.upperLeftPosition.x + Math.floor(this.context.mapColumns / 2);
       
       this.context.nextKey = null;
       this.context.isProgress = true;

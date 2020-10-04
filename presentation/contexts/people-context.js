@@ -1,7 +1,7 @@
 // ピープルのコントローラークラス
 class PeopleContext extends MovableContext {
   // コンストラクタ
-  constructor(town, peopleName, position, canMove, isAuto, moveTimeSpan, isActive, action, zIndexBase) { super(town);
+  constructor(town, peopleName, position, canMove, isAuto, moveTimeSpan, isActive, action, zIndexBase, text) { super(town);
     // 町と設定
     this.town = town;
     this.settings = town.settings;
@@ -14,6 +14,9 @@ class PeopleContext extends MovableContext {
     this.basePosition = position;
     this.isProgress = false;
     
+    this.textSet = text;
+    this.readIndex = 0;
+
     // 現在のキャラクター位置
     this.currentPosition = new Position(this.basePosition.x, this.basePosition.y);
     this.mapUpperLeftPosition = this.town.mapPosition;
@@ -44,9 +47,10 @@ class PeopleContext extends MovableContext {
 
   // 動作が可能かどうか
   get canMove() {
-    if (this.isProgress) {
+    if (this.isProgress ) {
       return false;
     }
+
     // コンテキストのチェック
     return this.checkContextForMove();
   }
@@ -57,6 +61,7 @@ class PeopleContext extends MovableContext {
     if (this.town.commandBoxController.viewState == "opened") {
       return false;
     }
+
     return this._canMove;
   }
 
